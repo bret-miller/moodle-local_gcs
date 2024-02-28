@@ -1,0 +1,6 @@
+.local-gcs-htmlpage .gcswebhooks { float:right; text-align:right; }
+.local-gcs-htmlpage .gcscontent { margin-top:20px; }
+.local-gcs-htmlpage .gcscontent table { border: 1px solid black; }
+.local-gcs-htmlpage .gcscontent td,
+.local-gcs-htmlpage .gcscontent th { padding: 5px; border: 1px solid lightgray; }
+.local-gcs-htmlpage .gcscontent tr.even td { background-color: lightgray; }

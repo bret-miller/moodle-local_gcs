@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/gcs/db" VERSION="20240206" COMMENT="XMLDB file for Moodle local/gcs"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="local_gcs_acct_sch_cat" COMMENT="Accounting scholarship category codes for GCS Program Management">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="code" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="scholarship" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="result" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_classes" COMMENT="Instances of courses for a specific academic term.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="termyear" TYPE="int" LENGTH="4" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="termcode" TYPE="char" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursecode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="lectures" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="requiredtextbooks" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="shorttitle" TYPE="char" LENGTH="40" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="60" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursehours" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="instructor" TYPE="int" LENGTH="5" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="comments" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_termcourse" UNIQUE="true" FIELDS="termyear, termcode, coursecode"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_classes_taken" COMMENT="Every class taken by every student ever. This is used for evaluating program completion requirements and for producing transcripts.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="termyear" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="termcode" TYPE="char" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursecode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="studentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="shorttitleoverride" TYPE="char" LENGTH="40" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="titleoverride" TYPE="char" LENGTH="60" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="credittypecode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="gradecode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursehoursoverride" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="registrationdate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="tuitionpaid" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="completiondate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="canceldate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="comments" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="assignedcoursecode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="elective" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="scholarshippedamount" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="scholarshippedadjustment" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="scholarshipid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="agreementsigned" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="agreementid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ordernumber" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="linenumber" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="fee" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="classtuition" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="ordertotal" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="studentpaid" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="regfoxcode" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="manualpricing" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="seqn" TYPE="int" LENGTH="5" NOTNULL="false" SEQUENCE="false" COMMENT="Used for record matching during data conversion."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_studtermcourse" UNIQUE="true" FIELDS="studentid, termyear, termcode, coursecode"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_codes" COMMENT="Sets of codes used to describe what codes mean to the users">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="codeset" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" COMMENT="The set or group this code belongs to"/>
+        <FIELD NAME="code" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="128" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_codeset_code" UNIQUE="true" FIELDS="codeset, code" COMMENT="To keep the codeset + code unique"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_courses" COMMENT="Master list of courses for GCS Program Management System">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="courseseq" TYPE="int" LENGTH="3" NOTNULL="false" SEQUENCE="false" COMMENT="A field to order the courses on reports"/>
+        <FIELD NAME="coursecode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The code the identifies the course. Starts with the course category (2 letters) followed by 3 numbers."/>
+        <FIELD NAME="shorttitle" TYPE="char" LENGTH="40" NOTNULL="false" SEQUENCE="false" COMMENT="A short title to use where space is limited. May be the same as title if the title is short enough."/>
+        <FIELD NAME="title" TYPE="char" LENGTH="60" NOTNULL="false" SEQUENCE="false" COMMENT="The course title"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Detailed description of the course"/>
+        <FIELD NAME="coursehours" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false" COMMENT="Number of credits for this course"/>
+        <FIELD NAME="lectures" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false" COMMENT="Number of lectures in this course"/>
+        <FIELD NAME="requiredtextbooks" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The textbooks required for the course"/>
+        <FIELD NAME="defaultinstructor" TYPE="int" LENGTH="5" NOTNULL="false" SEQUENCE="false" COMMENT="The Moodle user id of the default instructor for the course"/>
+        <FIELD NAME="comments" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Miscellaneous comments about the course, like prerequisites."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_coursecode" UNIQUE="true" FIELDS="coursecode"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_courses_permitted" COMMENT="Lists the courses permitted in each category for each program of study.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="programcode" TYPE="char" LENGTH="5" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursecategory" TYPE="char" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursecode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="electiveeligible" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_all" UNIQUE="true" FIELDS="programcode, coursecategory, coursecode"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_enroll_agreements" COMMENT="Enrollment agreements students must sign when they enroll in a course.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="seqn" TYPE="int" LENGTH="4" NOTNULL="false" SEQUENCE="false" COMMENT="Sequence number used to match agreements for conversion from old system"/>
+        <FIELD NAME="credittype" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Credit type code"/>
+        <FIELD NAME="agreement" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Text of the agreement"/>
+        <FIELD NAME="adddate" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Date agreement was added."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_program" COMMENT="Programs Offered">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="programcode" TYPE="char" LENGTH="5" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="academicdegree" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="inactive" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_programcode" UNIQUE="true" FIELDS="programcode"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_program_completion" COMMENT="Programs completed and previous education that is the basis for admissions.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="studentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="programcode" TYPE="char" LENGTH="15" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="university" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="enrolldate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="completiondate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="notes" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="basisofadmission" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="source" TYPE="char" LENGTH="15" NOTNULL="true" SEQUENCE="false" COMMENT="Source of program that was completed. This controls whether a program is listed on the program requirements completed page."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_program_req" COMMENT="Defines the number of courses in each course category that are required to complete a program of study.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="programcode" TYPE="char" LENGTH="5" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="categorycode" TYPE="char" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="coursesrequired" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="reportseq" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false" COMMENT="display order on reports"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_programcategory" UNIQUE="true" FIELDS="programcode, categorycode"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_sch_available" COMMENT="Scholarships available for GCS Program Management">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="scholarshipcode" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="scholarshiptext" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="statusconfirm" TYPE="char" LENGTH="200" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="perunitamount" TYPE="number" LENGTH="10" NOTNULL="true" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="coursemax" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="eligibleyears" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
+        <FIELD NAME="applyfrom" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Scholarship is valid starting on this date."/>
+        <FIELD NAME="applythru" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Scholarship is valid through this date."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="ix_sch_code" UNIQUE="true" FIELDS="scholarshipcode"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_gcs_sch_given" COMMENT="Scholarships given for GCS Program Management">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="studentid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="termyear" TYPE="int" LENGTH="4" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="requestdate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="programcode" TYPE="char" LENGTH="5" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="occupation" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="employer" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="cadinfoauth" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="category" TYPE="char" LENGTH="3" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="perunitamount" TYPE="number" LENGTH="11" NOTNULL="true" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="coursemax" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="eligiblefrom" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="eligiblethru" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="decision" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="reviewdate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="comments" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="studentnotified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="seqn" TYPE="int" LENGTH="5" NOTNULL="false" SEQUENCE="false" COMMENT="Used for record matching for data conversion."/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_student" COMMENT="Students who are either currently enrolled or have taken courses in the past">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="legallastname" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="legalfirstname" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="legalmiddlename" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="preferredfirstname" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="programcode" TYPE="char" LENGTH="5" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="acceptancedate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="statuscode" TYPE="char" LENGTH="5" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="exitdate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="idnumber" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="ID from external system"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Moodle user id"/>
+        <FIELD NAME="birthplace" TYPE="char" LENGTH="40" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ssn" TYPE="char" LENGTH="11" NOTNULL="false" SEQUENCE="false" COMMENT="US social security number"/>
+        <FIELD NAME="address" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="address2" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="city" TYPE="char" LENGTH="40" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="stateprovince" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="zip" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="country" TYPE="char" LENGTH="25" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="citizenship" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="alienregnumber" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="visatype" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="isveteran" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="ethniccode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="donotemail" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="scholarshipeligible" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="regfoxemails" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Comma-separated list of emails that could be associated with this person at RegFox. Used to match incoming registration with the student."/>
+        <FIELD NAME="isgraduated" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_term_dates" COMMENT="Defines academic calendar terms (periods), codes, names, and key dates.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="termyear" TYPE="int" LENGTH="4" NOTNULL="false" SEQUENCE="false" COMMENT="Year this term belongs to"/>
+        <FIELD NAME="termcode" TYPE="char" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="termname" TYPE="char" LENGTH="32" NOTNULL="false" SEQUENCE="false" COMMENT="Student-friendly name (term + year) of this term, like Fall 2023."/>
+        <FIELD NAME="accountingcode" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="The accounting code for the term, like GCS20233"/>
+        <FIELD NAME="accountingtitle" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false" COMMENT="The title Accounting will use in reports, like GCS 2023 Fall Registration"/>
+        <FIELD NAME="registrationstart" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="registrationend" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date registration ends, unix timestamp in UTC"/>
+        <FIELD NAME="classesstart" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date classes start, unix timestamp in UTC"/>
+        <FIELD NAME="classesend" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Date classes end, unix timestamp in UTC"/>
+        <FIELD NAME="address" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="city" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="state" TYPE="char" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="zip" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_regfox_webhook" COMMENT="Raw data collected from RegFox webhook posts">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="receivedtime" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="signature" TYPE="char" LENGTH="256" NOTNULL="false" SEQUENCE="false" COMMENT="Contents of the X-Webconnex-Signature header"/>
+        <FIELD NAME="event" TYPE="char" LENGTH="32" NOTNULL="false" SEQUENCE="false" COMMENT="Contents of the X-Webconnex-Event header"/>
+        <FIELD NAME="postdata" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="processedtime" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_regfox_transaction" COMMENT="transaction data from RegFox webhooks">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="transactionid" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="transactionid"/>
+        <FIELD NAME="ordernumber" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="order number"/>
+        <FIELD NAME="orderstatus" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="order status"/>
+        <FIELD NAME="email" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="payers email address"/>
+        <FIELD NAME="firstname" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false" COMMENT="payers first name"/>
+        <FIELD NAME="lastname" TYPE="char" LENGTH="30" NOTNULL="false" SEQUENCE="false" COMMENT="payers lastname"/>
+        <FIELD NAME="paymethod" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="payment method"/>
+        <FIELD NAME="formname" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="RegFox form name"/>
+        <FIELD NAME="total" TYPE="number" LENGTH="7" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2"/>
+        <FIELD NAME="transactiontime" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Timestamp on the RegFox transaction"/>
+        <FIELD NAME="timestamp" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Time transaction was recorded"/>
+        <FIELD NAME="webhookid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of the webhook that holds the raw data"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_regfox_registrant" COMMENT="Registrant details for a RegFox transaction.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="email" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Registrant's email"/>
+        <FIELD NAME="firstname" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false" COMMENT="Registrant first name"/>
+        <FIELD NAME="lastname" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false" COMMENT="Registrant last name"/>
+        <FIELD NAME="scholarshipcode" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="amount" TYPE="number" LENGTH="7" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Total cost for this registrant"/>
+        <FIELD NAME="tranid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of transaction this registration came from"/>
+        <FIELD NAME="processedtime" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Time this registrant was processed"/>
+        <FIELD NAME="studentid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_regfox_class" COMMENT="A class item for a RegFox transactions registrant.">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="regid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="ID of the registrant this class belongs to"/>
+        <FIELD NAME="coursecode" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course code registered"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false" COMMENT="Course title"/>
+        <FIELD NAME="credittypecode" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Credit type"/>
+        <FIELD NAME="cost" TYPE="number" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="The cost for this class based on credit type"/>
+        <FIELD NAME="paid" TYPE="number" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Amount paid"/>
+        <FIELD NAME="discount" TYPE="number" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Discount amount for this course"/>
+        <FIELD NAME="processedtime" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Time this class registration was processed"/>
+        <FIELD NAME="ctrid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Classes taken record id"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>

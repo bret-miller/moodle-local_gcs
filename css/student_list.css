@@ -1,0 +1,39 @@
+.local-gcs-htmlpage div.termselect { display:inline-block; }
+.local-gcs-htmlpage .print {float:right;}
+.local-gcs-htmlpage .reportcontent { margin-top:10px; padding-top:10px; border-top: 3px solid black; }
+.local-gcs-htmlpage .reportcontent .class td { padding-top:15px; }
+.local-gcs-htmlpage .reportcontent .classname { float:left; font-size:1.1em; font-weight: 700; }
+.local-gcs-htmlpage .reportcontent .class .info { float:right; width:30%; clear:inline-end; white-space: nowrap;}
+.local-gcs-htmlpage .reportcontent .class .info .hours { display:inline-block; margin-right:10px; width:30%; }
+.local-gcs-htmlpage .reportcontent .class .info .prof { display:inline-block; }
+.local-gcs-htmlpage .reportcontent table { display:block; width:80%; margin-left:40px; clear:both; }
+.local-gcs-htmlpage .reportcontent tr.even { background-color:#FAF0E6; }
+.local-gcs-htmlpage .reportcontent th, .local-gcs-htmlpage .reportcontent td { width:15%; }
+.local-gcs-htmlpage .reportcontent th.name, .local-gcs-htmlpage .reportcontent td.name { width:25%; }
+.local-gcs-htmlpage .reportcontent th.state, .local-gcs-htmlpage .reportcontent td.state { width:10%; }
+.local-gcs-htmlpage .reportcontent th.status, .local-gcs-htmlpage .reportcontent td.status { width:10%; }
+.local-gcs-htmlpage .reportcontent th.program, .local-gcs-htmlpage .reportcontent td.program { width:25%; }
+.local-gcs-htmlpage .reportcontent .clear { clear:both; height:1px; }
+.local-gcs-htmlpage .hidden { display:none; }
+
+/* For classes taken subtable */
+
+.local-gcs-htmlpage .reportcontent td table { width:90% }
+.local-gcs-htmlpage .reportcontent td table td.course { width:45%; }
+.local-gcs-htmlpage .reportcontent td table td.term { width:8%; }
+.local-gcs-htmlpage .reportcontent td table td.transfer { width:35%; }
+.local-gcs-htmlpage .reportcontent td table td.completed { width:7%; }
+.local-gcs-htmlpage .reportcontent td table th.grade,
+.local-gcs-htmlpage .reportcontent td table td.grade { width:5%; padding-left:5px;}
+
+@media print {
+    * {
+        -webkit-print-color-adjust: exact !important;   /* Chrome, Safari 6 – 15.3, Edge */
+        color-adjust: exact !important;                 /* Firefox 48 – 96 */
+        print-color-adjust: exact !important;           /* Firefox 97+, Safari 15.4+ */
+    }    
+    #page-header {display:none;}
+    #page-footer {display:none;}
+    .local-gcs-htmlpage table { width:100%; }
+    .local-gcs-htmlpage .print {display:none;}
+}

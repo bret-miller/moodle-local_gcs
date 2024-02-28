@@ -1,0 +1,24 @@
+.local-gcs-htmlpage div.termselect { display:inline-block; }
+.local-gcs-htmlpage .print {float:right;}
+.local-gcs-htmlpage .reportcontent { margin-top:10px; padding-top:10px; border-top: 3px solid black; }
+.local-gcs-htmlpage .reportcontent .class td { padding-top:15px; }
+.local-gcs-htmlpage .reportcontent .classname { float:left; font-size:1.1em; font-weight: 700; }
+.local-gcs-htmlpage .reportcontent .class .info { float:right; width:30%; clear:inline-end; white-space: nowrap;}
+.local-gcs-htmlpage .reportcontent .class .info .hours { display:inline-block; margin-right:10px; width:30%; }
+.local-gcs-htmlpage .reportcontent .class .info .prof { display:inline-block; }
+.local-gcs-htmlpage .reportcontent table { display:block; width:80%; margin-left:40px; clear:both; }
+.local-gcs-htmlpage .reportcontent th, .local-gcs-htmlpage .reportcontent td { width:15%; }
+.local-gcs-htmlpage .reportcontent th.name, .local-gcs-htmlpage .reportcontent td.name { width:40%; }
+.local-gcs-htmlpage .reportcontent .clear { clear:both; height:1px; }
+
+@media print {
+    * {
+        -webkit-print-color-adjust: exact !important;   /* Chrome, Safari 6 – 15.3, Edge */
+        color-adjust: exact !important;                 /* Firefox 48 – 96 */
+        print-color-adjust: exact !important;           /* Firefox 97+, Safari 15.4+ */
+    }    
+    #page-header {display:none;}
+    #page-footer {display:none;}
+    .local-gcs-htmlpage table { width:100%; }
+    .local-gcs-htmlpage .print {display:none;}
+}

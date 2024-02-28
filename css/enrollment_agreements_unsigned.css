@@ -1,0 +1,5 @@
+.local-gcs-htmlpage div.termselect { display:inline-block; }
+.local-gcs-htmlpage .print {float:right;}
+.local-gcs-htmlpage .reportcontent { margin-top:10px; padding-top:10px; border-top: 3px solid black; }
+.local-gcs-htmlpage .reportcontent tr.even { background-color:#FAF0E6; }
+.local-gcs-htmlpage .reportcontent th.class, .local-gcs-htmlpage .reportcontent td.class { padding-left:10px; }
