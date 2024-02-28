@@ -1211,8 +1211,8 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
 	// Add new swervice users_get_instructors.
 	// Add Program Completion menu item.
 	// Add Unsigned Enrollment agreements.
-    if ($oldversion < 2024022000) {
+    if ($oldversion < 2024022001) {
         // Gcs savepoint reached.
-        upgrade_plugin_savepoint(true, 2024022000, 'local', 'gcs');
+        upgrade_plugin_savepoint(true, 2024022001, 'local', 'gcs');
     }
 }
