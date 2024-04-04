@@ -97,7 +97,11 @@ class classes_taken {
         if ($argc == 0) {
             // Initialize blank regfox class record.
 			$this->blankrec();
-        } else if (($argc == 1) && ((gettype(args[0]) == 'integer') || (gettype(args[0]=='string')))) {
+        } else if (($argc == 1) && (gettype($args[0]) == 'object')){
+            // Build from object properties.
+            $rec = $args[0];
+			$this->fill($rec);
+        } else if (($argc == 1) && ((gettype($args[0]) == 'integer') || (gettype($args[0]=='string')))) {
             // Read from database by record id.
             $rec = data::get_classes_taken($args[0]);
 			if ($rec) {
@@ -105,10 +109,6 @@ class classes_taken {
 			} else {
 				$this->blankrec();
 			}
-        } else if (($argc == 1) && (gettype(args[0]) == 'object')){
-            // Build from object properties.
-            $rec = $args[0];
-			$this->fill($rec);
 		} else if ($argc == 4) {
 			// Read from database
 			global $DB;

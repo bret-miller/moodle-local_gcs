@@ -1211,8 +1211,10 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
 	// Add new swervice users_get_instructors.
 	// Add Program Completion menu item.
 	// Add Unsigned Enrollment agreements.
-    if ($oldversion < 2024022001) {
+	// Add formatted enrollment agreement services
+	// Add students with scholarships service
+    if ($oldversion < 2024040402) {
         // Gcs savepoint reached.
-        upgrade_plugin_savepoint(true, 2024022001, 'local', 'gcs');
+        upgrade_plugin_savepoint(true, 2024040402, 'local', 'gcs');
     }
 }

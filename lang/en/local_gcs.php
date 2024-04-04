@@ -67,5 +67,6 @@ $string['setting_fromemail'] = 'From email address';
 $string['setting_fromemail_desc'] = 'Plugin emails are sent from this email address.';
 $string['setting_notificationemails'] = 'Email addresses to receive plugin notifications.';
 $string['setting_notificationemails_desc'] = 'Comma-separated list of emails to notify of things that need attention.';
+$string['taskprocessagreements'] = 'Process enrollment agreements';
 $string['taskprocessregfox'] = 'Process RegFox registration webhooks';
 $string['taskstudentusermatch'] = 'Match students with their user account';

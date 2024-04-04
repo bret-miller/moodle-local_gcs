@@ -232,6 +232,7 @@ class regfox_processor {
                             }
                             $msg .= 'Total should be: '.number_format($schtotal,2);
                             $this->logthis($msg);
+							utils::send_notification_email('Check Tuition Paid',"<p>$msg</p>");
                         }
                     }
                     if ($ctr->id) {

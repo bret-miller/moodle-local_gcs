@@ -14,19 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Version information for GCS Program Management
+ * Defines scheduled tasks.
  *
  * @package    local_gcs
- * @copyright  2023 Grace Communion Seminary
+ * @copyright  2024 Grace Communion Seminary
  * @author     Bret Miller
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component = 'local_gcs';       // To check on upgrade, that module sits in correct place.
-$plugin->version   = 2024040402;        // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022112803;        // Requires Moodle version 4.1.
-$plugin->release   = '0.1.1';
-$plugin->maturity  = MATURITY_BETA;     // One of: ALPHA, BETA, RC, STABLE.
-$plugin->cron      = 0;
+$tasks = [
+    [
+	    'classname' => 'local_gcs\task\process_agreements',
+		'dayofweek' => 1,
+		'hour' => 6,
+		'minute' => 0
+	]
+];

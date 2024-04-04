@@ -1275,6 +1275,29 @@ $functions = [
             'gcs',
         ],
     ],
+    // The name of your web service function.
+    'local_gcs_students_get_with_scholarships' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\students_get_with_scholarships',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Retrieves the list students with scholarships.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
     'local_gcs_students_get' => [
         // The name of the namespaced class that the function is located in.
         'classname'   => 'local_gcs\external\students_get',
@@ -2187,6 +2210,50 @@ $functions = [
 
         // A brief, human-readable, description of the web service function.
         'description' => 'Gets the program management plugin settings.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_enrollment_agreement_info_get' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\enrollment_agreement_info_get',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Gets the formatted enrollment agreement info.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_classes_taken_agreement_info_get' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\classes_taken_agreement_info_get',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Gets the formatted enrollment agreement info.',
 
         // Options include read, and write.
         'type'        => 'read',

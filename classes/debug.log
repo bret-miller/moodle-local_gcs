@@ -2,13 +2,13 @@ Array
 (
     [0] => stdClass Object
         (
-            [recid] => XX-4068
+            [recid] => XX-4098
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 4068
+            [id] => 4098
             [classcategorycode] => XX
             [coursecode] => IS501
             [shorttitle] => Seminar on Nature of God
@@ -31,13 +31,13 @@ Array
 
     [1] => stdClass Object
         (
-            [recid] => XX-2733
+            [recid] => XX-3026
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 2733
+            [id] => 3026
             [classcategorycode] => XX
             [coursecode] => IS509
             [shorttitle] => Combined In-Service Classes
@@ -50,7 +50,7 @@ Array
             [coursehours] => 3
             [termyear] => 1995
             [termcode] => 0
-            [completiondate] => 1059696000
+            [completiondate] => 1028160000
             [elective] => 0
             [electiveeligible] => 0
             [termname] => Special 1995
@@ -60,13 +60,13 @@ Array
 
     [2] => stdClass Object
         (
-            [recid] => XX-3924
+            [recid] => XX-3986
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 3924
+            [id] => 3986
             [classcategorycode] => XX
             [coursecode] => IS508
             [shorttitle] => Theology of Leadership
@@ -79,7 +79,7 @@ Array
             [coursehours] => 3
             [termyear] => 1996
             [termcode] => 0
-            [completiondate] => 864950400
+            [completiondate] => 854755200
             [elective] => 0
             [electiveeligible] => 0
             [termname] => Special 1996
@@ -89,13 +89,42 @@ Array
 
     [3] => stdClass Object
         (
-            [recid] => XX-3772
+            [recid] => XX-4038
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 3772
+            [id] => 4038
+            [classcategorycode] => XX
+            [coursecode] => TR501
+            [shorttitle] => Transfer Credit
+            [title] => Transfer Credit
+            [transfershorttitle] => Life, Ministry & Teachings of
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => 
+            [passfail] => IP
+            [coursehours] => 0
+            [termyear] => 1996
+            [termcode] => 3
+            [completiondate] => 833587200
+            [elective] => 0
+            [electiveeligible] => 0
+            [termname] => Fall 1996
+            [coursepermitted] => 0
+            [coursesrequired] => 0
+        )
+
+    [4] => stdClass Object
+        (
+            [recid] => XX-3864
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 0
+            [categorycode] => 0
+            [categoryname] =>  
+            [id] => 3864
             [classcategorycode] => XX
             [coursecode] => IS502
             [shorttitle] => Biblical Interpretation (1997)
@@ -108,7 +137,7 @@ Array
             [coursehours] => 3
             [termyear] => 1997
             [termcode] => 0
-            [completiondate] => 872726400
+            [completiondate] => 866332800
             [elective] => 0
             [electiveeligible] => 0
             [termname] => Special 1997
@@ -116,15 +145,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [4] => stdClass Object
+    [5] => stdClass Object
         (
-            [recid] => XX-3633
+            [recid] => XX-3548
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 3633
+            [id] => 3548
             [classcategorycode] => XX
             [coursecode] => IS503
             [shorttitle] => Early Church History (1998)
@@ -137,7 +166,7 @@ Array
             [coursehours] => 3
             [termyear] => 1997
             [termcode] => 0
-            [completiondate] => 885945600
+            [completiondate] => 888710400
             [elective] => 0
             [electiveeligible] => 0
             [termname] => Special 1997
@@ -145,15 +174,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [5] => stdClass Object
+    [6] => stdClass Object
         (
-            [recid] => XX-3475
+            [recid] => XX-3537
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 3475
+            [id] => 3537
             [classcategorycode] => XX
             [coursecode] => IS511
             [shorttitle] => Stewardship (1998)
@@ -174,15 +203,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [6] => stdClass Object
+    [7] => stdClass Object
         (
-            [recid] => XX-3339
+            [recid] => XX-3388
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 3339
+            [id] => 3388
             [classcategorycode] => XX
             [coursecode] => IS510
             [shorttitle] => Prophesy (1999)
@@ -203,15 +232,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [7] => stdClass Object
+    [8] => stdClass Object
         (
-            [recid] => XX-3262
+            [recid] => XX-3172
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 3262
+            [id] => 3172
             [classcategorycode] => XX
             [coursecode] => IS504
             [shorttitle] => Modern Church History (2000)
@@ -224,7 +253,7 @@ Array
             [coursehours] => 3
             [termyear] => 2000
             [termcode] => 0
-            [completiondate] => 962928000
+            [completiondate] => 967766400
             [elective] => 0
             [electiveeligible] => 0
             [termname] => Special 2000
@@ -232,15 +261,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [8] => stdClass Object
+    [9] => stdClass Object
         (
-            [recid] => XX-2971
+            [recid] => XX-3060
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 2971
+            [id] => 3060
             [classcategorycode] => XX
             [coursecode] => IS506
             [shorttitle] => Holy Spirit (2002)
@@ -251,25 +280,25 @@ Array
             [gradecode] => PAS
             [passfail] => PAS
             [coursehours] => 3
-            [termyear] => 2002
+            [termyear] => 2001
             [termcode] => 0
-            [completiondate] => 1028160000
+            [completiondate] => 999302400
             [elective] => 0
             [electiveeligible] => 0
-            [termname] => Special 2002
+            [termname] => Special 2001
             [coursepermitted] => 0
             [coursesrequired] => 0
         )
 
-    [9] => stdClass Object
+    [10] => stdClass Object
         (
-            [recid] => XX-2602
+            [recid] => XX-2679
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 2602
+            [id] => 2679
             [classcategorycode] => XX
             [coursecode] => IS505
             [shorttitle] => Caring for People God's Way
@@ -282,7 +311,7 @@ Array
             [coursehours] => 3
             [termyear] => 2003
             [termcode] => 0
-            [completiondate] => 1068163200
+            [completiondate] => 1059955200
             [elective] => 0
             [electiveeligible] => 0
             [termname] => Special 2003
@@ -290,15 +319,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [10] => stdClass Object
+    [11] => stdClass Object
         (
-            [recid] => XX-2734
+            [recid] => XX-2788
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => 0
             [categoryname] =>  
-            [id] => 2734
+            [id] => 2788
             [classcategorycode] => XX
             [coursecode] => IS507
             [shorttitle] => Preaching (2003)
@@ -319,15 +348,44 @@ Array
             [coursesrequired] => 0
         )
 
-    [11] => stdClass Object
+    [12] => stdClass Object
         (
-            [recid] => 6-2204
+            [recid] => 6-2557
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 10
             [categorycode] => TH
             [categoryname] => Theology
-            [id] => 2204
+            [id] => 2557
+            [classcategorycode] => TH
+            [coursecode] => TH501
+            [shorttitle] => The Triune God Revealed in Jesus Christ
+            [title] => The Triune God Revealed in Jesus Christ
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2004
+            [termcode] => 0
+            [completiondate] => 1086048000
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Special 2004
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [13] => stdClass Object
+        (
+            [recid] => 6-2214
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 10
+            [categorycode] => TH
+            [categoryname] => Theology
+            [id] => 2214
             [classcategorycode] => TH
             [coursecode] => TH502
             [shorttitle] => Nature of Humans and Salvation
@@ -335,7 +393,7 @@ Array
             [transfershorttitle] => 
             [transfertitle] => 
             [credittypecode] => CR
-            [gradecode] => A
+            [gradecode] => B+
             [passfail] => PAS
             [coursehours] => 3
             [termyear] => 2008
@@ -348,15 +406,131 @@ Array
             [coursesrequired] => 3
         )
 
-    [12] => stdClass Object
+    [14] => stdClass Object
         (
-            [recid] => 7-2331
+            [recid] => 6-2087
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 10
+            [categorycode] => TH
+            [categoryname] => Theology
+            [id] => 2087
+            [classcategorycode] => TH
+            [coursecode] => TH504
+            [shorttitle] => Trinitarian Perspectives on Faith and Sc
+            [title] => Trinitarian Perspectives on Faith and Science
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => A
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2009
+            [termcode] => 1
+            [completiondate] => 1240185600
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Spring 2009
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [15] => stdClass Object
+        (
+            [recid] => 6-1808
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 10
+            [categorycode] => TH
+            [categoryname] => Theology
+            [id] => 1808
+            [classcategorycode] => TH
+            [coursecode] => TH505
+            [shorttitle] => Doctrine of the Trinity
+            [title] => Doctrine of the Trinity
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => B+
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2010
+            [termcode] => 3
+            [completiondate] => 1292284800
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Fall 2010
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [16] => stdClass Object
+        (
+            [recid] => 7-2535
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 20
             [categorycode] => BS
             [categoryname] => Biblical Studies
-            [id] => 2331
+            [id] => 2535
+            [classcategorycode] => BS
+            [coursecode] => NT501
+            [shorttitle] => New Testament Background
+            [title] => New Testament Background
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2004
+            [termcode] => 0
+            [completiondate] => 1108425600
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Special 2004
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [17] => stdClass Object
+        (
+            [recid] => 7-2439
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 20
+            [categorycode] => BS
+            [categoryname] => Biblical Studies
+            [id] => 2439
+            [classcategorycode] => BS
+            [coursecode] => BT501
+            [shorttitle] => Pentateuch
+            [title] => Pentateuch
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2005
+            [termcode] => 0
+            [completiondate] => 1131408000
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Special 2005
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [18] => stdClass Object
+        (
+            [recid] => 7-2405
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 20
+            [categorycode] => BS
+            [categoryname] => Biblical Studies
+            [id] => 2405
             [classcategorycode] => BS
             [coursecode] => NT503
             [shorttitle] => Acts of the Apostles
@@ -368,28 +542,202 @@ Array
             [passfail] => PAS
             [coursehours] => 3
             [termyear] => 2007
-            [termcode] => 1
-            [completiondate] => 1177545600
+            [termcode] => 0
+            [completiondate] => 1166659200
             [elective] => 0
             [electiveeligible] => 1
-            [termname] => Spring 2007
+            [termname] => Special 2007
             [coursepermitted] => 1
             [coursesrequired] => 3
         )
 
-    [13] => stdClass Object
+    [19] => stdClass Object
         (
-            [recid] => 8-1917
+            [recid] => 7-2273
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 20
+            [categorycode] => BS
+            [categoryname] => Biblical Studies
+            [id] => 2273
+            [classcategorycode] => BS
+            [coursecode] => BT502
+            [shorttitle] => Prophets
+            [title] => Prophets
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => A
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2007
+            [termcode] => 3
+            [completiondate] => 1198108800
+            [elective] => 1
+            [electiveeligible] => 1
+            [termname] => Fall 2007
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [20] => stdClass Object
+        (
+            [recid] => 8-2146
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 30
             [categorycode] => CH
             [categoryname] => Church History
-            [id] => 1917
+            [id] => 2146
             [classcategorycode] => CH
             [coursecode] => CH501
             [shorttitle] => Church History: The First Millennium
             [title] => Church History: The First Millennium
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => B+
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2008
+            [termcode] => 3
+            [completiondate] => 1228435200
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Fall 2008
+            [coursepermitted] => 1
+            [coursesrequired] => 1
+        )
+
+    [21] => stdClass Object
+        (
+            [recid] => 9-2339
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 40
+            [categorycode] => CM
+            [categoryname] => Christian Ministry
+            [id] => 2339
+            [classcategorycode] => CM
+            [coursecode] => CM501
+            [shorttitle] => Foundations of Christian Ministry
+            [title] => Foundations of Christian Ministry
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2007
+            [termcode] => 1
+            [completiondate] => 1177545600
+            [elective] => 0
+            [electiveeligible] => 0
+            [termname] => Spring 2007
+            [coursepermitted] => 1
+            [coursesrequired] => 4
+        )
+
+    [22] => stdClass Object
+        (
+            [recid] => 9-2172
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 40
+            [categorycode] => CM
+            [categoryname] => Christian Ministry
+            [id] => 2172
+            [classcategorycode] => CM
+            [coursecode] => CM502
+            [shorttitle] => Pastoral Leadership
+            [title] => Pastoral Leadership
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => A-
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2008
+            [termcode] => 2
+            [completiondate] => 1218585600
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Summer 2008
+            [coursepermitted] => 1
+            [coursesrequired] => 4
+        )
+
+    [23] => stdClass Object
+        (
+            [recid] => 9-2027
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 40
+            [categorycode] => CM
+            [categoryname] => Christian Ministry
+            [id] => 2027
+            [classcategorycode] => CM
+            [coursecode] => CM504
+            [shorttitle] => Practice of Ministry
+            [title] => Practice of Ministry
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => A-
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2009
+            [termcode] => 2
+            [completiondate] => 1250208000
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Summer 2009
+            [coursepermitted] => 1
+            [coursesrequired] => 4
+        )
+
+    [24] => stdClass Object
+        (
+            [recid] => 9-1946
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 40
+            [categorycode] => CM
+            [categoryname] => Christian Ministry
+            [id] => 1946
+            [classcategorycode] => CM
+            [coursecode] => CM503
+            [shorttitle] => Christian Counseling
+            [title] => Christian Counseling
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => B-
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2009
+            [termcode] => 3
+            [completiondate] => 1261440000
+            [elective] => 0
+            [electiveeligible] => 1
+            [termname] => Fall 2009
+            [coursepermitted] => 1
+            [coursesrequired] => 4
+        )
+
+    [25] => stdClass Object
+        (
+            [recid] => 9-1928
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 40
+            [categorycode] => CM
+            [categoryname] => Christian Ministry
+            [id] => 1928
+            [classcategorycode] => CM
+            [coursecode] => CM506
+            [shorttitle] => Trinitarian Youth Ministry
+            [title] => Trinitarian Youth Ministry
             [transfershorttitle] => 
             [transfertitle] => 
             [credittypecode] => CR
@@ -398,44 +746,15 @@ Array
             [coursehours] => 3
             [termyear] => 2010
             [termcode] => 1
-            [completiondate] => 1271289600
-            [elective] => 0
+            [completiondate] => 1271203200
+            [elective] => 1
             [electiveeligible] => 1
             [termname] => Spring 2010
             [coursepermitted] => 1
-            [coursesrequired] => 1
-        )
-
-    [14] => stdClass Object
-        (
-            [recid] => 9- 
-            [programcode] => MPS
-            [programname] => Master of Pastoral Studies
-            [reportseq] => 40
-            [categorycode] => CM
-            [categoryname] => Christian Ministry
-            [id] => 0
-            [classcategorycode] =>  
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
-            [transfershorttitle] => 
-            [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 0
-            [completiondate] => 0
-            [elective] => 0
-            [electiveeligible] => 0
-            [termname] => 
-            [coursepermitted] => 0
             [coursesrequired] => 4
         )
 
-    [15] => stdClass Object
+    [26] => stdClass Object
         (
             [recid] => 13- 
             [programcode] => MPS
@@ -464,7 +783,7 @@ Array
             [coursesrequired] => 2
         )
 
-    [16] => stdClass Object
+    [27] => stdClass Object
         (
             [recid] => 22- 
             [programcode] => MPS
@@ -493,7 +812,7 @@ Array
             [coursesrequired] => 0
         )
 
-    [17] => stdClass Object
+    [28] => stdClass Object
         (
             [recid] => 10- 
             [programcode] => MPS
@@ -524,35 +843,75 @@ Array
 
 )
 ------------------------------------------------------------------------------------------
-Key: 0, Cat: 0, Count: 17
-Key: 1, Cat: 0, Count: 17
-Key: 2, Cat: 0, Count: 17
-Key: 3, Cat: 0, Count: 17
-Key: 4, Cat: 0, Count: 17
-Key: 5, Cat: 0, Count: 17
-Key: 6, Cat: 0, Count: 17
-Key: 7, Cat: 0, Count: 17
-Key: 8, Cat: 0, Count: 17
-Key: 9, Cat: 0, Count: 17
-Key: 10, Cat: 0, Count: 17
-Key: 11, Cat: TH, Count: 17
-Key: 12, Cat: BS, Count: 17
-Key: 13, Cat: CH, Count: 17
-Key: 14, Cat: CM, Count: 17
-Key: 15, Cat: EL, Count: 17
-Key: 16, Cat: FE, Count: 17
-Key: 17, Cat: TM, Count: 17
+Key: 0, Cat: 0, Count: 28
+Key: 1, Cat: 0, Count: 28
+Key: 2, Cat: 0, Count: 28
+Key: 3, Cat: 0, Count: 28
+Key: 4, Cat: 0, Count: 28
+Key: 5, Cat: 0, Count: 28
+Key: 6, Cat: 0, Count: 28
+Key: 7, Cat: 0, Count: 28
+Key: 8, Cat: 0, Count: 28
+Key: 9, Cat: 0, Count: 28
+Key: 10, Cat: 0, Count: 28
+Key: 11, Cat: 0, Count: 28
+Key: 12, Cat: TH, Count: 28
+Key: 13, Cat: TH, Count: 28
+Key: 14, Cat: TH, Count: 28
+Key: 15, Cat: TH, Count: 28
+Key: 16, Cat: BS, Count: 28
+Key: 17, Cat: BS, Count: 28
+Key: 18, Cat: BS, Count: 28
+Key: 19, Cat: BS, Count: 28
+Key: 20, Cat: CH, Count: 28
+Key: 21, Cat: CM, Count: 28
+Key: 22, Cat: CM, Count: 28
+Key: 23, Cat: CM, Count: 28
+Key: 24, Cat: CM, Count: 28
+Key: 25, Cat: CM, Count: 28
+Key: 26, Cat: EL, Count: 28
+Key: 27, Cat: FE, Count: 28
+Key: 28, Cat: TM, Count: 28
 Array
 (
     [0] => stdClass Object
         (
-            [recid] => 6-2204
+            [recid] => 6-2557
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 10
             [categorycode] => TH
             [categoryname] => Theology
-            [id] => 2204
+            [id] => 2557
+            [classcategorycode] => TH
+            [coursecode] => TH501
+            [shorttitle] => The Triune God Revealed in Jesus Christ
+            [title] => The Triune God Revealed in Jesus Christ
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2004
+            [termcode] => 0
+            [completiondate] => 1086048000
+            [elective] => 
+            [electiveeligible] => 1
+            [termname] => Special 2004
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [1] => stdClass Object
+        (
+            [recid] => 6-2214
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 10
+            [categorycode] => TH
+            [categoryname] => Theology
+            [id] => 2214
             [classcategorycode] => TH
             [coursecode] => TH502
             [shorttitle] => Nature of Humans and Salvation
@@ -560,7 +919,7 @@ Array
             [transfershorttitle] => 
             [transfertitle] => 
             [credittypecode] => CR
-            [gradecode] => A
+            [gradecode] => B+
             [passfail] => PAS
             [coursehours] => 3
             [termyear] => 2008
@@ -573,69 +932,102 @@ Array
             [coursesrequired] => 3
         )
 
-    [1] => Array
+    [2] => stdClass Object
         (
+            [recid] => 6-2087
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 10
             [categorycode] => TH
             [categoryname] => Theology
+            [id] => 2087
             [classcategorycode] => TH
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
+            [coursecode] => TH504
+            [shorttitle] => Trinitarian Perspectives on Faith and Sc
+            [title] => Trinitarian Perspectives on Faith and Science
             [transfershorttitle] => 
             [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
+            [credittypecode] => CR
+            [gradecode] => A
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2009
+            [termcode] => 1
+            [completiondate] => 1240185600
             [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
-            [coursesrequired] => 3
-        )
-
-    [2] => Array
-        (
-            [programcode] => MPS
-            [programname] => Master of Pastoral Studies
-            [reportseq] => 10
-            [categorycode] => TH
-            [categoryname] => Theology
-            [classcategorycode] => TH
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
-            [transfershorttitle] => 
-            [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
-            [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
+            [electiveeligible] => 1
+            [termname] => Spring 2009
+            [coursepermitted] => 1
             [coursesrequired] => 3
         )
 
     [3] => stdClass Object
         (
-            [recid] => 7-2331
+            [recid] => 7-2535
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 20
             [categorycode] => BS
             [categoryname] => Biblical Studies
-            [id] => 2331
+            [id] => 2535
+            [classcategorycode] => BS
+            [coursecode] => NT501
+            [shorttitle] => New Testament Background
+            [title] => New Testament Background
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2004
+            [termcode] => 0
+            [completiondate] => 1108425600
+            [elective] => 
+            [electiveeligible] => 1
+            [termname] => Special 2004
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [4] => stdClass Object
+        (
+            [recid] => 7-2439
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 20
+            [categorycode] => BS
+            [categoryname] => Biblical Studies
+            [id] => 2439
+            [classcategorycode] => BS
+            [coursecode] => BT501
+            [shorttitle] => Pentateuch
+            [title] => Pentateuch
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2005
+            [termcode] => 0
+            [completiondate] => 1131408000
+            [elective] => 
+            [electiveeligible] => 1
+            [termname] => Special 2005
+            [coursepermitted] => 1
+            [coursesrequired] => 3
+        )
+
+    [5] => stdClass Object
+        (
+            [recid] => 7-2405
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 20
+            [categorycode] => BS
+            [categoryname] => Biblical Studies
+            [id] => 2405
             [classcategorycode] => BS
             [coursecode] => NT503
             [shorttitle] => Acts of the Apostles
@@ -647,78 +1039,24 @@ Array
             [passfail] => PAS
             [coursehours] => 3
             [termyear] => 2007
-            [termcode] => 1
-            [completiondate] => 1177545600
+            [termcode] => 0
+            [completiondate] => 1166659200
             [elective] => 
             [electiveeligible] => 1
-            [termname] => Spring 2007
+            [termname] => Special 2007
             [coursepermitted] => 1
-            [coursesrequired] => 3
-        )
-
-    [4] => Array
-        (
-            [programcode] => MPS
-            [programname] => Master of Pastoral Studies
-            [reportseq] => 20
-            [categorycode] => BS
-            [categoryname] => Biblical Studies
-            [classcategorycode] => BS
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
-            [transfershorttitle] => 
-            [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
-            [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
-            [coursesrequired] => 3
-        )
-
-    [5] => Array
-        (
-            [programcode] => MPS
-            [programname] => Master of Pastoral Studies
-            [reportseq] => 20
-            [categorycode] => BS
-            [categoryname] => Biblical Studies
-            [classcategorycode] => BS
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
-            [transfershorttitle] => 
-            [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
-            [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
             [coursesrequired] => 3
         )
 
     [6] => stdClass Object
         (
-            [recid] => 8-1917
+            [recid] => 8-2146
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 30
             [categorycode] => CH
             [categoryname] => Church History
-            [id] => 1917
+            [id] => 2146
             [classcategorycode] => CH
             [coursecode] => CH501
             [shorttitle] => Church History: The First Millennium
@@ -726,179 +1064,191 @@ Array
             [transfershorttitle] => 
             [transfertitle] => 
             [credittypecode] => CR
-            [gradecode] => A
+            [gradecode] => B+
             [passfail] => PAS
             [coursehours] => 3
-            [termyear] => 2010
-            [termcode] => 1
-            [completiondate] => 1271289600
+            [termyear] => 2008
+            [termcode] => 3
+            [completiondate] => 1228435200
             [elective] => 
             [electiveeligible] => 1
-            [termname] => Spring 2010
+            [termname] => Fall 2008
             [coursepermitted] => 1
             [coursesrequired] => 1
         )
 
-    [7] => Array
+    [7] => stdClass Object
         (
+            [recid] => 9-2339
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 40
             [categorycode] => CM
             [categoryname] => Christian Ministry
-            [classcategorycode] =>  
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
+            [id] => 2339
+            [classcategorycode] => CM
+            [coursecode] => CM501
+            [shorttitle] => Foundations of Christian Ministry
+            [title] => Foundations of Christian Ministry
             [transfershorttitle] => 
             [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
+            [credittypecode] => CR
+            [gradecode] => PAS
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2007
+            [termcode] => 1
+            [completiondate] => 1177545600
             [elective] => 
             [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
+            [termname] => Spring 2007
+            [coursepermitted] => 1
             [coursesrequired] => 4
         )
 
-    [8] => Array
+    [8] => stdClass Object
         (
+            [recid] => 9-2172
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 40
             [categorycode] => CM
             [categoryname] => Christian Ministry
-            [classcategorycode] =>  
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
+            [id] => 2172
+            [classcategorycode] => CM
+            [coursecode] => CM502
+            [shorttitle] => Pastoral Leadership
+            [title] => Pastoral Leadership
             [transfershorttitle] => 
             [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
+            [credittypecode] => CR
+            [gradecode] => A-
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2008
+            [termcode] => 2
+            [completiondate] => 1218585600
             [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
+            [electiveeligible] => 1
+            [termname] => Summer 2008
+            [coursepermitted] => 1
             [coursesrequired] => 4
         )
 
-    [9] => Array
+    [9] => stdClass Object
         (
+            [recid] => 9-2027
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 40
             [categorycode] => CM
             [categoryname] => Christian Ministry
-            [classcategorycode] =>  
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
+            [id] => 2027
+            [classcategorycode] => CM
+            [coursecode] => CM504
+            [shorttitle] => Practice of Ministry
+            [title] => Practice of Ministry
             [transfershorttitle] => 
             [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
+            [credittypecode] => CR
+            [gradecode] => A-
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2009
+            [termcode] => 2
+            [completiondate] => 1250208000
             [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
+            [electiveeligible] => 1
+            [termname] => Summer 2009
+            [coursepermitted] => 1
             [coursesrequired] => 4
         )
 
-    [10] => Array
+    [10] => stdClass Object
         (
+            [recid] => 9-1946
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 40
             [categorycode] => CM
             [categoryname] => Christian Ministry
-            [classcategorycode] =>  
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
+            [id] => 1946
+            [classcategorycode] => CM
+            [coursecode] => CM503
+            [shorttitle] => Christian Counseling
+            [title] => Christian Counseling
             [transfershorttitle] => 
             [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
+            [credittypecode] => CR
+            [gradecode] => B-
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2009
+            [termcode] => 3
+            [completiondate] => 1261440000
             [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
+            [electiveeligible] => 1
+            [termname] => Fall 2009
+            [coursepermitted] => 1
             [coursesrequired] => 4
         )
 
-    [11] => Array
+    [11] => stdClass Object
         (
+            [recid] => 6-1808
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
-            [reportseq] => 50
+            [reportseq] => 10
             [categorycode] => EL
             [categoryname] => Elective
-            [classcategorycode] =>  
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
+            [id] => 1808
+            [classcategorycode] => TH
+            [coursecode] => TH505
+            [shorttitle] => Doctrine of the Trinity
+            [title] => Doctrine of the Trinity
             [transfershorttitle] => 
             [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
+            [credittypecode] => CR
+            [gradecode] => B+
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2010
+            [termcode] => 3
+            [completiondate] => 1292284800
             [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
-            [coursesrequired] => 2
+            [electiveeligible] => 1
+            [termname] => Fall 2010
+            [coursepermitted] => 1
+            [coursesrequired] => 3
         )
 
-    [12] => Array
+    [12] => stdClass Object
         (
+            [recid] => 7-2273
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
-            [reportseq] => 50
+            [reportseq] => 20
             [categorycode] => EL
             [categoryname] => Elective
-            [classcategorycode] =>  
-            [coursecode] => 
-            [shorttitle] => 
-            [title] => 
+            [id] => 2273
+            [classcategorycode] => BS
+            [coursecode] => BT502
+            [shorttitle] => Prophets
+            [title] => Prophets
             [transfershorttitle] => 
             [transfertitle] => 
-            [credittypecode] => 
-            [gradecode] => 
-            [passfail] => 
-            [coursehours] => 0
-            [termyear] => 0
-            [termcode] => 
-            [completiondate] => 0
-            [elective] => 
-            [electiveeligible] => 
-            [termname] => 
-            [coursepermitted] => 
-            [coursesrequired] => 2
+            [credittypecode] => CR
+            [gradecode] => A
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2007
+            [termcode] => 3
+            [completiondate] => 1198108800
+            [elective] => 1
+            [electiveeligible] => 1
+            [termname] => Fall 2007
+            [coursepermitted] => 1
+            [coursesrequired] => 3
         )
 
     [13] => Array
@@ -930,13 +1280,13 @@ Array
 
     [14] => stdClass Object
         (
-            [recid] => XX-4068
+            [recid] => XX-4098
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 4068
+            [id] => 4098
             [classcategorycode] => XX
             [coursecode] => IS501
             [shorttitle] => Seminar on Nature of God
@@ -959,13 +1309,13 @@ Array
 
     [15] => stdClass Object
         (
-            [recid] => XX-2733
+            [recid] => XX-3026
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 2733
+            [id] => 3026
             [classcategorycode] => XX
             [coursecode] => IS509
             [shorttitle] => Combined In-Service Classes
@@ -978,7 +1328,7 @@ Array
             [coursehours] => 3
             [termyear] => 1995
             [termcode] => 0
-            [completiondate] => 1059696000
+            [completiondate] => 1028160000
             [elective] => 
             [electiveeligible] => 
             [termname] => Special 1995
@@ -988,13 +1338,13 @@ Array
 
     [16] => stdClass Object
         (
-            [recid] => XX-3924
+            [recid] => XX-3986
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 3924
+            [id] => 3986
             [classcategorycode] => XX
             [coursecode] => IS508
             [shorttitle] => Theology of Leadership
@@ -1007,7 +1357,7 @@ Array
             [coursehours] => 3
             [termyear] => 1996
             [termcode] => 0
-            [completiondate] => 864950400
+            [completiondate] => 854755200
             [elective] => 
             [electiveeligible] => 
             [termname] => Special 1996
@@ -1017,13 +1367,42 @@ Array
 
     [17] => stdClass Object
         (
-            [recid] => XX-3772
+            [recid] => XX-4038
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 3772
+            [id] => 4038
+            [classcategorycode] => XX
+            [coursecode] => TR501
+            [shorttitle] => Transfer Credit
+            [title] => Transfer Credit
+            [transfershorttitle] => Life, Ministry & Teachings of
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => 
+            [passfail] => IP
+            [coursehours] => 0
+            [termyear] => 1996
+            [termcode] => 3
+            [completiondate] => 833587200
+            [elective] => 
+            [electiveeligible] => 
+            [termname] => Fall 1996
+            [coursepermitted] => 
+            [coursesrequired] => 0
+        )
+
+    [18] => stdClass Object
+        (
+            [recid] => XX-3864
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 0
+            [categorycode] => XX
+            [categoryname] => Additional Courses taken towards subsequent GCS programs
+            [id] => 3864
             [classcategorycode] => XX
             [coursecode] => IS502
             [shorttitle] => Biblical Interpretation (1997)
@@ -1036,7 +1415,7 @@ Array
             [coursehours] => 3
             [termyear] => 1997
             [termcode] => 0
-            [completiondate] => 872726400
+            [completiondate] => 866332800
             [elective] => 
             [electiveeligible] => 
             [termname] => Special 1997
@@ -1044,15 +1423,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [18] => stdClass Object
+    [19] => stdClass Object
         (
-            [recid] => XX-3633
+            [recid] => XX-3548
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 3633
+            [id] => 3548
             [classcategorycode] => XX
             [coursecode] => IS503
             [shorttitle] => Early Church History (1998)
@@ -1065,7 +1444,7 @@ Array
             [coursehours] => 3
             [termyear] => 1997
             [termcode] => 0
-            [completiondate] => 885945600
+            [completiondate] => 888710400
             [elective] => 
             [electiveeligible] => 
             [termname] => Special 1997
@@ -1073,15 +1452,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [19] => stdClass Object
+    [20] => stdClass Object
         (
-            [recid] => XX-3475
+            [recid] => XX-3537
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 3475
+            [id] => 3537
             [classcategorycode] => XX
             [coursecode] => IS511
             [shorttitle] => Stewardship (1998)
@@ -1102,15 +1481,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [20] => stdClass Object
+    [21] => stdClass Object
         (
-            [recid] => XX-3339
+            [recid] => XX-3388
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 3339
+            [id] => 3388
             [classcategorycode] => XX
             [coursecode] => IS510
             [shorttitle] => Prophesy (1999)
@@ -1131,15 +1510,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [21] => stdClass Object
+    [22] => stdClass Object
         (
-            [recid] => XX-3262
+            [recid] => XX-3172
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 3262
+            [id] => 3172
             [classcategorycode] => XX
             [coursecode] => IS504
             [shorttitle] => Modern Church History (2000)
@@ -1152,7 +1531,7 @@ Array
             [coursehours] => 3
             [termyear] => 2000
             [termcode] => 0
-            [completiondate] => 962928000
+            [completiondate] => 967766400
             [elective] => 
             [electiveeligible] => 
             [termname] => Special 2000
@@ -1160,15 +1539,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [22] => stdClass Object
+    [23] => stdClass Object
         (
-            [recid] => XX-2971
+            [recid] => XX-3060
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 2971
+            [id] => 3060
             [classcategorycode] => XX
             [coursecode] => IS506
             [shorttitle] => Holy Spirit (2002)
@@ -1179,25 +1558,25 @@ Array
             [gradecode] => PAS
             [passfail] => PAS
             [coursehours] => 3
-            [termyear] => 2002
+            [termyear] => 2001
             [termcode] => 0
-            [completiondate] => 1028160000
+            [completiondate] => 999302400
             [elective] => 
             [electiveeligible] => 
-            [termname] => Special 2002
+            [termname] => Special 2001
             [coursepermitted] => 
             [coursesrequired] => 0
         )
 
-    [23] => stdClass Object
+    [24] => stdClass Object
         (
-            [recid] => XX-2602
+            [recid] => XX-2679
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 2602
+            [id] => 2679
             [classcategorycode] => XX
             [coursecode] => IS505
             [shorttitle] => Caring for People God's Way
@@ -1210,7 +1589,7 @@ Array
             [coursehours] => 3
             [termyear] => 2003
             [termcode] => 0
-            [completiondate] => 1068163200
+            [completiondate] => 1059955200
             [elective] => 
             [electiveeligible] => 
             [termname] => Special 2003
@@ -1218,15 +1597,15 @@ Array
             [coursesrequired] => 0
         )
 
-    [24] => stdClass Object
+    [25] => stdClass Object
         (
-            [recid] => XX-2734
+            [recid] => XX-2788
             [programcode] => MPS
             [programname] => Master of Pastoral Studies
             [reportseq] => 0
             [categorycode] => XX
             [categoryname] => Additional Courses taken towards subsequent GCS programs
-            [id] => 2734
+            [id] => 2788
             [classcategorycode] => XX
             [coursecode] => IS507
             [shorttitle] => Preaching (2003)
@@ -1245,6 +1624,35 @@ Array
             [termname] => Special 2003
             [coursepermitted] => 
             [coursesrequired] => 0
+        )
+
+    [26] => stdClass Object
+        (
+            [recid] => 9-1928
+            [programcode] => MPS
+            [programname] => Master of Pastoral Studies
+            [reportseq] => 40
+            [categorycode] => XX
+            [categoryname] => Additional Courses taken towards subsequent GCS programs
+            [id] => 1928
+            [classcategorycode] => CM
+            [coursecode] => CM506
+            [shorttitle] => Trinitarian Youth Ministry
+            [title] => Trinitarian Youth Ministry
+            [transfershorttitle] => 
+            [transfertitle] => 
+            [credittypecode] => CR
+            [gradecode] => A
+            [passfail] => PAS
+            [coursehours] => 3
+            [termyear] => 2010
+            [termcode] => 1
+            [completiondate] => 1271203200
+            [elective] => 1
+            [electiveeligible] => 1
+            [termname] => Spring 2010
+            [coursepermitted] => 1
+            [coursesrequired] => 4
         )
 
 )

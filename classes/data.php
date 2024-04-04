@@ -17,7 +17,7 @@
  * Validate current session/user for GCS Program Management
  *
  * @package    local_gcs
- * @copyright  2023 Grace Communion Seminary
+ * @copyright  2023-2024 Grace Communion Seminary
  * @author     Bret Miller
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -764,10 +764,11 @@ class data {
     }
 
     /**
-     * Retrieves the list of student records.
+     * For admins - Retrieves the list of students with unsigned enroll agreement class records.
+	 * For student - Always returns his/her student record whether or not there are unsigned enroll agreement records.
      *
 	 * @param   
-     * @return  student records
+     * @return  student record(s)
      */
     public static function get_students_with_unsigned_enrollment_agreements () {
         global $DB;
@@ -786,7 +787,47 @@ FROM td
 JOIN mdl_local_gcs_term_dates d on d.registrationstart=td.registrationstart
 JOIN mdl_local_gcs_classes_taken ct on ct.termyear=d.termyear and ct.termcode=d.termcode
 JOIN mdl_local_gcs_student st on st.id=ct.studentid
-WHERE ct.agreementid=0
+WHERE ct.agreementsigned is null
+ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
+";
+            $sqlvar = [];
+        } else {
+            $sql = 'select * from mdl_local_gcs_student where userid=:userid';
+            $sqlvar = ['userid' => $USER->id];
+        }
+
+        $recs = $DB->get_records_sql(
+            $sql,
+            $sqlvar
+        );
+        foreach ($recs as $rec) {
+            (bool) $rec->isveteran = (bool) $rec->isveteran;
+            (bool) $rec->donotemail = (bool) $rec->donotemail;
+            if (is_null($rec->regfoxemails)) {
+                $rec->regfoxemails = '';
+            }
+        }
+        return $recs;
+    }
+	
+
+    /**
+     * Retrieves the list of student records.
+     *
+	 * @param   
+     * @return  student records
+     */
+    public static function get_students_with_scholarships () {
+        global $DB;
+        global $USER;
+
+        $systemcontext = \context_system::instance();
+        if (has_capability('local/gcs:administrator', $systemcontext)) {
+			$sql = "
+SELECT DISTINCT st.*
+FROM mdl_local_gcs_student st
+JOIN mdl_local_gcs_sch_given sg on sg.studentid = st.id
+WHERE st.statuscode='ACT'
 ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 ";
             $sqlvar = [];
@@ -810,6 +851,7 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         }
         return $recs;
     }
+
     /**
      * Retrieves single student record DEPRECATED--USE get_student_by_id WHICH RETURNS LIST
      *
@@ -1123,47 +1165,113 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         return;
     }
     /**
-     * format enrollment agreement text
+     * Format enrollment agreement info for the specified class taken record id.
+     *
+     * @return  enrollment agreement formatted
+     */
+    public static function format_classes_taken_agreement_info ($ctid) {
+		// read the class taken record
+		$ctrec = self::get_classes_taken ($ctid);
+		
+		// read class def
+		$clrec = self::get_class_by_code_and_term($ctrec->coursecode, $ctrec->termyear, $ctrec->termcode);
+		$eatext = self::format_enrollment_agreement_text ($ctrec);
+
+        return [
+			'agreementid'   => $ctrec->agreementid,
+			'headertext'    => $clrec->coursecode . ' - ' . $clrec->shorttitle,
+			'agreementtext' => $eatext,
+		];
+    }
+    /**
+     * get the enrollment agreement record for a class taken rec
      *
      * @param $ctrec class taken record
-	 * all needed settrlite info is looked up in the function.
      */
-    private static function format_enrollment_agreement ($ctrec) {
-		//$f = fopen(__DIR__ . "/glenndebug.log", "w");
-        $eatext = '';
+    public static function get_class_enrollment_agreement_rec ($ctrec) {
+		$earec = null;
 		global $DB;
 				
-		// lookup the enrollment agreement text
+		// lookup the assigned enrollment agreement text
 		if ($ctrec->agreementid > 0) {
 			// lookup specific signed enrollment agreement
 			$earec = self::get_enrollment_agreements ($ctrec->agreementid);
-			$eatext = $earec->agreement;
 		} else {
-			// lookup latest based on credit type
+			// lookup the latest ea for our class type (they can be defined specific to a course or more generally for the credit type, e.g. for credit agreements differ from audits)
 			$sql = "
 select ea.*
-from {local_gcs_enroll_agreements} ea
+from `mdl_local_gcs_enroll_agreements` ea
 where ea.credittype=:credittypecode
 and ea.adddate<=:registrationdate
-order by ea.adddate desc
+order by adddate desc
+limit 1;
 ";
-			$sqlparam['credittypecode'] = $ctrec->credittypecode;
+			// lookup latest ea based on specific coursecode
+			$sqlparam['credittypecode'] = $ctrec->coursecode;
 			$sqlparam['registrationdate'] = $ctrec->registrationdate;
 
 			$earecs = $DB->get_records_sql(
 				$sql,
 				$sqlparam,
 				$limitfrom = 0,
-				$limitnum = 1
+				$limitnum = 0
 			);
 			
-			foreach ($earecs as $earec) {
-				$eatext = $earec->agreement;
-				$ctrec->agreementid = $earec->id;
+			// if specific coursecode ea not found, try by credittypecode
+			if (count($earecs) == 0) {
+				// lookup latest based on credit type
+				$sqlparam['credittypecode'] = $ctrec->credittypecode;
+
+				$earecs = $DB->get_records_sql(
+					$sql,
+					$sqlparam,
+					$limitfrom = 0,
+					$limitnum = 0
+				);
+			}
+			
+			// extract id and text (should find one unless no ea was defined before this course was offered)
+			if (count($earecs) > 0) {
+				foreach ($earecs as $ea) {
+					$earec = $ea;
+				}
 			}
 		}
-		
-		if ($eatext != '') {
+
+        return $earec;
+    }
+    /**
+     * Format raw enrollment agreement info
+     *
+     * @return  enrollment agreement formatted
+     */
+    public static function format_enrollment_agreement_info ($eaid) {
+		// read the class taken record
+		$earec = self::get_enrollment_agreements ($eaid);
+
+        return [
+			'agreementid'   => $earec->id,
+			'headertext'    => '',
+			'agreementtext' => earec->agreement,
+		];
+    }
+    /**
+     * format enrollment agreement text
+     *
+     * @param $ctrec class taken record
+	 * all needed settrlite info is looked up in the function.
+     */
+    private static function format_enrollment_agreement_text ($ctrec) {
+		//$f = fopen(__DIR__ . "/glenndebug.log", "w");
+        $eatext = '';
+		global $DB;
+				
+		// lookup the assigned enrollment agreement text
+		$earec = self::get_class_enrollment_agreement_rec ($ctrec);
+		if ($earec != null) {
+			$eatext = $earec->agreement;
+			$ctrec->agreementid = $earec->id;
+
 			// lookup student record
 			$strec = self::get_students ($ctrec->studentid);
 			
@@ -1320,18 +1428,23 @@ order by ea.adddate desc
     /**
      * Retrieves the list of scholarships given records.
      *
-     * @param   int   $stuid student id
+     * @param   string   $stuid student id
      * @return  hash  of scholarships given records
      */
     public static function get_sch_given_all ($stuid) {
         global $DB;
 
-        if ( $stuid ) {
+        if ( empty($stuid) ) {
+			$sql = "
+SELECT sg.*
+FROM mdl_local_gcs_student st
+JOIN mdl_local_gcs_sch_given sg on sg.studentid = st.id
+WHERE st.statuscode='ACT'
+";
+			$sqlparam = [];
+        } else {
             $sql = 'select * from {local_gcs_sch_given} where studentid=:studentid';
             $sqlparam['studentid'] = $stuid;
-        } else {
-            $sql = 'select * from {local_gcs_sch_given}';
-			$sqlparam = [];
         }
 
         $recs = $DB->get_records_sql(
@@ -1594,8 +1707,8 @@ order by ea.adddate desc
 			//fwrite($f, "Count: ".(count($ctrecs) - 1)."\n");
 			//fwrite($f, "------------------------------------------------------------------------------------------\n");
 			foreach ($ctrecs as $ctrec) {
-				if ($ctrec->agreementid == 0 && $ctrec->termyear == $termrec->termyear && $ctrec->termcode == $termrec->termcode) {
-					$ctrec->comments = self::format_enrollment_agreement ($ctrec);// tack on the formatted ea text
+				if ($ctrec->agreementsigned == null && $ctrec->termyear == $termrec->termyear && $ctrec->termcode == $termrec->termcode) {
+					$ctrec->comments = self::format_enrollment_agreement_text ($ctrec);// tack on the formatted ea text
 					
 					// read class def
 					$clrec = self::get_class_by_code_and_term($ctrec->coursecode, $ctrec->termyear, $ctrec->termcode);
@@ -1671,6 +1784,13 @@ order by ea.adddate desc
         global $DB;
 
         $rec = (object) $rec; // For some reason, we get an array in this function instead of an object.
+		
+		// assign the enrollment agreement
+		$earec = self::get_class_enrollment_agreement_rec ($rec);
+		if ($earec != null) {
+			$rec->agreementid = $earec->id;
+		}
+
         $id = $DB->insert_record('local_gcs_classes_taken', $rec);
         $rec = self::get_classes_taken($id);
         return $rec;

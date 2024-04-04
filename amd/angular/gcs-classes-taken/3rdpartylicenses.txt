@@ -63,6 +63,8 @@ THE SOFTWARE.
 @angular/platform-browser
 MIT
 
+gcs-shared-lib
+
 ngx-mat-select-search
 MIT
 MIT License
