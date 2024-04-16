@@ -23,12 +23,7 @@
  */
 
 require_once(__DIR__.'/../../config.php');
-
-// For some reason, require_login() doesn't redirect to the login page when we call it.
-if (!isloggedin()) {
-    $SESSION->wantsurl = qualified_me();
-    redirect(get_login_url());
-}
+require_login(null, false);
 
 $settings = new \local_gcs\settings();
 $html = '<div>For Term: <div class="termselect"></div></div>

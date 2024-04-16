@@ -23,18 +23,14 @@
  */
 
 require_once(__DIR__.'/../../config.php');
-
-// For some reason, require_login() doesn't redirect to the login page when we call it.
-if (!isloggedin()) {
-    $SESSION->wantsurl = qualified_me();
-    redirect(get_login_url());
-}
+require_login(null, false);
 
 $settings = new \local_gcs\settings();
 $html = '<div>
     <select id="statussel">
 		<option value="1" selected>Active Students</option>
 		<option value="0">All Students</option>
+		<option value="2">Graduates</option>
 	</select> &nbsp;
 	<select id="orderby">
         <option value="">-- Order by? --</option>

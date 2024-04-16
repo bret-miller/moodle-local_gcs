@@ -31,6 +31,10 @@ class agreement_processor {
     public $interactive;
     /** @var string $logrecs log records. */
     public $logrecs;
+    /** @var string $ntfmsg notification message. */
+    public $ntfmsg;
+    /** @var \local\gcs\settings settings class. */
+    public $settings;
 
     /**
      * Initializes the RegFox Processor class
@@ -41,6 +45,14 @@ class agreement_processor {
         $this->interactive = $interactive;
         $this->logrecs = '--------------------------------------------------------------------------------'.PHP_EOL;
         $this->logthis('Interactive: '.json_encode($this->interactive));
+        $this->logrecs = '';
+        $this->ntfmsg = '';
+        $this->settings = new settings();
+        if (!utils::is_live()){
+            $this->ntfmsg .= '--> ** Not running in live instance **'.PHP_EOL;
+        }
+        $this->ntfmsg .= '--> Running in "' . utils::get_instance_label() . '" instance'.PHP_EOL;
+		$this->logthis($this->ntfmsg);
     }
 
     /**
@@ -70,6 +82,9 @@ class agreement_processor {
                AND registrationdate >= :mindate';
         $recs = $DB->get_records_sql($sql, ['mindate' => $mindate], $limitfrom = 0, $limitnum = 0);
         $this->logthis("Found ".count($recs)." agreements to process.");
+        if (count($recs)) {
+            $this->ntfmsg .= "Found " . count($recs) . " unsigned enrollment agreements to process." . PHP_EOL;
+        }
         foreach ($recs as $rec) {
             $needsave = false;
             $ctr = new classes_taken($rec);
@@ -98,6 +113,17 @@ class agreement_processor {
                 }
             } 
         }
+        if ($this->ntfmsg) {
+            $msg = '<pre>'.$this->ntfmsg.'</pre>';
+            $sub = 'Enrollment Agreement Review';
+            if (!utils::is_live()) {
+                if ($this->settings->notificationenabled) { // Only send notification in non-live if enabled.
+                    utils::send_notification_email($sub, $msg);
+                }
+            } else {
+                utils::send_notification_email($sub, $msg);
+            }
+        }
         $log = $this->logrecs;
         $this->logrecs = PHP_EOL;
         return $log;
@@ -116,6 +142,7 @@ class agreement_processor {
         $term = data::get_code_by_code('term',$ctr->termcode);
         $msg = 'Autosigned agreement for ' . $stud->preferredfirstname . ' ' . $stud->legallastname;
         $msg .= ' for ' . $ctr->coursecode . ' taken in ' . $term->description . ' ' . $ctr->termyear;
+        $this->ntfmsg .= $msg.PHP_EOL;
         $this->logthis($msg);
     }
 
@@ -132,15 +159,21 @@ class agreement_processor {
         $msg = '<p>Please sign your enrollment agreement for ' . $ctr->coursecode . ' - ' . $crs->title . '</p>' . PHP_EOL;;
         $msg .= '<p><a href="' . $CFG->wwwroot . '/local/gcs/enrollment_agreements_signing.php">';
         $msg .= 'Click here to sign.</a></p>' . PHP_EOL;
-        $this->logthis('Would send this message to '.$studuser->email.':');
-        $this->logthis($msg);
-		// Only actually send emails in the live system.
+		$msg .= '<p>If that does not work, here is how to find it manually:</p>' . PHP_EOL;
+		$msg .= '<ol><li>Sign in at <a href="' . $CFG->wwwroot . '">' . $CFG->wwwroot . '</a></li>' . PHP_EOL;
+		$msg .= '<li>Click Student Reports on the low left column.</li>' . PHP_EOL;
+		$msg .= '<li>Click Sign Enrollment Agreements.</li></ol>' . PHP_EOL;
+        // Only actually send emails in the live system.
         if (utils::is_live()) {
             utils::send_email($studuser->email, 'Reminder: Sign Enrollment Agreement', $msg);
+            $msg = 'Reminded ' . $stud->preferredfirstname . ' ' . $stud->legallastname;
+            $msg .= ' to sign agreement for ' . $ctr->coursecode . ' - ' . $crs->title;
+            $this->ntfmsg .= $msg.PHP_EOL;
+        } else {
+            $msg = 'In Live, would have sent this message to ' . $studuser->email . ':' . PHP_EOL;
+            $this->logthis($msg);
+            $this->ntfmsg .= $msg.PHP_EOL;
         }
-        $msg = 'Reminded ' . $stud->preferredfirstname . ' ' . $stud->legallastname;
-        $msg .= ' to sign agreement for ' . $ctr->coursecode;
-        $this->logthis($msg);
     }
 
     /**
@@ -154,4 +187,5 @@ class agreement_processor {
             mtrace($logrec);
         }
     }
+
 }

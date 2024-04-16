@@ -20,11 +20,17 @@
  * @copyright  2023 Grace Communion Seminary
  * @author     Bret Miller
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+
+ * For some reason, require_login() doesn't redirect to the login page when we call it.
+    if (!isloggedin()) {
+        $SESSION->wantsurl = qualified_me();
+        redirect(get_login_url());
+    }
  */
 
 
 require_once(__DIR__.'/../../config.php');
-require_login();
+require_login(null, false);
 
 $settings = new \local_gcs\settings();
 $html = '<div class="studentselect"></div>

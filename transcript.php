@@ -24,7 +24,7 @@
 
 
 require_once(__DIR__.'/../../config.php');
-require_login();
+require_login(null, false);
 
 $settings = new \local_gcs\settings();
 $html = '<div class="studentselect"></div>

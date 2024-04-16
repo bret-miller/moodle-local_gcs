@@ -34,7 +34,6 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/lib/externallib.php');
 require_once(__dir__.'/../data.php');
 
 require_login();
-require_capability('local/gcs:administrator', \context_system::instance());
 
 /**
  * Get list of instructors

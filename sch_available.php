@@ -23,7 +23,7 @@
  */
 
 require_once(__DIR__.'/../../config.php');
-require_login();
+require_login(null, false);
 require_capability('local/gcs:administrator', context_system::instance());
 
 $angularpage = new \local_gcs\angular_page('gcs-sch-available');

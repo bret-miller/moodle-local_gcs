@@ -23,6 +23,11 @@
  */
 $tasks = [
     [
+	    'classname' => 'local_gcs\task\daily_automation',
+		'hour' => 6,
+		'minute' => 0
+	],
+    [
 	    'classname' => 'local_gcs\task\process_agreements',
 		'dayofweek' => 1,
 		'hour' => 6,

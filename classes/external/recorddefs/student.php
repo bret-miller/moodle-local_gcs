@@ -55,6 +55,7 @@ class studentrecord {
                 'stateprovince' => new external_value(PARAM_TEXT, 'State|nolist'),
                 'zip' => new external_value(PARAM_TEXT, 'Zip code|nolist'),
                 'country' => new external_value(PARAM_TEXT, 'Zip code|nolist'),
+                'birthdate' => new external_value(PARAM_INT, 'Birth Date|nolist|date'),
                 'birthplace' => new external_value(PARAM_TEXT, 'Birth Place|nolist'),
                 'ssn' => new external_value(PARAM_TEXT, 'Social Security Number|nolist'),
                 'citizenship' => new external_value(PARAM_TEXT, 'Citizenship|nolist'),

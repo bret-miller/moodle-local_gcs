@@ -147,8 +147,23 @@ function local_gcs_show_students() {
     var csel = document.getElementById('ctrysel');
 	var wsel = document.getElementById('showsel');
     var rdiv = document.getElementsByClassName('reportcontent')[0];
-    var onlyactive = parseInt(ssel[ssel.selectedIndex].value);
+	var studfilter = parseInt(ssel[ssel.selectedIndex].value);
     var orderby = osel[osel.selectedIndex].value;
+	var onlyactive = 0;
+	if (studfilter == 1) {
+		onlyactive = 1;
+	}
+	if ((studfilter == 2) && (!local_gcs_program_completion)) {
+		// User chose graduates and we don't have the program completion table.
+		// Change the show selector to programs completed, and go get the table.
+		if (orderby == '') {
+			osel.value = 'n';
+		}
+		wsel.value='p';
+		local_gcs_new_showsel(wsel);
+		// That function will return to the top of this one, so we just exit for now.
+		return;
+	}
 	var showopt = wsel[wsel.selectedIndex].value;
     var selectedprogram = '';
     var selectedcountry = '* All Countries';
@@ -228,7 +243,16 @@ function local_gcs_show_students() {
     rpt +='<tbody>'+eol;
 	scnt = 0;
     local_gcs_students.forEach( (student) => {
-        if (((student.statuscode == 'ACT') || !onlyactive) 
+		if (showopt == 'p') {
+			if (studfilter == 2) {
+				pcmp = local_gcs_program_completion.filter( (p) => ((p.studentid == student.id)&&(p.source=='GCS')&&(p.completiondate>0)) );
+			} else {
+				pcmp = local_gcs_program_completion.filter( (p) => ((p.studentid == student.id)&&(p.source=='GCS')) );
+			}
+		}
+        if ((  ((studfilter==1) && (student.statuscode == 'ACT'))
+			|| (studfilter == 0) 
+			|| ((studfilter == 2) && (pcmp.length>0))) 
             && ((student.programcode==selectedprogram) || selectedprogram == '') 
             && ((student.country==selectedcountry) || selectedcountry == '* All Countries')) {
 			scnt++;
@@ -250,14 +274,21 @@ function local_gcs_show_students() {
                 rpt += student.country;
             }
             rpt += '</td><td class="status">' + local_gcs_status[student.statuscode] + '</td>' + eol;
-            rpt += '<td class="program">' + local_gcs_programs[student.programcode] + '</td>' + eol;
+			rpt += '<td class="program">';
+			if ((studfilter != 2) || ((student.programcode != 'MCE') && (!student.exitdate))) {
+			    rpt += local_gcs_programs[student.programcode]	
+			}
+			rpt += '</td>' + eol;
 			if (showopt == 'p') {
-				rpt += '<td class="completed">(enrolled)</td>';
+				rpt += '<td class="completed">';
+    			if ((studfilter != 2) || ((student.programcode != 'MCE') && (!student.exitdate))) {
+				    rpt += '(enrolled)';
+				}
+				rpt += '</td>';
 			}
 			rpt += '</tr>' + eol;
 			if (showopt == 'p') {
 				// Show programs completed.
-				pcmp = local_gcs_program_completion.filter( (p) => ((p.studentid == student.id)&&(p.source=='GCS')) );
 				pcmp.forEach( (p) => {
 					rpt += '<tr class="' + oddoreven + '">';
 					rpt += '<td colspan="3">&nbsp;</td><td class="program">' + local_gcs_programs[p.programcode] + '</td>';

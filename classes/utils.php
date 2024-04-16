@@ -36,6 +36,28 @@ class utils {
      * @param string $from who the email is sent from, can be blank to use from email in settings
      */
     public static function send_email ($to, $subject, $message, $from='') {
+        
+		// when live, send to intended recipient
+		if (utils::is_live()) {
+			self::send_email_internal($to, $subject, $message, $headers);
+			return;
+		}
+		
+		// BELOW IS ONLY EXECUTED WHEN NOT IN LIVE WEBSITE
+		// send to us instead
+		$debugsubject = $subject . " - sent to you instead of " . $to;
+		self::send_notification_email($debugsubject, $message);
+    }
+
+    /**
+     * Send an email. This is used to send the actual email by other functions.
+     *
+     * @param string $to who the email is sent to
+     * @param string $subject the subject of the email
+     * @param string $message the HTML content of the email
+     * @param string $from who the email is sent from, can be blank to use from email in settings
+     */
+    private static function send_email_internal ($to, $subject, $message, $from='') {
 		if ($from == '') {
             $settings = new \local_gcs\settings();
             $fromemail = $settings->fromemail;
@@ -47,29 +69,7 @@ class utils {
         $headers .= 'From: ' . $fromemail . "\r\n";
         $headers .= 'Reply-To: ' . $fromemail . "\r\n";
         $headers .= 'X-Mailer: PHP/' . phpversion();
-        
-		// when live, send to intended recipient
-		if (utils::is_live()) {
-			mail($to, $subject, $message, $headers);
-			return;
-		}
-		
-		// BELOW IS ONLY EXECUTED WHEN NOT IN LIVE WEBSITE
-		// send to us instead
-		$settings = new \local_gcs\settings();
-		// but leave be if $to is present in our list (this means one of us is the target)
-		foreach ($settings->notificationemails as $debugemail) {
-			if (strcasecmp($debugemail, $to) == 0) {
-				mail($to, $subject, $message, $headers);
-				return;
-			}
-		}
-		
-		// send to internal
-		$debugsubject = $subject . " (TEST - sent to you instead of " . $to . ")";
-		foreach ($settings->notificationemails as $debugemail) {
-			mail($debugemail, $debugsubject, $message, $headers);
-		}
+		mail($to, $subject, $message, $headers);
     }
 
     /**
@@ -81,16 +81,20 @@ class utils {
     public static function send_notification_email ($subject, $message) {
         $settings = new \local_gcs\settings();
         $fromemail = $settings->fromemail;
+		if (!self::is_live()) {
+			$ntfsubj = '(' . self::get_instance_label() . ') ' . $subject;
+		} else {
+			$ntfsubj = $subject;
+		}
         foreach ($settings->notificationemails as $to) {
-            utils::send_email($to, $subject, $message, $fromemail);
+            self::send_email_internal($to, $ntfsubj, $message, $fromemail);
         }
     }
 
     /**
-     * Send a notification email
-     *
-     * @param string $subject the subject of the email
-     * @param string $message the HTML content of the email
+     * Is this the production/live Moodle instance? 
+	 *
+	 * @return bool true if is the live instance
      */
     public static function is_live () {
         //$f = fopen(__DIR__ . "/glenndebug.log", "w");
@@ -98,6 +102,39 @@ class utils {
         //fwrite($f, "------------------------------------------------------------------------------------------\n");
         //fclose($f);
 		
-		return $$_SERVER['HTTP_HOST'] == 'learn.gcs.edu';
+		return (self::get_instance_label() == 'Live');
+   }
+
+    /**
+     * Get the Moodle instance label
+	 *
+	 * @return string Moodle instance label
+     */
+    public static function get_instance_label () {
+		global $CFG;
+		// Can't use the $_SERVER global because it only works on web, not in CLI or tasks.
+		$siteurl = new \moodle_url($CFG->wwwroot);
+		$hostname = $siteurl->get_host();
+        $settings = new \local_gcs\settings();
+		$sitelabel = 'Snapshot';
+		$livehosts = explode(',', $settings->livesites);
+		foreach($livehosts as $livehost) {
+			if ( $hostname == $livehost) {
+				$sitelabel = 'Live';
+			}			
+		}
+		$testhosts = explode(',', $settings->testsites);
+		foreach($testhosts as $testhost) {
+			if ( $hostname == $testhost) {
+				$sitelabel = 'Test';
+			}			
+		}
+ 		$devhosts = explode(',', $settings->devsites);
+		foreach($devhosts as $devhost) {
+			if ( $hostname == $devhost) {
+				$sitelabel = 'Dev';
+			}			
+		}
+		return $sitelabel;
    }
 }

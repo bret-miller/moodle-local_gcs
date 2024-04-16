@@ -489,7 +489,7 @@ class data {
 
         // Get the record.
         $sql = "select * 
-			from mdl_local_gcs_term_dates td
+			from {local_gcs_term_dates} td
 			where td.registrationstart < unix_timestamp()
 			order by td.registrationstart desc
 			limit 1";
@@ -547,12 +547,14 @@ class data {
 
         $sql = 'select u.id, u.lastname, u.firstname, fn.data as fullname
                   from {user} u
-                  join {user_info_data} fn on fn.userid=u.id and fn.fieldid=10
-                  join {user_info_data} ins on ins.userid=u.id and ins.fieldid=9
-                 where 1=cast(ins.data as int)';
+				  left join {user_info_data} fn on fn.userid=u.id
+				  left join {user_info_field} fnf on fnf.id=fn.fieldid
+                  left join {user_info_data} ins on ins.userid=u.id 
+				  left join {user_info_field} insf on insf.id=ins.fieldid
+                 where 1=cast(ins.data as int) and fnf.name=:fnfname and insf.name=:insfname';
         $courses = $DB->get_records_sql(
             $sql,
-            [],
+            ['fnfname'=>'Full Name', 'insfname'=>'Instsructor?'],
             $limitfrom = 0,
             $limitnum = 0
         );
@@ -779,20 +781,20 @@ class data {
 			$sql = "
 WITH td AS (
 	select max(d.registrationstart) as registrationstart
-	from mdl_local_gcs_term_dates d
+	from {local_gcs_term_dates} d
 	where d.registrationstart<unix_timestamp()
 )
 SELECT DISTINCT st.*
 FROM td
-JOIN mdl_local_gcs_term_dates d on d.registrationstart=td.registrationstart
-JOIN mdl_local_gcs_classes_taken ct on ct.termyear=d.termyear and ct.termcode=d.termcode
-JOIN mdl_local_gcs_student st on st.id=ct.studentid
+JOIN {local_gcs_term_dates} d on d.registrationstart=td.registrationstart
+JOIN {local_gcs_classes_taken} ct on ct.termyear=d.termyear and ct.termcode=d.termcode
+JOIN {local_gcs_student} st on st.id=ct.studentid
 WHERE ct.agreementsigned is null
 ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 ";
             $sqlvar = [];
         } else {
-            $sql = 'select * from mdl_local_gcs_student where userid=:userid';
+            $sql = 'select * from {local_gcs_student} where userid=:userid';
             $sqlvar = ['userid' => $USER->id];
         }
 
@@ -825,14 +827,14 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         if (has_capability('local/gcs:administrator', $systemcontext)) {
 			$sql = "
 SELECT DISTINCT st.*
-FROM mdl_local_gcs_student st
-JOIN mdl_local_gcs_sch_given sg on sg.studentid = st.id
+FROM {local_gcs_student} st
+JOIN {local_gcs_sch_given} sg on sg.studentid = st.id
 WHERE st.statuscode='ACT'
 ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 ";
             $sqlvar = [];
         } else {
-            $sql = 'select * from mdl_local_gcs_student where userid=:userid';
+            $sql = 'select * from {local_gcs_student} where userid=:userid';
             $sqlvar = ['userid' => $USER->id];
         }
 
@@ -1200,7 +1202,7 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 			// lookup the latest ea for our class type (they can be defined specific to a course or more generally for the credit type, e.g. for credit agreements differ from audits)
 			$sql = "
 select ea.*
-from `mdl_local_gcs_enroll_agreements` ea
+from {local_gcs_enroll_agreements} ea
 where ea.credittype=:credittypecode
 and ea.adddate<=:registrationdate
 order by adddate desc
@@ -1437,8 +1439,8 @@ limit 1;
         if ( empty($stuid) ) {
 			$sql = "
 SELECT sg.*
-FROM mdl_local_gcs_student st
-JOIN mdl_local_gcs_sch_given sg on sg.studentid = st.id
+FROM {local_gcs_student} st
+JOIN {local_gcs_sch_given} sg on sg.studentid = st.id
 WHERE st.statuscode='ACT'
 ";
 			$sqlparam = [];
@@ -1734,9 +1736,9 @@ WHERE st.statuscode='ACT'
         global $DB;
         $sql = "
             select ct.*
-            from mdl_local_gcs_classes_taken ct
-            join mdl_local_gcs_student st on st.id=ct.studentid
-            join mdl_local_gcs_courses_permitted cp on cp.coursecode=ct.coursecode and cp.programcode=st.programcode
+            from {local_gcs_classes}_taken ct
+            join {local_gcs_student} st on st.id=ct.studentid
+            join {local_gcs_courses_permitted} cp on cp.coursecode=ct.coursecode and cp.programcode=st.programcode
             where s.studentid=:studentid
             and s.termyear=:termyear
             order by ct.termcode, ct.coursecode";
@@ -1944,8 +1946,8 @@ WHERE st.statuscode='ACT'
                            CAST(0 AS INTEGER) AS completed,
                            '' AS notes,
                            CAST(1 AS INTEGER) AS iscurrent
-                      FROM mdl_local_gcs_student s
-                      JOIN mdl_local_gcs_program p ON p.programcode=s.programcode
+                      FROM {local_gcs_student} s
+                      JOIN {local_gcs_program} p ON p.programcode=s.programcode
 
                      UNION
 
@@ -1957,9 +1959,9 @@ WHERE st.statuscode='ACT'
                            CAST(1 AS INTEGER) AS completed,
                            notes,
                            CAST(CASE WHEN s.programcode=p.programcode THEN 1 ELSE 0 END AS INTEGER) AS iscurrent
-                      FROM mdl_local_gcs_program_completion pc
-                      JOIN mdl_local_gcs_program p ON p.programcode=pc.programcode
-                 LEFT JOIN mdl_local_gcs_student s on s.id=pc.studentid
+                      FROM {local_gcs_program_completion} pc
+                      JOIN {local_gcs_program} p ON p.programcode=pc.programcode
+                 LEFT JOIN {local_gcs_student} s on s.id=pc.studentid
                 )
                 SELECT * FROM stuenr WHERE studentid=:studentid";
         $recs = $DB->get_records_sql(
@@ -1985,7 +1987,6 @@ WHERE st.statuscode='ACT'
      */
     public static function get_student_course_completion ($studentid, $programcode) {
         global $DB;
-        $f = fopen(__DIR__ . "/debug.log", "w");
 
         $systemcontext = \context_system::instance();
         if (has_capability('local/gcs:administrator', $systemcontext)) {
@@ -2000,10 +2001,10 @@ WHERE st.statuscode='ACT'
         // First we get the records.
         $sql = "WITH preq AS (
                     SELECT req.*
-                      FROM mdl_local_gcs_program_req req
+                      FROM {local_gcs_program_req} req
                      WHERE req.programcode=:programcode1
                 ), cperm AS (
-                    SELECT cp.* FROM mdl_local_gcs_courses_permitted cp
+                    SELECT cp.* FROM {local_gcs_courses_permitted} cp
                       JOIN preq on preq.programcode=cp.programcode and preq.categorycode=cp.categorycode
                 ), clstkn AS (
                     SELECT
@@ -2027,13 +2028,13 @@ WHERE st.statuscode='ACT'
                         COALESCE(cp.electiveeligible, 0) AS electiveeligible,
                         CAST(CASE WHEN cp.coursecode IS NOT NULL THEN 1 ELSE 0 END AS integer) AS coursepermitted,
 						CASE WHEN COALESCE(ct.completiondate,0) = 0 THEN 0 ELSE 1 END as completed
-                      FROM mdl_local_gcs_classes_taken ct
-                 LEFT JOIN mdl_local_gcs_classes cls ON cls.coursecode=ct.coursecode
+                      FROM {local_gcs_classes_taken} ct
+                 LEFT JOIN {local_gcs_classes} cls ON cls.coursecode=ct.coursecode
                                                     AND cls.termyear=ct.termyear
                                                     AND cls.termcode=ct.termcode
-                 LEFT JOIN mdl_local_gcs_courses crs
+                 LEFT JOIN {local_gcs_courses} crs
                      ON crs.coursecode=CASE WHEN LENGTH(ct.assignedcoursecode)<3 THEN ct.coursecode ELSE ct.assignedcoursecode END
-                 LEFT JOIN mdl_local_gcs_codes pf ON pf.codeset='pass_fail' AND pf.code=ct.gradecode
+                 LEFT JOIN {local_gcs_codes} pf ON pf.codeset='pass_fail' AND pf.code=ct.gradecode
                  LEFT JOIN cperm cp ON cp.coursecode=ct.assignedcoursecode OR cp.coursecode=ct.coursecode
                      WHERE studentid=:studentid and coalesce(pf.description,'PAS') in('PAS','AUD','IP')
                 ), classlist AS (
@@ -2064,9 +2065,9 @@ WHERE st.statuscode='ACT'
                         COALESCE(preq.coursesrequired, 0) as coursesrequired, c.completed
                       FROM clstkn c
                  LEFT JOIN preq ON c.classcategorycode=preq.categorycode
-                 LEFT JOIN mdl_local_gcs_codes t ON t.codeset='TERM' AND t.code=c.termcode
-                 LEFT JOIN mdl_local_gcs_codes cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
-                 LEFT JOIN mdl_local_gcs_program p ON p.programcode=:programcode2
+                 LEFT JOIN {local_gcs_codes} t ON t.codeset='TERM' AND t.code=c.termcode
+                 LEFT JOIN {local_gcs_codes} cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
+                 LEFT JOIN {local_gcs_program} p ON p.programcode=:programcode2
 
                  UNION
 
@@ -2098,9 +2099,9 @@ WHERE st.statuscode='ACT'
 						COALESCE(c.completed, 0) as completed
                       FROM preq
                  LEFT JOIN clstkn c ON c.classcategorycode=preq.categorycode
-                 LEFT JOIN mdl_local_gcs_codes t ON t.codeset='TERM' AND t.code=c.termcode
-                 LEFT JOIN mdl_local_gcs_codes cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
-                 LEFT JOIN mdl_local_gcs_program p ON p.programcode=:programcode3
+                 LEFT JOIN {local_gcs_codes} t ON t.codeset='TERM' AND t.code=c.termcode
+                 LEFT JOIN {local_gcs_codes} cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
+                 LEFT JOIN {local_gcs_program} p ON p.programcode=:programcode3
                  where c.clsid is null
                 )
                 SELECT recid, programcode, programname, reportseq, categorycode, categoryname,
@@ -2125,8 +2126,6 @@ WHERE st.statuscode='ACT'
         foreach ($dbrecs as $dbrec) {
             $recs[] = $dbrec;
         }
-        fwrite($f, print_r($recs, true));
-        fwrite($f, "------------------------------------------------------------------------------------------\n");
         // Then we place the records into a grid of slots for how many courses of each category are needed.
         $xrecs = []; // Extra courses.
         $precs = []; // Courses for this program.
@@ -2168,7 +2167,6 @@ WHERE st.statuscode='ACT'
             }
 
             // End of category.
-            fwrite($f, "Key: $key, Cat: $cat, Count: ".(count($recs) - 1)."\n");
             if ( $key >= (count($recs) - 1) ) {
                 $endofcat = true;
             } else if ($recs[$key + 1]->categorycode != $cat) {
@@ -2236,8 +2234,6 @@ WHERE st.statuscode='ACT'
         foreach ($arecs as $xrec) {
             $precs[] = $xrec;
         }
-        fwrite($f, print_r($precs, true));
-        fclose($f);
         return $precs;
     }
     /**

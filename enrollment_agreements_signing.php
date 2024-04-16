@@ -57,7 +57,7 @@
  */
 
 require_once(__DIR__.'/../../config.php');
-require_login();
+require_login(null, false);
 
 $angularpage = new \local_gcs\angular_page('gcs-enroll-agreements-signing');
 echo $angularpage->output->render($angularpage);

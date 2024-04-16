@@ -23,7 +23,7 @@
  */
 
 require_once(__DIR__.'/../../config.php');
-require_login();
+require_login(null, false);
 
 $angularpage = new \local_gcs\angular_page('gcs-sch-application');
 echo $angularpage->output->render($angularpage);

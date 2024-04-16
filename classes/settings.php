@@ -42,6 +42,14 @@ class settings {
     public $fromemail;
     /** @var string email addresses to send notifications to */
     public $notificationemails;
+    /** @var boolean enable notification emails in non-live? */
+    public $notificationenabled;
+    /** @var string hostnames that are labeled Live */
+    public $livesites;
+    /** @var string hostnames that are labeled Dev */
+    public $devsites;
+    /** @var string hostnames that are labeled Test */
+    public $testsites;
     /** @var int version */
     public $version;
     /** @var string release id */
@@ -68,5 +76,9 @@ class settings {
             null, $config->printlogo);
         $this->fromemail = $config->fromemail;
         $this->notificationemails = explode(',', $config->notificationemails);
-    }
+		$this->notificationenabled = $config->notificationsenabled;
+		$this->livesites = $config->livesites;
+		$this->devsites = $config->devsites;
+		$this->testsites = $config->testsites;
+	}
 }

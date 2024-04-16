@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo '     Hash: '.$hash.PHP_EOL;
     }
 } else {
-    require_login();
+    require_login(null, false);
     $html  = '<div class="gcswebhooks"><span>&nbsp;</span><br />'.PHP_EOL;
     $html .= '    <button id="gcstriggerbutton" onclick="local_gcs_trigger_processing();">Trigger Webhook Processing</button><br />'.PHP_EOL;
     $html .= '    <button id="gcsprocessbutton" onclick="local_gcs_process_webhooks();">Process Webhooks</button><br />'.PHP_EOL;

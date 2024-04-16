@@ -212,7 +212,7 @@ class regfox_processor {
                         $this->logthis("Created classes taken record:\n".print_r($ctr,true));
                         $ctr->save();
 						if ($stu->userid) {
-							$this->enrolluser($stu->userid, $ctr->coursecode);
+							enrollment::enroll_user($stu->userid, $ctr->coursecode);
 						}
                         if ( $schtotal != $ctr->studentpaid) {
                             // Student didn't pay correct amount?
@@ -266,24 +266,6 @@ class regfox_processor {
             'log' => $log
         ];
     }
-	
-	private function enrolluser($userid,$coursecode) {
-		global $DB;
-		// Get the course and role records from the database so we have the ids.
-		$crs  = $DB->get_record('course', ['shortname' => $coursecode]);
-		$role = $DB->get_record('role', ['shortname' => 'student']);
-		if ($crs && $role) {
-			$context = \context_course::instance($crs->id);
-			$thisuser = \core_user::get_user($userid);
-			// Make sure the user isn't already enrolled.
-			if (!is_enrolled($context,$thisuser)) {
-				// Get the enrollment plugin for manual enrollments.
-				$epr = $DB->get_record('enrol', ['courseid' => $crs->id, 'enrol' => 'manual']);
-				$ep  = enrol_get_plugin($epr->enrol);
-				$ep->enrol_user($epr, $userid, $role->id, time(), 0, ENROL_USER_ACTIVE);
-			}
-		}
-	}
     
     /**
      * Add a message to the log records.

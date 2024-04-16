@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 if (is_siteadmin()) {
-	$s = new \local_gcs\settings();
+    $s = new \local_gcs\settings();
     $settings = new admin_settingpage('local_gcs', $s->pluginname);
     $ADMIN->add('localplugins', $settings);
 
@@ -89,6 +89,38 @@ if (is_siteadmin()) {
     $name = 'local_gcs/notificationemails';
     $title = get_string('setting_notificationemails', 'local_gcs');
     $description = get_string('setting_notificationemails_desc', 'local_gcs');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
+    // Suppress notifications in non-live instances?
+    $name = 'local_gcs/notificationsenabled';
+    $title = get_string('setting_notificationsenabled', 'local_gcs');
+    $description = get_string('setting_notificationsenabled_desc', 'local_gcs');
+    $default = true;
+    $setting = new admin_setting_configcheckbox($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
+    // Live instances.
+    $name = 'local_gcs/livesites';
+    $title = get_string('setting_livesites', 'local_gcs');
+    $description = get_string('setting_livesites_desc', 'local_gcs');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
+    // Test instances.
+    $name = 'local_gcs/testsites';
+    $title = get_string('setting_testsites', 'local_gcs');
+    $description = get_string('setting_testsites_desc', 'local_gcs');
+    $default = '';
+    $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
+    // Dev instances.
+    $name = 'local_gcs/devsites';
+    $title = get_string('setting_devsites', 'local_gcs');
+    $description = get_string('setting_devsites_desc', 'local_gcs');
     $default = '';
     $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
     $settings->add($setting);
