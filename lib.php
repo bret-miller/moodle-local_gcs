@@ -66,7 +66,7 @@ function local_gcs_extend_navigation(global_navigation $nav) {
         if (has_capability('local/gcs:administrator', $systemcontext)) {
             $foldername = get_config('local_gcs', 'menuadmin');
             $navfld = $navtree->add($foldername, $navurl, $navtype, null, 'gcspm');
-			$navfld->set_show_in_secondary_navigation(true);
+			$navfld->set_force_into_more_menu(true);
 			$navurl = null;
 			$navtype = global_navigation::TYPE_CATEGORY;
             foreach ($adminmenu as $menuitem) {
@@ -85,6 +85,9 @@ function local_gcs_extend_navigation(global_navigation $nav) {
         }
         $foldername = get_config('local_gcs', 'menustudent');
         $navfld = $navtree->add($foldername, $navurl, $navtype, null, 'gcsstu');
+		if ($navurl) {
+			$navfld->set_force_into_more_menu(true);
+		}
         foreach ($studmenu as $menuitem) {
             $name = get_string("menu$menuitem", 'local_gcs');
             $url = new moodle_url("/local/gcs/$menuitem.php");
