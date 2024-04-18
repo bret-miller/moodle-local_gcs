@@ -1219,7 +1219,7 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
     }
 	
 	// Add student birthdate
-    if ($oldversion < 2024040403) {
+    if ($oldversion < 2024041601) {
 
         // Define field birthdate to be added to local_gcs_student.
         $table = new xmldb_table('local_gcs_student');
@@ -1231,11 +1231,11 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
         }
 
         // Gcs savepoint reached.
-        upgrade_plugin_savepoint(true, 2024040403, 'local', 'gcs');
+        upgrade_plugin_savepoint(true, 2024041601, 'local', 'gcs');
     }
 
-    if ($oldversion < 2024041600) {
+    if ($oldversion < 2024041800) {
         // Gcs savepoint reached.
-        upgrade_plugin_savepoint(true, 2024041600, 'local', 'gcs');
+        upgrade_plugin_savepoint(true, 2024041800, 'local', 'gcs');
     }
 }

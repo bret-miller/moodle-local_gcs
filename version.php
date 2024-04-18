@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_gcs';       // To check on upgrade, that module sits in correct place.
-$plugin->version   = 2024041600;        // The current module version (Date: YYYYMMDDXX).
+$plugin->version   = 2024041800;        // The current module version (Date: YYYYMMDDXX).
 $plugin->requires  = 2022112803;        // Requires Moodle version 4.1.
-$plugin->release   = '0.3.0';
+$plugin->release   = '0.3.0+';
 $plugin->maturity  = MATURITY_BETA;     // One of: ALPHA, BETA, RC, STABLE.
 $plugin->cron      = 0;

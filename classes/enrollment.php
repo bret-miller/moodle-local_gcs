@@ -31,6 +31,8 @@ class enrollment {
     public $ntfmsg;
     /** @var \local\gcs\settings settings class. */
     public $settings;
+    /** @var array $termcodes array of term codes */
+    public $termcodes;
 
     /**
      * Initializes the enrollment class.
@@ -53,6 +55,7 @@ class enrollment {
     public function verify_enrollments() {
         global $DB;
         $lastterm = false;
+        self::get_term_codes();
         // Get the current term dates record.
         $recs = data::get_term_date_current();
         $thisterm = array_pop($recs);
@@ -82,16 +85,31 @@ class enrollment {
                 if (!$ctr->completiondate && !$ctr->canceldate) {
                     continue;
                 }
+                // We allow 30 days after completion so we get the snapshot site made before unenrolling.
+                // But for cancels and drops, we unenroll immediately.
+                $unenroll = false;
+                $checkdate = new DateTime();
+                $checkdate.sub(new DateInterval('P30D'));
+                $checkdate = $checkdate.getTimestamp();
+                if ($ctr->canceldate) {
+                    $unenroll = true;
+                } else if ($ctr->gradecode == 'DRP') {
+                    $unenroll = true;
+                } else if (($ctr->completiondate) && ($ctr>completiondate < $checkdate)) {
+                    $unenroll = true;
+                }
+                
                 // Get the student record.
                 $stus = data::get_student_by_id($ctr->studentid);
                 $stu = array_pop($stus);
                 if ($stu) {
                     $userid = $stu->userid;
-                    if ($userid) {
+                    if ($userid && $unenroll) {
                         if (self::unenroll_user($userid, $ctr->coursecode)) {
                             $crs = data::get_course_by_code($ctr->coursecode);
                             $msg = 'Unenrolled ' . $stu->preferredfirstname . " " . $stu->legallastname 
-                                . " from " . $crs->coursecode . ' - ' . $crs->title;
+                                . " from " . $crs->coursecode . ' - ' . $crs->title 
+                                . ' in ' . $this->termcodes[$ctr->termcode] . ' ' . $ctr->termyear;
                             $this->logthis($msg);
                         }
                     }
@@ -120,15 +138,19 @@ class enrollment {
                     // If a student has not completed or withdrawn, enroll the student in the course.
                     if (self::enroll_user($userid, $ctr->coursecode)) {
                         $msg = 'Enrolled ' . $stu->preferredfirstname . " " . $stu->legallastname 
-                            . " in " . $crs->coursecode . ' - ' . $crs->title;
+                            . " in " . $crs->coursecode . ' - ' . $crs->title 
+                            . ' in ' . $this->termcodes[$ctr->termcode] . ' ' . $ctr->termyear;
                         $this->logthis($msg);
                     }
                 } else {
-                    // Otherwise, we unenroll the student to prevent further access.
-                    if (self::unenroll_user($userid, $ctr->coursecode)) {
-                        $msg = 'Unenrolled ' . $stu->preferredfirstname . " " . $stu->legallastname 
-                            . " from " . $crs->coursecode . ' - ' . $crs->title;
-                        $this->logthis($msg);
+                    if (($ctr->gradecode == 'DRP') || ($ctr->canceldate)) {
+                        // Otherwise, we unenroll a student who withdrew or cancelled to prevent further access.
+                        if (self::unenroll_user($userid, $ctr->coursecode)) {
+                            $msg = 'Unenrolled ' . $stu->preferredfirstname . " " . $stu->legallastname 
+                                . " from " . $crs->coursecode . ' - ' . $crs->title 
+                                . ' in ' . $this->termcodes[$ctr->termcode] . ' ' . $ctr->termyear;;
+                            $this->logthis($msg);
+                        }
                     }
                 }
             }
@@ -248,9 +270,22 @@ class enrollment {
     }
 
     /**
-     * Add a message to the log records.
+     * Get term codes.
      *
      * @param none
+     */
+    private function get_term_codes() {
+        $this->termcodes = [];
+        $recs = data::get_codes('term');
+        foreach ($recs as $rec) {
+            $this->termcodes[$rec['code']] = $rec['description'];
+        }
+    }
+
+    /**
+     * Add a message to the log records.
+     *
+     * @param string $logrec message to add to log
      */
     private function logthis($logrec) {
         $this->logrecs .= $logrec.PHP_EOL;

@@ -47,14 +47,17 @@ class html_page implements renderable {
      * @param string $content html content to output
      * @param array  $jsfiles javascript files to require on page
      */
-    public function __construct($content, $jsfiles=[]) {
+    public function __construct($content, $jsfiles=[], $pagetitle='') {
         global $PAGE;
         global $CFG;
         // Get basename, filename and URL.
         $name = basename(debug_backtrace()[0]['file'], '.php');
         $this->name = $name;
         $this->url = "/local/gcs/$name.php";
-        $this->title = get_string("menu$name", 'local_gcs');
+		if (!$pagetitle) {
+			$pagetitle = get_string("menu$name", 'local_gcs');
+		}
+        $this->title = $pagetitle;
         $this->content = $content;
 
         // Set up the page environment.

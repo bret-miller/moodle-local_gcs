@@ -47,7 +47,9 @@ function local_gcs_extend_navigation(global_navigation $nav) {
         'sch_available',
         'sch_given',
         'codes',
+        'acct_sch_cat',
         'regfox_webhook',
+        'transcript',
         ];
     $reportsmenu = [
         'classes_roster',
@@ -56,30 +58,37 @@ function local_gcs_extend_navigation(global_navigation $nav) {
 		'enrollment_agreements_unsigned',
         ];
     $systemcontext = context_system::instance();
-    $site = $nav->find('home', global_navigation::TYPE_SETTING);
-    if ($site) {
-        $foldername = get_config('local_gcs', 'menustudent');
-        $gcsroot = $nav->add($foldername, null, global_navigation::TYPE_CATEGORY);
-        foreach ($studmenu as $menuitem) {
-            $name = get_string("menu$menuitem", 'local_gcs');
-            $url = new moodle_url("/local/gcs/$menuitem.php");
-            $gcsroot->add($name, $url, global_navigation::NODETYPE_LEAF);
-        }
+    //$navtree = $nav->find('home', global_navigation::TYPE_SETTING);
+    $navtree = $nav;
+    if ($nav) {
+		$navurl = new moodle_url("/local/gcs/menu.php");
+		$navtype = global_navigation::TYPE_CUSTOM;
         if (has_capability('local/gcs:administrator', $systemcontext)) {
             $foldername = get_config('local_gcs', 'menuadmin');
-            $gcsroot = $nav->add($foldername, null, global_navigation::TYPE_CATEGORY);
+            $navfld = $navtree->add($foldername, $navurl, $navtype, null, 'gcspm');
+			$navfld->set_show_in_secondary_navigation(true);
+			$navurl = null;
+			$navtype = global_navigation::TYPE_CATEGORY;
             foreach ($adminmenu as $menuitem) {
                 $name = get_string("menu$menuitem", 'local_gcs');
                 $url = new moodle_url("/local/gcs/$menuitem.php");
-                $gcsroot->add($name, $url, global_navigation::NODETYPE_LEAF);
+                $navfld->add($name, $url, global_navigation::NODETYPE_LEAF);
             }
+			$navtree = $navfld;
             $foldername = get_config('local_gcs', 'menureports');
-            $gcsroot = $nav->add($foldername, null, global_navigation::TYPE_CATEGORY);
+            $navfld = $navtree->add($foldername, null, global_navigation::TYPE_CATEGORY, null, 'gcsrpt');
             foreach ($reportsmenu as $menuitem) {
                 $name = get_string("menu$menuitem", 'local_gcs');
                 $url = new moodle_url("/local/gcs/$menuitem.php");
-                $gcsroot->add($name, $url, global_navigation::NODETYPE_LEAF);
+                $navfld->add($name, $url, global_navigation::NODETYPE_LEAF);
             }
+        }
+        $foldername = get_config('local_gcs', 'menustudent');
+        $navfld = $navtree->add($foldername, $navurl, $navtype, null, 'gcsstu');
+        foreach ($studmenu as $menuitem) {
+            $name = get_string("menu$menuitem", 'local_gcs');
+            $url = new moodle_url("/local/gcs/$menuitem.php");
+            $navfld->add($name, $url, global_navigation::NODETYPE_LEAF);
         }
     }
 }

@@ -37,14 +37,6 @@ if (is_siteadmin()) {
     $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
     $settings->add($setting);
 
-    // Menu folder for student reports.
-    $name = 'local_gcs/menustudent';
-    $title = get_string('setting_menufolderstud', 'local_gcs');
-    $description = get_string('setting_menufolderstud_desc', 'local_gcs');
-    $default = get_string('menufolderstud', 'local_gcs');
-    $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
-    $settings->add($setting);
-
     // Menu folder for administration.
     $name = 'local_gcs/menuadmin';
     $title = get_string('setting_menufolderadmin', 'local_gcs');
@@ -58,6 +50,14 @@ if (is_siteadmin()) {
     $title = get_string('setting_menufolderreports', 'local_gcs');
     $description = get_string('setting_menufolderreports_desc', 'local_gcs');
     $default = get_string('menufolderreports', 'local_gcs');
+    $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
+    $settings->add($setting);
+
+    // Menu folder for student resources.
+    $name = 'local_gcs/menustudent';
+    $title = get_string('setting_menufolderstud', 'local_gcs');
+    $description = get_string('setting_menufolderstud_desc', 'local_gcs');
+    $default = get_string('menufolderstud', 'local_gcs');
     $setting = new admin_setting_configtext($name, $title, $description, $default, true, false);
     $settings->add($setting);
 
