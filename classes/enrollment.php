@@ -95,7 +95,7 @@ class enrollment {
                     $unenroll = true;
                 } else if ($ctr->gradecode == 'DRP') {
                     $unenroll = true;
-                } else if (($ctr->completiondate) && ($ctr>completiondate < $checkdate)) {
+                } else if (($ctr->completiondate) && ($ctr->completiondate < $checkdate)) {
                     $unenroll = true;
                 }
                 
