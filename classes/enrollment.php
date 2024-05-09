@@ -88,9 +88,9 @@ class enrollment {
                 // We allow 30 days after completion so we get the snapshot site made before unenrolling.
                 // But for cancels and drops, we unenroll immediately.
                 $unenroll = false;
-                $checkdate = new DateTime();
-                $checkdate.sub(new DateInterval('P30D'));
-                $checkdate = $checkdate.getTimestamp();
+                $checkdate = new \DateTime();
+                $checkdate->sub(new \DateInterval('P30D'));
+                $checkdate = $checkdate->getTimestamp();
                 if ($ctr->canceldate) {
                     $unenroll = true;
                 } else if ($ctr->gradecode == 'DRP') {
@@ -278,7 +278,7 @@ class enrollment {
         $this->termcodes = [];
         $recs = data::get_codes('term');
         foreach ($recs as $rec) {
-            $this->termcodes[$rec['code']] = $rec['description'];
+            $this->termcodes[$rec->code] = $rec->description;
         }
     }
 

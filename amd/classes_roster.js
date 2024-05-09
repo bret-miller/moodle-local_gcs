@@ -62,10 +62,11 @@ function local_gcs_got_terms_and_codes() {
     var gotcur = false;
     var opts = '';
     for ( x=0; x<terms.length; x++) {
+
         var termname = local_gcs_term_codes.filter( obj => obj.code === terms[x].termcode )[0].description;
         opts += '<option value="' + terms[x].termyear + terms[x].termcode + '"';
         if (!gotcur && (x < terms.length+1)) {
-            if (now > terms[x].registrationstart) {
+            if (now > (terms[x].registrationstart * 1000)) {
                 opts += 'selected="selected"';
                 gotcur = true;
             }

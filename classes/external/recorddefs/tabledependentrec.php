@@ -14,19 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Version information for GCS Program Management
+ * Defines a regfox registrant record.
  *
  * @package    local_gcs
- * @copyright  2023 Grace Communion Seminary
+ * @copyright  2024 Grace Communion Seminary
  * @author     Bret Miller
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_gcs\external;
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_gcs';       // To check on upgrade, that module sits in correct place.
-$plugin->version   = 2024050303;        // The current module version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022112803;        // Requires Moodle version 4.1.
-$plugin->release   = '0.3.0+';
-$plugin->maturity  = MATURITY_BETA;     // One of: ALPHA, BETA, RC, STABLE.
-$plugin->cron      = 0;
+use external_single_structure;
+use external_value;
+
+class tabledependentrec {
+    public $recdef;
+    
+    /**
+     * Initializes the class record field list definition
+     */
+    public function __construct() {
+        $this->recdef = [
+            'tablecode' => new external_value(PARAM_TEXT, 'dependent table'),
+            'id' => new external_value(PARAM_INT, 'dependent record id'),
+        ];
+    }
+}

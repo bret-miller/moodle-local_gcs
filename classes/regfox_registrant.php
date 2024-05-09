@@ -75,7 +75,7 @@ class regfox_registrant {
     *
     * @param onone
     */
-    public function blackrec() {
+    public function blankrec() {
         $this->id = $rec->id;
         $this->email = '';
         $this->firstname = '';
@@ -99,6 +99,9 @@ class regfox_registrant {
         $this->lastname = $rec->lastname;
         $this->scholarshipcode = $rec->scholarshipcode;
         $this->amount = $rec->amount;
+		if (is_null($this->amount)) {
+			$this->amount = 0;
+		}
         if (property_exists($rec,'processedtime')) {
             $this->processedtime = $rec->processedtime;
         } else {
@@ -121,9 +124,11 @@ class regfox_registrant {
      public function from_webhook($reg) {
         // Build registrant from transaction data.
         $this->blankrec();
-        $reg = $arg;
         $this->id = 0;
         $this->amount = $reg->amount;
+		if (is_null($this->amount)) {
+			$this->amount = 0;
+		}
         $this->classes = [];
         $regitems = $reg->data;
         $products = [];
@@ -163,7 +168,7 @@ class regfox_registrant {
                 array_push($this->classes,$class);
             }
         }
-     }
+	 }
 
 
     /**

@@ -95,7 +95,9 @@ class classrec {
                     $this->comments = $crs->comments;
                     $this->save();
                 } else {
-                    // Need to alert someone--there isn't a course record.
+                    $msg =  'Could not create class record for course ' . $args[0] . '.' . PHP_EOL;
+					$msg .= 'Course ' . $args[0] . ' does not exist.' . PHP_EOL;
+					utils::send_notification_email('Missing Course ' . $args[0], $msg);
                 }
             }
         } else {

@@ -48,10 +48,12 @@ class process_regfox_registrations extends \core\task\adhoc_task {
 		$processor = new \local_gcs\regfox_processor($this);
 
         // Process raw webhooks into registrants and class registrations.
-		$this->logrecs .= $processor->process_webhooks();
+		$logrecs = $processor->process_webhooks();
+		$this->log($logrecs);
 		
 		// Process the unprocessed registrants and class registrations.
-        $this->logrecs .= $processor->process_registrants();
+        $logrecs = $processor->process_registrants();
+		$this->log($logrecs);
         
         return $this->logrecs;
     }

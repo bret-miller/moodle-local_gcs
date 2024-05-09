@@ -74,7 +74,7 @@ async function local_gcs_get_unprocessed_webhooks() {
  *
  * @param none
  */
-async function local_gcs_trigger_processing() {
+async function local_gcs_process_webhooks() {
     document.getElementById('gcsprocessbutton').innerText='Processing...';
     local_gcs_ajax.queue('local_gcs_regfox_process_webhooks', []);
     var r = await local_gcs_ajax.process();

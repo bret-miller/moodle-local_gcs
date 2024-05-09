@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Trigger RegFox processing task
+ * Get a course record for GCS Program Management
  *
  * @package    local_gcs
  * @copyright  2023 Grace Communion Seminary
@@ -32,39 +32,38 @@ use external_single_structure;
 use external_value;
 require_once($_SERVER['DOCUMENT_ROOT'].'/lib/externallib.php');
 require_once(__dir__.'/../data.php');
+require_once(__dir__.'/recorddefs/course.php');
 
 require_login();
 require_capability('local/gcs:administrator', \context_system::instance());
 
 /**
- * Process all unprocessed RegFox webhooks.
+ * Get single course record
  */
-class regfox_process_webhooks extends \external_api {
+class course_get_by_coursecode extends \external_api {
     /**
      * Returns description of method parameters
      * @return external_function_parameters
      */
     public static function execute_parameters() {
         return new external_function_parameters([
+            'coursecode' => new external_value(PARAM_TEXT, VALUE_REQUIRED),
         ]);
     }
     /**
      * Returns description of method returns
-     * @return external_external_multiple_structure
+     * @return external_external_single_structure
      */
     public static function execute_returns() {
-        return new external_multiple_structure(
-            new external_value(PARAM_TEXT, 'log line'),
-	    );
+		$def = new courserecord();
+        new external_single_structure($def->recdef);
     }
     /**
-     * Get current list of programs
-     * @return hash of program records
+     * Get a course record
+     * @param  int  $coursecode  coursecode of course to get
+     * @return object course record
      */
-    public static function execute() {
-        $rfp = new \local_gcs\regfox_processor(true);
-		$log = $rfp->process_webhooks();
-		return [$log];
-
+    public static function execute($coursecode) {
+        return \local_gcs\data::get_course_by_coursecode($coursecode);
     }
 }

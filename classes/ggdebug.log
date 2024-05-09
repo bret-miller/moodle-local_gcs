@@ -1,0 +1,446 @@
+Array
+(
+    [0] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4113
+        )
+
+    [1] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4156
+        )
+
+    [2] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4106
+        )
+
+    [3] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 1
+        )
+
+    [4] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4162
+        )
+
+    [5] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4129
+        )
+
+    [6] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4130
+        )
+
+    [7] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4114
+        )
+
+    [8] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4166
+        )
+
+    [9] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4125
+        )
+
+    [10] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4136
+        )
+
+    [11] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4108
+        )
+
+    [12] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4143
+        )
+
+    [13] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 2
+        )
+
+    [14] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 48
+        )
+
+    [15] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 92
+        )
+
+    [16] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 138
+        )
+
+    [17] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 190
+        )
+
+    [18] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 244
+        )
+
+    [19] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 292
+        )
+
+    [20] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 295
+        )
+
+    [21] => Array
+        (
+            [tablecode] => classes
+            [id] => 22
+        )
+
+    [22] => Array
+        (
+            [tablecode] => classes
+            [id] => 1
+        )
+
+)
+tablecode: classes_taken
+Array
+(
+    [assignedcoursecode] => BI510
+)
+assignedcoursecode: BI510
+select id from {local_gcs_classes_taken} where assignedcoursecode=:assignedcoursecode
+Array
+(
+    [1] => stdClass Object
+        (
+            [id] => 1
+        )
+
+    [110] => stdClass Object
+        (
+            [id] => 110
+        )
+
+    [4106] => stdClass Object
+        (
+            [id] => 4106
+        )
+
+    [4108] => stdClass Object
+        (
+            [id] => 4108
+        )
+
+    [4113] => stdClass Object
+        (
+            [id] => 4113
+        )
+
+    [4114] => stdClass Object
+        (
+            [id] => 4114
+        )
+
+    [4125] => stdClass Object
+        (
+            [id] => 4125
+        )
+
+    [4129] => stdClass Object
+        (
+            [id] => 4129
+        )
+
+    [4130] => stdClass Object
+        (
+            [id] => 4130
+        )
+
+    [4136] => stdClass Object
+        (
+            [id] => 4136
+        )
+
+    [4143] => stdClass Object
+        (
+            [id] => 4143
+        )
+
+    [4156] => stdClass Object
+        (
+            [id] => 4156
+        )
+
+    [4162] => stdClass Object
+        (
+            [id] => 4162
+        )
+
+    [4166] => stdClass Object
+        (
+            [id] => 4166
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4113
+        )
+
+    [1] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4156
+        )
+
+    [2] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4106
+        )
+
+    [3] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 1
+        )
+
+    [4] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4162
+        )
+
+    [5] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4129
+        )
+
+    [6] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4130
+        )
+
+    [7] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4114
+        )
+
+    [8] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4166
+        )
+
+    [9] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4125
+        )
+
+    [10] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4136
+        )
+
+    [11] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4108
+        )
+
+    [12] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4143
+        )
+
+    [13] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 2
+        )
+
+    [14] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 48
+        )
+
+    [15] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 92
+        )
+
+    [16] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 138
+        )
+
+    [17] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 190
+        )
+
+    [18] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 244
+        )
+
+    [19] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 292
+        )
+
+    [20] => Array
+        (
+            [tablecode] => courses_permitted
+            [id] => 295
+        )
+
+    [21] => Array
+        (
+            [tablecode] => classes
+            [id] => 22
+        )
+
+    [22] => Array
+        (
+            [tablecode] => classes
+            [id] => 1
+        )
+
+    [23] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 1
+        )
+
+    [24] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 110
+        )
+
+    [25] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4106
+        )
+
+    [26] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4108
+        )
+
+    [27] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4113
+        )
+
+    [28] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4114
+        )
+
+    [29] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4125
+        )
+
+    [30] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4129
+        )
+
+    [31] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4130
+        )
+
+    [32] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4136
+        )
+
+    [33] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4143
+        )
+
+    [34] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4156
+        )
+
+    [35] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4162
+        )
+
+    [36] => Array
+        (
+            [tablecode] => classes_taken
+            [id] => 4166
+        )
+
+)

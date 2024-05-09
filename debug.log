@@ -1,0 +1,264 @@
+
+
+<!--
+_REQUEST:
+Array
+(
+)
+
+
+
+_SERVER:
+Array
+(
+    [USER] => gcswww
+    [HOME] => /home/gcswww
+    [SCRIPT_NAME] => /local/gcs/regfox_webhook.php
+    [REQUEST_URI] => /local/gcs/regfox_webhook.php
+    [QUERY_STRING] => 
+    [REQUEST_METHOD] => POST
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [REMOTE_PORT] => 32225
+    [SCRIPT_FILENAME] => /home/gcswww/learn.gcs.edu/local/gcs/regfox_webhook.php
+    [SERVER_ADMIN] => support@gcs.edu
+    [CONTEXT_DOCUMENT_ROOT] => /home/gcswww/learn.gcs.edu
+    [CONTEXT_PREFIX] => 
+    [REQUEST_SCHEME] => https
+    [DOCUMENT_ROOT] => /home/gcswww/learn.gcs.edu
+    [REMOTE_ADDR] => 34.218.183.77
+    [SERVER_PORT] => 443
+    [SERVER_ADDR] => 208.113.129.230
+    [SERVER_NAME] => learn.gcs.edu
+    [SERVER_SOFTWARE] => Apache/2.4.59 (Ubuntu)
+    [SERVER_SIGNATURE] => <address>Apache/2.4.59 (Ubuntu) Server at learn.gcs.edu Port 443</address>
+
+    [PATH] => /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+    [HTTP_ACCEPT_ENCODING] => gzip
+    [HTTP_X_WEBCONNEX_SIGNATURE] => 0028a5686b94de944743d15fffb0e740d22178da55b2ddbaadd80184166316a4
+    [HTTP_X_WEBCONNEX_INTEGRATION_ID] => 9649
+    [HTTP_X_WEBCONNEX_EVENT] => registration
+    [HTTP_X_WEBCONNEX_DELIVERY] => 8f28344767f34edea2055bb79645df15
+    [CONTENT_TYPE] => application/json
+    [CONTENT_LENGTH] => 2474
+    [HTTP_USER_AGENT] => Webconnex-Divvy
+    [HTTP_HOST] => learn.gcs.edu
+    [proxy-nokeepalive] => 1
+    [SSL_TLS_SNI] => learn.gcs.edu
+    [HTTPS] => on
+    [SCRIPT_URI] => https://learn.gcs.edu/local/gcs/regfox_webhook.php
+    [SCRIPT_URL] => /local/gcs/regfox_webhook.php
+    [FCGI_ROLE] => RESPONDER
+    [PHP_SELF] => /local/gcs/regfox_webhook.php
+    [REQUEST_TIME_FLOAT] => 1715217356.7088
+    [REQUEST_TIME] => 1715217356
+)
+
+
+
+POST data:
+{"eventType":"registration","accountId":24840,"formId":673984,"customerId":7142661,"eventId":48493975,"data":{"id":"01HXDENGZSRM2GFVX8Y","lookupId":48493975,"customerId":7142661,"billing":{"address":{"city":"Stafford","country":"US","postalCode":"22554","state":"VA","street1":"89 Millbrook Road"},"card":{"cardNumber":"VISA-8788","expMonth":12,"expYear":2027},"check":{},"email":"jcpollardlhcf@outlook.com","name":{"first":"Juanita","last":"Carlisle-Pollard"},"paymentMethod":"card"},"transactionId":60735974,"transactionReference":"9500790926","orderStatus":"completed","orderNumber":"GCS20242-GW9000Q","registrants":[{"id":"01HXDENH0755WGA1G6C","lookupId":55408714,"data":[{"first":{"label":"First Name","type":"nameField","value":"Juanita"},"key":"name","label":"Name","last":{"label":"Last Name","type":"nameField","value":"Carlisle-Pollard"},"type":"name"},{"key":"email","label":"Email","type":"email","value":"jcpollardlhcf@outlook.com"},{"city":{"label":"City","type":"textField","value":"Stafford"},"country":{"label":"Country","type":"textField","value":"US"},"key":"address","label":"Address","postalCode":{"label":"ZIP/Postal Code","type":"textField","value":"22554"},"state":{"label":"State","type":"textField","value":"VA"},"street1":{"label":"Street Address","type":"textField","value":"89 Millbrook Road"},"type":"address"},{"key":"scholarshipCode","label":"Scholarship Code","type":"textField","value":""},{"key":"classes","label":"Classes","products":[{"description":"Trinitarian Worship explores in depth the who, what and how of the church’s corporate (public) worship. Exploring the who takes us to the theological foundations that undergird Christian worship. We’ll see that this worship flows from and is shaped by incarnational Trinitarian faith—the knowledge of the triune God revealed in the person and work of Jesus. Throughout the course, we’ll emphasize that Christian worship is our participation, by the Holy Spirit, in Jesus’ ongoing worship of the Father.","key":"th503HolySpiritChurch","label":"CM513 – Trinitarian Worship","type":"product","value":1,"variants":[{"amount":"735","discount":"0","key":"variant","label":"Credit","price":"735","type":"productVariant","value":1}]}],"type":"products","value":1}],"amount":735}],"registrationTimestamp":"2024-05-09T01:14:46Z","total":735,"formName":"GCS 2024 Summer Semester","currency":"USD","deductibleTotal":0},"meta":{"appKey":"RegFox","name":"GCS Registrations"},"formMeta":{}}
+
+
+
+decoded data:
+stdClass Object
+(
+    [eventType] => registration
+    [accountId] => 24840
+    [formId] => 673984
+    [customerId] => 7142661
+    [eventId] => 48493975
+    [data] => stdClass Object
+        (
+            [id] => 01HXDENGZSRM2GFVX8Y
+            [lookupId] => 48493975
+            [customerId] => 7142661
+            [billing] => stdClass Object
+                (
+                    [address] => stdClass Object
+                        (
+                            [city] => Stafford
+                            [country] => US
+                            [postalCode] => 22554
+                            [state] => VA
+                            [street1] => 89 Millbrook Road
+                        )
+
+                    [card] => stdClass Object
+                        (
+                            [cardNumber] => VISA-8788
+                            [expMonth] => 12
+                            [expYear] => 2027
+                        )
+
+                    [check] => stdClass Object
+                        (
+                        )
+
+                    [email] => jcpollardlhcf@outlook.com
+                    [name] => stdClass Object
+                        (
+                            [first] => Juanita
+                            [last] => Carlisle-Pollard
+                        )
+
+                    [paymentMethod] => card
+                )
+
+            [transactionId] => 60735974
+            [transactionReference] => 9500790926
+            [orderStatus] => completed
+            [orderNumber] => GCS20242-GW9000Q
+            [registrants] => Array
+                (
+                    [0] => stdClass Object
+                        (
+                            [id] => 01HXDENH0755WGA1G6C
+                            [lookupId] => 55408714
+                            [data] => Array
+                                (
+                                    [0] => stdClass Object
+                                        (
+                                            [first] => stdClass Object
+                                                (
+                                                    [label] => First Name
+                                                    [type] => nameField
+                                                    [value] => Juanita
+                                                )
+
+                                            [key] => name
+                                            [label] => Name
+                                            [last] => stdClass Object
+                                                (
+                                                    [label] => Last Name
+                                                    [type] => nameField
+                                                    [value] => Carlisle-Pollard
+                                                )
+
+                                            [type] => name
+                                        )
+
+                                    [1] => stdClass Object
+                                        (
+                                            [key] => email
+                                            [label] => Email
+                                            [type] => email
+                                            [value] => jcpollardlhcf@outlook.com
+                                        )
+
+                                    [2] => stdClass Object
+                                        (
+                                            [city] => stdClass Object
+                                                (
+                                                    [label] => City
+                                                    [type] => textField
+                                                    [value] => Stafford
+                                                )
+
+                                            [country] => stdClass Object
+                                                (
+                                                    [label] => Country
+                                                    [type] => textField
+                                                    [value] => US
+                                                )
+
+                                            [key] => address
+                                            [label] => Address
+                                            [postalCode] => stdClass Object
+                                                (
+                                                    [label] => ZIP/Postal Code
+                                                    [type] => textField
+                                                    [value] => 22554
+                                                )
+
+                                            [state] => stdClass Object
+                                                (
+                                                    [label] => State
+                                                    [type] => textField
+                                                    [value] => VA
+                                                )
+
+                                            [street1] => stdClass Object
+                                                (
+                                                    [label] => Street Address
+                                                    [type] => textField
+                                                    [value] => 89 Millbrook Road
+                                                )
+
+                                            [type] => address
+                                        )
+
+                                    [3] => stdClass Object
+                                        (
+                                            [key] => scholarshipCode
+                                            [label] => Scholarship Code
+                                            [type] => textField
+                                            [value] => 
+                                        )
+
+                                    [4] => stdClass Object
+                                        (
+                                            [key] => classes
+                                            [label] => Classes
+                                            [products] => Array
+                                                (
+                                                    [0] => stdClass Object
+                                                        (
+                                                            [description] => Trinitarian Worship explores in depth the who, what and how of the church’s corporate (public) worship. Exploring the who takes us to the theological foundations that undergird Christian worship. We’ll see that this worship flows from and is shaped by incarnational Trinitarian faith—the knowledge of the triune God revealed in the person and work of Jesus. Throughout the course, we’ll emphasize that Christian worship is our participation, by the Holy Spirit, in Jesus’ ongoing worship of the Father.
+                                                            [key] => th503HolySpiritChurch
+                                                            [label] => CM513 – Trinitarian Worship
+                                                            [type] => product
+                                                            [value] => 1
+                                                            [variants] => Array
+                                                                (
+                                                                    [0] => stdClass Object
+                                                                        (
+                                                                            [amount] => 735
+                                                                            [discount] => 0
+                                                                            [key] => variant
+                                                                            [label] => Credit
+                                                                            [price] => 735
+                                                                            [type] => productVariant
+                                                                            [value] => 1
+                                                                        )
+
+                                                                )
+
+                                                        )
+
+                                                )
+
+                                            [type] => products
+                                            [value] => 1
+                                        )
+
+                                )
+
+                            [amount] => 735
+                        )
+
+                )
+
+            [registrationTimestamp] => 2024-05-09T01:14:46Z
+            [total] => 735
+            [formName] => GCS 2024 Summer Semester
+            [currency] => USD
+            [deductibleTotal] => 0
+        )
+
+    [meta] => stdClass Object
+        (
+            [appKey] => RegFox
+            [name] => GCS Registrations
+        )
+
+    [formMeta] => stdClass Object
+        (
+        )
+
+)
+
+
+
+

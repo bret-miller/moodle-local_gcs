@@ -1,0 +1,83 @@
+stdClass Object
+(
+    [id] => 433
+    [legallastname] => Arnold
+    [legalfirstname] => Jon
+    [legalmiddlename] => Paul
+    [preferredfirstname] => Jon
+    [programcode] => MCE
+    [acceptancedate] => 1646092800
+    [statuscode] => ACT
+    [exitdate] => 
+    [idnumber] => 1160428
+    [userid] => 0
+    [birthplace] => 
+    [ssn] => 
+    [address] => 6136 Golden Valley Rd
+    [address2] => 
+    [city] => Golden Valley
+    [stateprovince] => MN
+    [zip] => 55422-4442
+    [country] => United States
+    [citizenship] => 
+    [alienregnumber] => 
+    [visatype] => 
+    [isveteran] => 
+    [ethniccode] => 
+    [donotemail] => 
+    [scholarshipeligible] => PST
+    [regfoxemails] => jpcearnold@juno.com,jpcearnold@gmail.com,jon.arnold@gci.org
+    [isgraduated] => 0
+)
+------------------------------------------------------------------------------------------
+stdClass Object
+(
+    [id] => 76619
+    [auth] => db
+    [confirmed] => 1
+    [policyagreed] => 0
+    [deleted] => 0
+    [suspended] => 0
+    [mnethostid] => 1
+    [username] => jon.arnold
+    [password] => $2y$10$4tcjfV.AK01evoRPpA6JW.AuRZe3bLQ7G1JZYArhNVE1VL7QlGwnS
+    [idnumber] => 1160428
+    [firstname] => Jon
+    [lastname] => Arnold
+    [email] => jon.arnold@gci.org
+    [emailstop] => 0
+    [phone1] => 
+    [phone2] => 
+    [institution] => 
+    [department] => 
+    [address] => 
+    [city] => Golden Valley, MN
+    [country] => US
+    [lang] => en_us
+    [theme] => 
+    [timezone] => 99
+    [firstaccess] => 1646186670
+    [lastaccess] => 1693876266
+    [lastlogin] => 1693754983
+    [currentlogin] => 1693876266
+    [lastip] => 2607:fb90:fa0b:59d5:a3:d3cb:ddd0:38a8
+    [secret] => 
+    [picture] => 256411
+    [description] => 
+    [descriptionformat] => 1
+    [mailformat] => 1
+    [maildigest] => 0
+    [maildisplay] => 2
+    [autosubscribe] => 1
+    [trackforums] => 0
+    [timecreated] => 1646175612
+    [timemodified] => 1667616526
+    [trustbitmask] => 0
+    [imagealt] => 
+    [lastnamephonetic] => 
+    [firstnamephonetic] => 
+    [middlename] => 
+    [alternatename] => 
+    [moodlenetprofile] => 
+    [calendartype] => gregorian
+)

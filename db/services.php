@@ -717,6 +717,28 @@ $functions = [
             'gcs',
         ],
     ],
+    'local_gcs_course_get_by_coursecode' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\course_get_by_coursecode',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Retrieves a course record.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
     'local_gcs_course_update' => [
         // The name of the namespaced class that the function is located in.
         'classname'   => 'local_gcs\external\course_update',
@@ -2254,6 +2276,28 @@ $functions = [
 
         // A brief, human-readable, description of the web service function.
         'description' => 'Gets the formatted enrollment agreement info.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_table_record_dependencies' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\table_record_dependencies',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Retrieves a list of table names and record ids of record dependents.',
 
         // Options include read, and write.
         'type'        => 'read',

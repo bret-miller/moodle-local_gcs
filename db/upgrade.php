@@ -1234,8 +1234,55 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
         upgrade_plugin_savepoint(true, 2024041601, 'local', 'gcs');
     }
 
-    if ($oldversion < 2024041800) {
+    // Restructure scholarship accounting table
+    if ($oldversion < 2024042600) {
+
+        // Define field scholarship to be dropped from local_gcs_acct_sch_cat.
+        $table = new xmldb_table('local_gcs_acct_sch_cat');
+        $field = new xmldb_field('scholarship');
+
+        // Conditionally launch drop field scholarship.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Rename field code on table local_gcs_acct_sch_cat to regfoxcode.
+        $table = new xmldb_table('local_gcs_acct_sch_cat');
+        $field = new xmldb_field('code', XMLDB_TYPE_CHAR, '20', null, null, null, null, 'id');
+
+        // Launch rename field regfoxcode.
+        $dbman->rename_field($table, $field, 'regfoxcode');
+
+        // Rename field result on table local_gcs_acct_sch_cat to accountinggroup.
+        $table = new xmldb_table('local_gcs_acct_sch_cat');
+        $field = new xmldb_field('result', XMLDB_TYPE_CHAR, '20', null, null, null, null, 'regfoxcode');
+
+        // Launch rename field accountinggroup.
+        $dbman->rename_field($table, $field, 'accountinggroup');
+
         // Gcs savepoint reached.
-        upgrade_plugin_savepoint(true, 2024041800, 'local', 'gcs');
+        upgrade_plugin_savepoint(true, 2024042600, 'local', 'gcs');
+    }
+
+    // Drop scholarhip accounting table, using codes instead.
+    if ($oldversion < 2024042601) {
+
+        // Define table local_gcs_acct_sch_cat to be dropped.
+        $table = new xmldb_table('local_gcs_acct_sch_cat');
+
+        // Conditionally launch drop table for local_gcs_acct_sch_cat.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024042601, 'local', 'gcs');
+    }
+
+	// Add local_gcs_course_get_by_coursecode service
+	// Add local_gcs_dependents_get service
+    if ($oldversion < 2024050303) {
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024050303, 'local', 'gcs');
     }
 }

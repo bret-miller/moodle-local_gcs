@@ -83,7 +83,7 @@ async function local_gcs_ready() {
         opts += '<option value="' + term.termyear + term.termcode + '"';
         if (!gotcur) {
             // Default to the current term.
-            if (now > term.registrationstart) {
+            if (now > term.registrationstart*1000) {
                 opts += 'selected="selected"';
                 gotcur = true;
             }

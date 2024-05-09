@@ -47,9 +47,7 @@ function local_gcs_extend_navigation(global_navigation $nav) {
         'sch_available',
         'sch_given',
         'codes',
-        'acct_sch_cat',
         'regfox_webhook',
-        'transcript',
         ];
     $reportsmenu = [
         'classes_roster',

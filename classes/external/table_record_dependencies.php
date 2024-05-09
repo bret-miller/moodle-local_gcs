@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Trigger RegFox processing task
+ * Get classes taken for GCS Program Management
  *
  * @package    local_gcs
  * @copyright  2023 Grace Communion Seminary
@@ -32,20 +32,22 @@ use external_single_structure;
 use external_value;
 require_once($_SERVER['DOCUMENT_ROOT'].'/lib/externallib.php');
 require_once(__dir__.'/../data.php');
+require_once(__dir__.'/recorddefs/tabledependentrec.php');
 
 require_login();
-require_capability('local/gcs:administrator', \context_system::instance());
 
 /**
- * Process all unprocessed RegFox webhooks.
+ * Get list of dependent records
  */
-class regfox_process_webhooks extends \external_api {
+class table_record_dependencies extends \external_api {
     /**
      * Returns description of method parameters
      * @return external_function_parameters
      */
     public static function execute_parameters() {
         return new external_function_parameters([
+            'tablecode' => new external_value(PARAM_TEXT, 'table code', VALUE_REQUIRED),
+            'keycsv' => new external_value(PARAM_TEXT, 'csv key value list', VALUE_REQUIRED),
         ]);
     }
     /**
@@ -53,18 +55,18 @@ class regfox_process_webhooks extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
+		$def = new tabledependentrec();
         return new external_multiple_structure(
-            new external_value(PARAM_TEXT, 'log line'),
-	    );
+            new external_single_structure($def->recdef)
+        );
     }
     /**
-     * Get current list of programs
-     * @return hash of program records
+     * Get list of dependencies
+     * @param  string  $tablecode table description
+     * @param  string  $keycsv id or code to look for
+     * @return hash of returned records
      */
-    public static function execute() {
-        $rfp = new \local_gcs\regfox_processor(true);
-		$log = $rfp->process_webhooks();
-		return [$log];
-
+    public static function execute($tablecode, $keycsv) {
+        return \local_gcs\data::get_table_record_dependencies($tablecode, $keycsv);
     }
 }

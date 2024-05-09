@@ -94,7 +94,13 @@ class agreement_processor {
                 if ($earec) {
                     $ctr->agreementid = $earec->id;    
                     $needsave = true;
-                }
+                } else {
+					$stud = data::get_students($ctr->studentid);
+					$term = data::get_code_by_code('term',$ctr->termcode);
+					$msg = 'No agreement found for ' . $stud->preferredfirstname . ' ' . $stud->legallastname;
+					$msg .= ' for ' . $ctr->coursecode . ' taken in ' . $term->description . ' ' . $ctr->termyear . '. Skipping.' . PHP_EOL;
+					$this->ntfmsg .= $msg;
+				}					
             }
             // For completed classes, auto-sign with the completion date.
             if (($ctr->agreementid) && ($ctr->completiondate)) {
@@ -150,8 +156,9 @@ class agreement_processor {
      * Remind student to sign enrollment agreement.
      *
      * @param classes_taken $ctr classes taken record.
+	 * @return string log message
      */
-    private function reminder($ctr) {
+    public function reminder($ctr) {
         global $CFG;
         $stud = data::get_students($ctr->studentid);
         $studuser = \core_user::get_user($stud->userid);
@@ -174,6 +181,7 @@ class agreement_processor {
             $this->logthis($msg);
             $this->ntfmsg .= $msg.PHP_EOL;
         }
+		return $msg;
     }
 
     /**

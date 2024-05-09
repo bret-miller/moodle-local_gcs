@@ -17,7 +17,7 @@
  * Validate current session/user for GCS Program Management
  *
  * @package    local_gcs
- * @copyright  2023-2024 Grace Communion Seminary
+ * @copyright  2023 Grace Communion Seminary
  * @author     Bret Miller
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -489,7 +489,7 @@ class data {
 
         // Get the record.
         $sql = "select * 
-			from {local_gcs_term_dates} td
+			from mdl_local_gcs_term_dates td
 			where td.registrationstart < unix_timestamp()
 			order by td.registrationstart desc
 			limit 1";
@@ -547,14 +547,12 @@ class data {
 
         $sql = 'select u.id, u.lastname, u.firstname, fn.data as fullname
                   from {user} u
-				  left join {user_info_data} fn on fn.userid=u.id
-				  left join {user_info_field} fnf on fnf.id=fn.fieldid
-                  left join {user_info_data} ins on ins.userid=u.id 
-				  left join {user_info_field} insf on insf.id=ins.fieldid
-                 where 1=cast(ins.data as int) and fnf.name=:fnfname and insf.name=:insfname';
+                  join {user_info_data} fn on fn.userid=u.id and fn.fieldid=10
+                  join {user_info_data} ins on ins.userid=u.id and ins.fieldid=9
+                 where 1=cast(ins.data as int)';
         $courses = $DB->get_records_sql(
             $sql,
-            ['fnfname'=>'Full Name', 'insfname'=>'Instsructor?'],
+            [],
             $limitfrom = 0,
             $limitnum = 0
         );
@@ -591,18 +589,6 @@ class data {
         $course = $DB->get_record('local_gcs_courses', ['id' => $id]);
         return $course;
     }
-    /**
-     * Retrieves single course record from the database
-     *
-     * @param int $id course id
-     * @return  object  course record
-     */
-    public static function get_course_by_coursecode($coursecode) {
-        global $DB;
-
-        $sql = 'select * from {local_gcs_courses} where coursecode=:coursecode';
-        return $DB->get_record('local_gcs_courses', ['coursecode' => $coursecode]);
-	}
     /**
      * Retrieves single course record from the database
      *
@@ -778,11 +764,10 @@ class data {
     }
 
     /**
-     * For admins - Retrieves the list of students with unsigned enroll agreement class records.
-	 * For student - Always returns his/her student record whether or not there are unsigned enroll agreement records.
+     * Retrieves the list of student records.
      *
 	 * @param   
-     * @return  student record(s)
+     * @return  student records
      */
     public static function get_students_with_unsigned_enrollment_agreements () {
         global $DB;
@@ -793,26 +778,28 @@ class data {
 			$sql = "
 WITH td AS (
 	select max(d.registrationstart) as registrationstart
-	from {local_gcs_term_dates} d
+	from mdl_local_gcs_term_dates d
 	where d.registrationstart<unix_timestamp()
 )
 SELECT DISTINCT st.*
 FROM td
-JOIN {local_gcs_term_dates} d on d.registrationstart=td.registrationstart
-JOIN {local_gcs_classes_taken} ct on ct.termyear=d.termyear and ct.termcode=d.termcode
-JOIN {local_gcs_student} st on st.id=ct.studentid
-WHERE ct.agreementsigned is null or ct.agreementsigned = 0
+JOIN mdl_local_gcs_term_dates d on d.registrationstart=td.registrationstart
+JOIN mdl_local_gcs_classes_taken ct on ct.termyear=d.termyear and ct.termcode=d.termcode
+JOIN mdl_local_gcs_student st on st.id=ct.studentid
+WHERE ct.agreementid=0
 ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 ";
             $sqlvar = [];
         } else {
-            $sql = 'select * from {local_gcs_student} where userid=:userid';
+            $sql = 'select * from mdl_local_gcs_student where userid=:userid';
             $sqlvar = ['userid' => $USER->id];
         }
 
         $recs = $DB->get_records_sql(
             $sql,
-            $sqlvar
+            $sqlvar,
+            $limitfrom = 0,
+            $limitnum = 0
         );
         foreach ($recs as $rec) {
             (bool) $rec->isveteran = (bool) $rec->isveteran;
@@ -839,14 +826,14 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         if (has_capability('local/gcs:administrator', $systemcontext)) {
 			$sql = "
 SELECT DISTINCT st.*
-FROM {local_gcs_student} st
-JOIN {local_gcs_sch_given} sg on sg.studentid = st.id
+FROM mdl_local_gcs_student st
+JOIN mdl_local_gcs_sch_given sg on sg.studentid = st.id
 WHERE st.statuscode='ACT'
 ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 ";
             $sqlvar = [];
         } else {
-            $sql = 'select * from {local_gcs_student} where userid=:userid';
+            $sql = 'select * from mdl_local_gcs_student where userid=:userid';
             $sqlvar = ['userid' => $USER->id];
         }
 
@@ -978,7 +965,7 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 			// We only want to include those where the emails truly match.
 			// We can partially match an email in regfoxemails without matching it completely with the sql query.
 			// For example, searching for user@example.com would match user@example.com.au in the query, but not here.
-			$rfemails = explode(',', $rec->regfoxemails);
+			$rmemails = explode(',', $rec->regfoxemails);
 			if (($rec->email == $email) || (in_array($email, $rfemails))) {
 				unset($rec->email); // Remove this property since it is not in the original data record.
 				$students[$rec->id] = $rec; // Make the array identical to what is returned from the query.
@@ -1198,63 +1185,6 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 		];
     }
     /**
-     * get the enrollment agreement record for a class taken rec
-     *
-     * @param $ctrec class taken record
-     */
-    public static function get_class_enrollment_agreement_rec ($ctrec) {
-		$earec = null;
-		global $DB;
-				
-		// lookup the assigned enrollment agreement text
-		if ($ctrec->agreementid > 0) {
-			// lookup specific signed enrollment agreement
-			$earec = self::get_enrollment_agreements ($ctrec->agreementid);
-		} else {
-			// lookup the latest ea for our class type (they can be defined specific to a course or more generally for the credit type, e.g. for credit agreements differ from audits)
-			$sql = "
-select ea.*
-from {local_gcs_enroll_agreements} ea
-where ea.credittype=:credittypecode
-and ea.adddate<=:registrationdate
-order by adddate desc
-limit 1;
-";
-			// lookup latest ea based on specific coursecode
-			$sqlparam['credittypecode'] = $ctrec->coursecode;
-			$sqlparam['registrationdate'] = $ctrec->registrationdate;
-
-			$earecs = $DB->get_records_sql(
-				$sql,
-				$sqlparam,
-				$limitfrom = 0,
-				$limitnum = 0
-			);
-			
-			// if specific coursecode ea not found, try by credittypecode
-			if (count($earecs) == 0) {
-				// lookup latest based on credit type
-				$sqlparam['credittypecode'] = $ctrec->credittypecode;
-
-				$earecs = $DB->get_records_sql(
-					$sql,
-					$sqlparam,
-					$limitfrom = 0,
-					$limitnum = 0
-				);
-			}
-			
-			// extract id and text (should find one unless no ea was defined before this course was offered)
-			if (count($earecs) > 0) {
-				foreach ($earecs as $ea) {
-					$earec = $ea;
-				}
-			}
-		}
-
-        return $earec;
-    }
-    /**
      * Format raw enrollment agreement info
      *
      * @return  enrollment agreement formatted
@@ -1276,15 +1206,48 @@ limit 1;
 	 * all needed settrlite info is looked up in the function.
      */
     private static function format_enrollment_agreement_text ($ctrec) {
+		//$f = fopen(__DIR__ . "/glenndebug.log", "w");
         $eatext = '';
 		global $DB;
 				
-		// lookup the assigned enrollment agreement text
-		$earec = self::get_class_enrollment_agreement_rec ($ctrec);
-		if ($earec != null) {
+		// lookup the enrollment agreement text
+		if ($ctrec->agreementid > 0) {
+			// lookup specific signed enrollment agreement
+			$earec = self::get_enrollment_agreements ($ctrec->agreementid);
 			$eatext = $earec->agreement;
-			$ctrec->agreementid = $earec->id;
+		} else {
+			// lookup latest based on credit type
+			$sql = "
+select ea.*
+from `mdl_local_gcs_enroll_agreements` ea
+where ea.credittype='CR'
+union
+select ea.*
+from `mdl_local_gcs_enroll_agreements` ea
+where ea.credittype='CR'
+and ea.adddate<=0
+order by adddate desc
+limit 1;
+";
+			$sqlparam['credittypecode'] = $ctrec->credittypecode;
+			$sqlparam['registrationdate'] = $ctrec->registrationdate;
 
+			$earecs = $DB->get_records_sql(
+				$sql,
+				$sqlparam,
+				$limitfrom = 0,
+				$limitnum = 0
+			);
+			
+			if (count($earecs) > 0) {
+				foreach ($earecs as $earec) {
+					$eatext = $earec->agreement;
+					$ctrec->agreementid = $earec->id;
+				}
+			}
+		}
+		
+		if ($eatext != '') {
 			// lookup student record
 			$strec = self::get_students ($ctrec->studentid);
 			
@@ -1317,6 +1280,9 @@ limit 1;
 			}
 		}
 		
+		//fwrite($f, $eatext);
+		//fwrite($f, "------------------------------------------------------------------------------------------\n");
+		//fclose($f);
         return $eatext;
     }
     /**
@@ -1447,8 +1413,8 @@ limit 1;
         if ( empty($stuid) ) {
 			$sql = "
 SELECT sg.*
-FROM {local_gcs_student} st
-JOIN {local_gcs_sch_given} sg on sg.studentid = st.id
+FROM mdl_local_gcs_student st
+JOIN mdl_local_gcs_sch_given sg on sg.studentid = st.id
 WHERE st.statuscode='ACT'
 ";
 			$sqlparam = [];
@@ -1624,7 +1590,7 @@ WHERE st.statuscode='ACT'
                     // variable replacement
                     $settings = new \local_gcs\settings();
                 
-		        //$f = fopen(__DIR__ . "/ggdebug.log", "w");
+		        //$f = fopen(__DIR__ . "/glenndebug.log", "w");
                 //fwrite($f, print_r($settings, true));
                 //fclose($f);
 
@@ -1710,14 +1676,14 @@ WHERE st.statuscode='ACT'
         // get current term record
 		$termreclist = self::get_term_date_current();
 		foreach ($termreclist as $termrec) {
-			//$f = fopen(__DIR__ . "/ggdebug.log", "w");
+			//$f = fopen(__DIR__ . "/glenndebug.log", "w");
 			//fwrite($f, print_r($termrec, true));
 			//fwrite($f, "------------------------------------------------------------------------------------------\n");
 			$ctrecs = self::get_classes_taken_all ($stuid);
 			//fwrite($f, "Count: ".(count($ctrecs) - 1)."\n");
 			//fwrite($f, "------------------------------------------------------------------------------------------\n");
 			foreach ($ctrecs as $ctrec) {
-				if (($ctrec->agreementsigned == null || $ctrec->agreementsigned == 0) && $ctrec->termyear == $termrec->termyear && $ctrec->termcode == $termrec->termcode) {
+				if ($ctrec->agreementid == 0 && $ctrec->termyear == $termrec->termyear && $ctrec->termcode == $termrec->termcode) {
 					$ctrec->comments = self::format_enrollment_agreement_text ($ctrec);// tack on the formatted ea text
 					
 					// read class def
@@ -1744,9 +1710,9 @@ WHERE st.statuscode='ACT'
         global $DB;
         $sql = "
             select ct.*
-            from {local_gcs_classes}_taken ct
-            join {local_gcs_student} st on st.id=ct.studentid
-            join {local_gcs_courses_permitted} cp on cp.coursecode=ct.coursecode and cp.programcode=st.programcode
+            from mdl_local_gcs_classes_taken ct
+            join mdl_local_gcs_student st on st.id=ct.studentid
+            join mdl_local_gcs_courses_permitted cp on cp.coursecode=ct.coursecode and cp.programcode=st.programcode
             where s.studentid=:studentid
             and s.termyear=:termyear
             order by ct.termcode, ct.coursecode";
@@ -1794,13 +1760,6 @@ WHERE st.statuscode='ACT'
         global $DB;
 
         $rec = (object) $rec; // For some reason, we get an array in this function instead of an object.
-		
-		// assign the enrollment agreement
-		$earec = self::get_class_enrollment_agreement_rec ($rec);
-		if ($earec != null) {
-			$rec->agreementid = $earec->id;
-		}
-
         $id = $DB->insert_record('local_gcs_classes_taken', $rec);
         $rec = self::get_classes_taken($id);
         return $rec;
@@ -1954,8 +1913,8 @@ WHERE st.statuscode='ACT'
                            CAST(0 AS INTEGER) AS completed,
                            '' AS notes,
                            CAST(1 AS INTEGER) AS iscurrent
-                      FROM {local_gcs_student} s
-                      JOIN {local_gcs_program} p ON p.programcode=s.programcode
+                      FROM mdl_local_gcs_student s
+                      JOIN mdl_local_gcs_program p ON p.programcode=s.programcode
 
                      UNION
 
@@ -1967,9 +1926,9 @@ WHERE st.statuscode='ACT'
                            CAST(1 AS INTEGER) AS completed,
                            notes,
                            CAST(CASE WHEN s.programcode=p.programcode THEN 1 ELSE 0 END AS INTEGER) AS iscurrent
-                      FROM {local_gcs_program_completion} pc
-                      JOIN {local_gcs_program} p ON p.programcode=pc.programcode
-                 LEFT JOIN {local_gcs_student} s on s.id=pc.studentid
+                      FROM mdl_local_gcs_program_completion pc
+                      JOIN mdl_local_gcs_program p ON p.programcode=pc.programcode
+                 LEFT JOIN mdl_local_gcs_student s on s.id=pc.studentid
                 )
                 SELECT * FROM stuenr WHERE studentid=:studentid";
         $recs = $DB->get_records_sql(
@@ -1995,6 +1954,7 @@ WHERE st.statuscode='ACT'
      */
     public static function get_student_course_completion ($studentid, $programcode) {
         global $DB;
+        $f = fopen(__DIR__ . "/debug.log", "w");
 
         $systemcontext = \context_system::instance();
         if (has_capability('local/gcs:administrator', $systemcontext)) {
@@ -2009,10 +1969,10 @@ WHERE st.statuscode='ACT'
         // First we get the records.
         $sql = "WITH preq AS (
                     SELECT req.*
-                      FROM {local_gcs_program_req} req
+                      FROM mdl_local_gcs_program_req req
                      WHERE req.programcode=:programcode1
                 ), cperm AS (
-                    SELECT cp.* FROM {local_gcs_courses_permitted} cp
+                    SELECT cp.* FROM mdl_local_gcs_courses_permitted cp
                       JOIN preq on preq.programcode=cp.programcode and preq.categorycode=cp.categorycode
                 ), clstkn AS (
                     SELECT
@@ -2036,13 +1996,13 @@ WHERE st.statuscode='ACT'
                         COALESCE(cp.electiveeligible, 0) AS electiveeligible,
                         CAST(CASE WHEN cp.coursecode IS NOT NULL THEN 1 ELSE 0 END AS integer) AS coursepermitted,
 						CASE WHEN COALESCE(ct.completiondate,0) = 0 THEN 0 ELSE 1 END as completed
-                      FROM {local_gcs_classes_taken} ct
-                 LEFT JOIN {local_gcs_classes} cls ON cls.coursecode=ct.coursecode
+                      FROM mdl_local_gcs_classes_taken ct
+                 LEFT JOIN mdl_local_gcs_classes cls ON cls.coursecode=ct.coursecode
                                                     AND cls.termyear=ct.termyear
                                                     AND cls.termcode=ct.termcode
-                 LEFT JOIN {local_gcs_courses} crs
+                 LEFT JOIN mdl_local_gcs_courses crs
                      ON crs.coursecode=CASE WHEN LENGTH(ct.assignedcoursecode)<3 THEN ct.coursecode ELSE ct.assignedcoursecode END
-                 LEFT JOIN {local_gcs_codes} pf ON pf.codeset='pass_fail' AND pf.code=ct.gradecode
+                 LEFT JOIN mdl_local_gcs_codes pf ON pf.codeset='pass_fail' AND pf.code=ct.gradecode
                  LEFT JOIN cperm cp ON cp.coursecode=ct.assignedcoursecode OR cp.coursecode=ct.coursecode
                      WHERE studentid=:studentid and coalesce(pf.description,'PAS') in('PAS','AUD','IP')
                 ), classlist AS (
@@ -2073,9 +2033,9 @@ WHERE st.statuscode='ACT'
                         COALESCE(preq.coursesrequired, 0) as coursesrequired, c.completed
                       FROM clstkn c
                  LEFT JOIN preq ON c.classcategorycode=preq.categorycode
-                 LEFT JOIN {local_gcs_codes} t ON t.codeset='TERM' AND t.code=c.termcode
-                 LEFT JOIN {local_gcs_codes} cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
-                 LEFT JOIN {local_gcs_program} p ON p.programcode=:programcode2
+                 LEFT JOIN mdl_local_gcs_codes t ON t.codeset='TERM' AND t.code=c.termcode
+                 LEFT JOIN mdl_local_gcs_codes cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
+                 LEFT JOIN mdl_local_gcs_program p ON p.programcode=:programcode2
 
                  UNION
 
@@ -2107,9 +2067,9 @@ WHERE st.statuscode='ACT'
 						COALESCE(c.completed, 0) as completed
                       FROM preq
                  LEFT JOIN clstkn c ON c.classcategorycode=preq.categorycode
-                 LEFT JOIN {local_gcs_codes} t ON t.codeset='TERM' AND t.code=c.termcode
-                 LEFT JOIN {local_gcs_codes} cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
-                 LEFT JOIN {local_gcs_program} p ON p.programcode=:programcode3
+                 LEFT JOIN mdl_local_gcs_codes t ON t.codeset='TERM' AND t.code=c.termcode
+                 LEFT JOIN mdl_local_gcs_codes cc on cc.codeset='CATEGORY' and cc.code=preq.categorycode
+                 LEFT JOIN mdl_local_gcs_program p ON p.programcode=:programcode3
                  where c.clsid is null
                 )
                 SELECT recid, programcode, programname, reportseq, categorycode, categoryname,
@@ -2134,6 +2094,8 @@ WHERE st.statuscode='ACT'
         foreach ($dbrecs as $dbrec) {
             $recs[] = $dbrec;
         }
+        fwrite($f, print_r($recs, true));
+        fwrite($f, "------------------------------------------------------------------------------------------\n");
         // Then we place the records into a grid of slots for how many courses of each category are needed.
         $xrecs = []; // Extra courses.
         $precs = []; // Courses for this program.
@@ -2175,6 +2137,7 @@ WHERE st.statuscode='ACT'
             }
 
             // End of category.
+            fwrite($f, "Key: $key, Cat: $cat, Count: ".(count($recs) - 1)."\n");
             if ( $key >= (count($recs) - 1) ) {
                 $endofcat = true;
             } else if ($recs[$key + 1]->categorycode != $cat) {
@@ -2242,6 +2205,8 @@ WHERE st.statuscode='ACT'
         foreach ($arecs as $xrec) {
             $precs[] = $xrec;
         }
+        fwrite($f, print_r($precs, true));
+        fclose($f);
         return $precs;
     }
     /**
@@ -2418,104 +2383,4 @@ WHERE st.statuscode='ACT'
         $id = $DB->update_record('local_gcs_regfox_class', $rec);
         return $id;
     }
-
-    /**
-     * Retrieves list of depedent record ids and table identifier
-     *
-     * @param  string  $tablecode table description
-     * @param  string  $keycsv key values for lookup
-     * @return hash of returned records
-     */
-	const DEFS = [
-		['tablecode' => 'class', 'keyfldnames' => 'termyear,termcode,coursecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'course', 'keyfldnames' => 'coursecode', 'tblsfxlist' => 'classes_taken,courses_permitted,classes'],
-		['tablecode' => 'course', 'keyfldnames' => 'assignedcoursecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'enrollmentagreement', 'keyfldnames' => 'agreementid', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'program', 'keyfldnames' => 'programcode', 'tblsfxlist' => 'courses_permitted,program_req,program_completion,sch_given,student'],
-		['tablecode' => 'programreq', 'keyfldnames' => 'programcode,categorycode', 'tblsfxlist' => 'courses_permitted'],
-		['tablecode' => 'scholarship', 'keyfldnames' => 'scholarshipeligible', 'tblsfxlist' => 'student'],
-		['tablecode' => 'scholarship', 'keyfldnames' => 'category', 'tblsfxlist' => 'sch_given'],
-		['tablecode' => 'scholarshipgiven', 'keyfldnames' => 'scholarshipid', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'student', 'keyfldnames' => 'studentid', 'tblsfxlist' => 'classes_taken,sch_given,program_completion'],
-		['tablecode' => 'codeset.category', 'keyfldnames' => 'categorycode', 'tblsfxlist' => 'courses_permitted,program_req'],
-		['tablecode' => 'codeset.category', 'keyfldnames' => 'category', 'tblsfxlist' => 'sch_given'],
-		['tablecode' => 'codeset.citizenship', 'keyfldnames' => 'citizenship', 'tblsfxlist' => 'student'],
-		['tablecode' => 'codeset.cr_type', 'keyfldnames' => 'credittypecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'codeset.cr_type', 'keyfldnames' => 'credittype', 'tblsfxlist' => 'enroll_agreements'],
-		['tablecode' => 'codeset.ethnic', 'keyfldnames' => 'ethniccode', 'tblsfxlist' => 'student'],
-		['tablecode' => 'codeset.grade', 'keyfldnames' => 'gradecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'codeset.scholarship_category', 'keyfldnames' => 'scholarshipeligible', 'tblsfxlist' => 'sch_given'],
-		['tablecode' => 'codeset.scholarship_accounting', 'keyfldnames' => 'regfoxcode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'codeset.status', 'keyfldnames' => 'statuscode', 'tblsfxlist' => 'student'],
-		['tablecode' => 'codeset.term', 'keyfldnames' => 'termcode', 'tblsfxlist' => 'classes_taken'],
-	];
-	
-    public static function get_table_record_dependencies ($tablecode, $keycsv) {
-		//$f = fopen(__DIR__ . "/ggdebug.log", "w");
-		//fwrite($f, $tablecode . ',' . $keycsv . "\n");
-
-        $recs = []; // output list
-		$keyvals = explode(",", $keycsv);
-
-		foreach (self::DEFS as $def) {
-			//fwrite($f, print_r($def, true));
-			// process each matching entry
-			if ($def['tablecode'] == $tablecode) {
-				$keyfldnames = explode(",", $def['keyfldnames']);// expand key field names
-				//fwrite($f, print_r($keyfldnames, true));
-				// must match the passed-in key value count
-				if (count($keyfldnames) == count($keyvals)) {
-					// build the key array
-					$keylist = [];
-					for ($i = 0; $i < count($keyfldnames); $i++) {
-						$keylist[$keyfldnames[$i]] = $keyvals[$i];
-						//fwrite($f, 'keyfldname:' . $keyfldnames[$i] . ',keyval:' . $keyvals[$i] . "\n");
-					}
-					//fwrite($f, print_r($keylist, true));
-					
-					// check each table
-					foreach (explode(",", $def['tblsfxlist']) as $tblsfx) {
-						self::getdependents($recs, $tblsfx, $keylist);
-					}
-				}
-			}
-		}
-
-		// $f = fopen(__DIR__ . "/ggdebug.log", "w");
-		
-		//fclose($f);
-        return $recs;
-    }
-	private static function getdependents(&$recs, $tablecode, $keylist) {
-		// $f = fopen(__DIR__ . "/ggdebug.log", "w");
-		// fwrite($f, print_r($recs, true));
-		// fwrite($f, "tablecode: ".$tablecode."\n");
-		// fwrite($f, print_r($keylist, true));
-        global $DB;
-		
-		$sqlcondition = '';
-		foreach ($keylist as $key => $val) {
-			if ($sqlcondition != '') {
-				$sqlcondition .= ' and ';
-			}
-			$sqlcondition .= $key . '=:' . $key;
-			//fwrite($f, $key . ": " . $val."\n");
-		}
-		$sql = 'select id from {local_gcs_' . $tablecode . '} where ' . $sqlcondition;
-		//fwrite($f, $sql."\n");
-		$dbrecs = $DB->get_records_sql(
-			$sql,
-			$keylist,
-			$limitfrom = 0,
-			$limitnum = 0
-		);
- 		//fwrite($f, print_r($dbrecs, true));
-       
-		foreach ($dbrecs as $dbrec) {
-			$recs[] = ['tablecode' => $tablecode, 'id' => $dbrec->id];
-		}
- 		//fwrite($f, print_r($recs, true));
-		//fclose($f);
-        return $recs;
-	}
 }

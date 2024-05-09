@@ -29,6 +29,8 @@ class regfox_processor {
     public $interactive;
     /** @var string $logrecs log records. */
     public $logrecs;
+    /** @var class local_gcs\agreement_processor $ap agreement processor. */
+    public $ap;
 
     /**
      * Initializes the RegFox Processor class
@@ -39,6 +41,7 @@ class regfox_processor {
         $this->interactive = $interactive;
         $this->logrecs = '--------------------------------------------------------------------------------'.PHP_EOL;
         $this->logthis('Interactive: '.json_encode($this->interactive));
+		$this->ap = new agreement_processor();
     }
 
     /**
@@ -47,7 +50,7 @@ class regfox_processor {
      * @param none
      */
     public function process_webhooks() {
-        $secret = '3213b1dee75d47c4acfb32e295ae2dcd'; // Hash secret for checking signatures.
+        $secret = '870d8225c4234cadbc3de8f7e11098d0'; // Hash secret for checking signatures.
         // Process raw webhooks into registrants and classes.
         $recs = data::get_regfox_webhooks_unprocessed();
         $this->logthis("Found ".count($recs)." webhooks to process.");
@@ -72,7 +75,6 @@ class regfox_processor {
                     foreach ($reg->classes as $class) {
                         $this->logthis('....... '.$class->coursecode.' - '.$class->title);
                     }
-                    $this->task->writelog();
                 }
             }
         }
@@ -181,7 +183,9 @@ class regfox_processor {
                 $ty = intval(substr($rftran->ordernumber, 3, 4));
                 $tc = intval(substr($rftran->ordernumber, 7, 1));
                 $cls = new classrec($rfclass->coursecode, $ty, $tc);
-                $this->logthis('Found class id = '.$cls->id.', course code = '.$cls->coursecode.', term = '.$cls->termyear.$cls->termcode);
+				$msg  = 'Found class id = ' . $cls->id;
+				$msg .= ', course code = ' . $cls->coursecode;
+				$msg .= ', term = ' . $cls->termyear . $cls->termcode;
                 if ($cls->id) {
                     // We found or created the class record so we can proceed with processing the registration.
                     $ctr = new classes_taken($stu->id, $ty, $tc, $cls->coursecode);
@@ -210,6 +214,8 @@ class regfox_processor {
                         }
 						$ctr->ordertotal = $ctr->studentpaid+$ctr->scholarshippedamount;
                         $this->logthis("Created classes taken record:\n".print_r($ctr,true));
+						$msg = $this->ap->reminder($ctr);
+						$this->logthis($msg);
                         $ctr->save();
 						if ($stu->userid) {
 							enrollment::enroll_user($stu->userid, $ctr->coursecode);
@@ -241,6 +247,16 @@ class regfox_processor {
                         $now = time();
                         $rfclass->processedtime = $now;
                         $rfclass->save();
+						
+						// Check to make sure the regfox discount code exists, otherwise add it.
+						if (!data::get_code_by_code('scholarship_accounting', $ctr->regfoxcode)) {
+							data::insert_code((object)[
+								'id' => 0,
+								'codeset' => 'scholarship_accounting',
+								'code' => $ctr->regfoxcode,
+								'description' => '',
+							]);
+						}
                     }
                 }
             }
