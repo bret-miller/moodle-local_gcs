@@ -24,8 +24,6 @@
 
 namespace local_gcs\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 class daily_automation extends \core\task\scheduled_task {
     /** @var string log records to write to debug log */
     public $logrecs;
@@ -43,11 +41,11 @@ class daily_automation extends \core\task\scheduled_task {
     public function execute() {
         $this->logrecs = '';
         mtrace('local_gcs: daily automation started');
-        
+
         // Handle automatic course enrollments for students added to or removed from a class.
         $enrollment = new \local_gcs\enrollment();
         $this->logrecs .= $enrollment->verify_enrollments();
-        
+
         return $this->logrecs;
     }
 }

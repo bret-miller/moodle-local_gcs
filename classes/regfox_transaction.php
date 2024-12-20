@@ -34,7 +34,7 @@ class regfox_transaction {
     /** @var string first name */
     public $firstname;
     /** @var string last name */
-    public $lasname;
+    public $lastname;
     /** @var string email */
     public $email;
     /** @var string payment method */
@@ -60,93 +60,98 @@ class regfox_transaction {
      * @param int    $webhookid webhook record id or registrant record id
      * @param string $jsondata  optional JSON data from RegFox webhook post
      */
- 
+
     public function __construct() {
         $args = func_get_args();
         $argc = func_num_args();
-		
-		if ($argc==2) {
-			// Build transaction from JSON webhook data.
-			$webhookid = $args[0];
-			$jsondata = $args[1];
-			$this->registrants = [];
-			$this->id = 0;
-			$hook = json_decode($jsondata);
-			if ($hook) {
-				$this->webhookid = $webhookid;
-				$tran = $hook->data;
-				$this->orderstatus = $tran->orderStatus;
-				$this->ordernumber = $tran->orderNumber;
-				$bill = $tran->billing;
-				$this->firstname = $bill->name->first;
-				$this->lastname = $bill->name->last;
-				$this->email = $bill->email;
-				if (property_exists($bill,'paymentMethod')) {
-					$this->paymethod = $bill->paymentMethod;
-				} else {
-					$this->paymethod = 'no pay method';
-				}
-				$this->transactionid = $tran->transactionId;
-				$this->total = $tran->total;
-				$this->formname = $tran->formName;
-				$this->transactiontime = strtotime($tran->registrationTimestamp);
-				$this->timestamp = time();
-				$regs = $tran->registrants;
-				foreach ($regs as $regrec) {
-					$reg = new regfox_registrant(null);
-					$reg->from_webhook($regrec);
-					array_push($this->registrants,$reg);
-				}
-			}
-		} else {
-			// Load transaction from database.
-			$id = intval($args[0]);
-			global $DB;
-			$rec = $DB->get_record('local_gcs_regfox_transaction', ['id' => $id]);
-			if ($rec) {
-				$this->id = $rec->id;
-				$this->orderstatus = $rec->orderstatus;
-				$this->ordernumber = $rec->ordernumber;
-				$this->firstname = $rec->firstname;
-				$this->lasname = $rec->lastname;
-				$this->email = $rec->email;
-				$this->paymethod = $rec->paymethod;
-				$this->formname = $rec->formname;
-				$this->transactionid = $rec->transactionid;
-				$this->total = $rec->total;
-				$this->transactiontime = $rec->transactiontime;
-				$this->timestamp = $rec->timestamp;
-				$this->webhookid = $rec->webhookid;
-				$this->registrants = [];
-			} else {
-				$this->id = 0;
-			}
-		}
+
+        if ($argc == 2) {
+            // Build transaction from JSON webhook data.
+            $webhookid = $args[0];
+            $jsondata = $args[1];
+            $this->registrants = [];
+            $this->id = 0;
+            $hook = json_decode($jsondata);
+            if ($hook) {
+                $this->webhookid = $webhookid;
+                $tran = $hook->data;
+                $this->orderstatus = $tran->orderStatus;
+                $this->ordernumber = $tran->orderNumber;
+                $bill = $tran->billing;
+                $this->firstname = $bill->name->first;
+                $this->lastname = $bill->name->last;
+                $this->email = $bill->email;
+                if (property_exists($bill, 'paymentMethod')) {
+                    $this->paymethod = $bill->paymentMethod;
+                } else {
+                    $this->paymethod = 'no pay method';
+                }
+                $this->transactionid = $tran->transactionId;
+                $this->total = $tran->total;
+                $this->formname = $tran->formName;
+                $this->transactiontime = strtotime($tran->registrationTimestamp);
+                $this->timestamp = time();
+                $regs = $tran->registrants;
+                foreach ($regs as $regrec) {
+                    $reg = new regfox_registrant(null);
+                    $reg->from_webhook($regrec);
+                    array_push($this->registrants, $reg);
+                }
+            }
+        } else {
+            // Load transaction from database.
+            $id = intval($args[0]);
+            global $DB;
+            $rec = $DB->get_record('local_gcs_regfox_transaction', ['id' => $id]);
+            if ($rec) {
+                $this->id = $rec->id;
+                $this->orderstatus = $rec->orderstatus;
+                $this->ordernumber = $rec->ordernumber;
+                $this->firstname = $rec->firstname;
+                $this->lastname = $rec->lastname;
+                $this->email = $rec->email;
+                $this->paymethod = $rec->paymethod;
+                $this->formname = $rec->formname;
+                $this->transactionid = $rec->transactionid;
+                $this->total = $rec->total;
+                $this->transactiontime = $rec->transactiontime;
+                $this->timestamp = $rec->timestamp;
+                $this->webhookid = $rec->webhookid;
+                $this->registrants = [];
+            } else {
+                $this->id = 0;
+            }
+        }
     }
 
     /**
      * Saves a RegFox transaction record from the current object
      */
- 	public function save() {
-		$rec = [
-			'id' => 0,
-			'transactionid' => $this->transactionid,
-			'ordernumber' => $this->ordernumber,
-			'orderstatus' => $this->orderstatus,
-			'email' => $this->email,
-			'firstname' => $this->firstname,
-			'lastname' => $this->lastname,
-			'paymethod' => $this->paymethod,
-			'formname' => $this->formname,
-			'total' => $this->total,
-			'transactiontime' => $this->transactiontime,
-			'timestamp' => time(),
-			'webhookid' => $this->webhookid,
-		];
-		$tranid = data::insert_regfox_transaction($rec);
-		foreach($this->registrants as $reg) {
-			$regid = $reg->save($tranid);
-		}
-		return $tranid;
-	}
+    public function save() {
+        $rec = [
+            'id' => $this->id,
+            'transactionid' => $this->transactionid,
+            'ordernumber' => $this->ordernumber,
+            'orderstatus' => $this->orderstatus,
+            'email' => $this->email,
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'paymethod' => $this->paymethod,
+            'formname' => $this->formname,
+            'total' => $this->total,
+            'transactiontime' => $this->transactiontime,
+            'timestamp' => time(),
+            'webhookid' => $this->webhookid,
+        ];
+        if ($this->id == 0) {
+            $tranid = data::insert_regfox_transaction($rec);
+            $this->id = $tranid;
+        } else {
+            data::update_regfox_transaction($rec);
+        }
+        foreach ($this->registrants as $reg) {
+            $regid = $reg->save($tranid);
+        }
+        return $this->id;
+    }
 }

@@ -55,7 +55,7 @@ class programreq_get extends \external_api {
      * @return external_external_single_structure
      */
     public static function execute_returns() {
-		$def = new programreqrecord();
+        $def = new programreqrecord();
         new external_single_structure($def->recdef);
     }
     /**

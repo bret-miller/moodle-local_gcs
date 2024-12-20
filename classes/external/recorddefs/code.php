@@ -24,23 +24,21 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class coderecord {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */
     public function __construct() {
         $this->recdef = [
-			'id' => new external_value(PARAM_INT, 'code record id'),
-			'codeset' => new external_value(PARAM_TEXT, 'set code belongs to'),
-			'code' => new external_value(PARAM_TEXT, 'code'),
-			'description' => new external_value(PARAM_TEXT, 'code description'),
-		];
+            'id' => new external_value(PARAM_INT, 'code record id'),
+            'codeset' => new external_value(PARAM_TEXT, 'set code belongs to'),
+            'code' => new external_value(PARAM_TEXT, 'code'),
+            'description' => new external_value(PARAM_TEXT, 'code description'),
+        ];
     }
 }

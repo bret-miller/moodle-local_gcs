@@ -24,14 +24,12 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class classrecord {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */
@@ -48,6 +46,7 @@ class classrecord {
             'description' => new external_value(PARAM_TEXT, 'course description text'),
             'coursehours' => new external_value(PARAM_INT, 'number of academic hours given for this course'),
             'instructor' => new external_value(PARAM_INT, 'user id of default instructor'),
+            'extrafee' => new external_value(PARAM_FLOAT, 'Extra Fee'),
             'comments' => new external_value(PARAM_TEXT, 'other miscellaneous comments'),
             ];
     }

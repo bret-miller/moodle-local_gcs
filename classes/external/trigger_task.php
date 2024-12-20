@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Trigger an adhoc	 task
+ * Trigger an adhoc     task
  *
  * @package    local_gcs
  * @copyright  2023 Grace Communion Seminary
@@ -60,11 +60,15 @@ class trigger_task extends \external_api {
      * @return hash of program records
      */
     public static function execute($tasksel) {
-		if ($tasksel == 'matching') {
-			$task = new \local_gcs\task\student_user_matching();
-			$task->set_next_run_time(time()-1);
-			\core\task\manager::reschedule_or_queue_adhoc_task($task);
-		}
-		return;
+        if ($tasksel == 'webhooks') {
+            $task = new \local_gcs\task\process_regfox_registrations();
+            $task->set_next_run_time(time() - 1);
+            \core\task\manager::reschedule_or_queue_adhoc_task($task);
+        } else if ($tasksel == 'matching') {
+            $task = new \local_gcs\task\student_user_matching();
+            $task->set_next_run_time(time() - 1);
+            \core\task\manager::reschedule_or_queue_adhoc_task($task);
+        }
+        return;
     }
 }

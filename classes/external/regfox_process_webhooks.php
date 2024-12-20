@@ -55,7 +55,7 @@ class regfox_process_webhooks extends \external_api {
     public static function execute_returns() {
         return new external_multiple_structure(
             new external_value(PARAM_TEXT, 'log line'),
-	    );
+        );
     }
     /**
      * Get current list of programs
@@ -63,8 +63,8 @@ class regfox_process_webhooks extends \external_api {
      */
     public static function execute() {
         $rfp = new \local_gcs\regfox_processor(true);
-		$log = $rfp->process_webhooks();
-		return [$log];
+        $log = $rfp->process_webhooks();
+        return [$log];
 
     }
 }

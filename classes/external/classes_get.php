@@ -54,7 +54,7 @@ class classes_get extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
-		$def = new classrecord();
+        $def = new classrecord();
         return new external_multiple_structure(
             new external_single_structure($def->recdef)
         );

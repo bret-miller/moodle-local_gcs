@@ -47,12 +47,14 @@ class classrec {
     public $coursehours;
     /** @var int instructor */
     public $instructor;
+    /** @var float extrafee */
+    public $extrafee;
     /** @var string comments */
     public $comments;
 
     /**
      * Initializes a record
-     * 
+     *
      * @param none for blank record
      *     or id to read from database
      *     or object to build from object properties
@@ -73,7 +75,7 @@ class classrec {
             }
         } else if ($argc == 3) {
             // Read from database with course code and term.
-            $rec = data::get_class_by_code_and_term($args[0],$args[1],$args[2]);
+            $rec = data::get_class_by_code_and_term($args[0], $args[1], $args[2]);
             if ($rec) {
                 // Found the class record.
                 $this->fill($rec);
@@ -92,12 +94,13 @@ class classrec {
                     $this->description = $crs->description;
                     $this->coursehours = $crs->coursehours;
                     $this->instructor = $crs->defaultinstructor;
+                    $this->extrafee = $crs->extrafee;
                     $this->comments = $crs->comments;
                     $this->save();
                 } else {
-                    $msg =  'Could not create class record for course ' . $args[0] . '.' . PHP_EOL;
-					$msg .= 'Course ' . $args[0] . ' does not exist.' . PHP_EOL;
-					utils::send_notification_email('Missing Course ' . $args[0], $msg);
+                    $msg = 'Could not create class record for course ' . $args[0] . '.' . PHP_EOL;
+                    $msg .= 'Course ' . $args[0] . ' does not exist.' . PHP_EOL;
+                    utils::send_notification_email('Missing Course ' . $args[0], $msg);
                 }
             }
         } else {
@@ -112,7 +115,7 @@ class classrec {
     private function blankrec() {
         $this->id = 0;
         $this->termyear = intval(date("Y"));
-        $this->termcode='';
+        $this->termcode = '';
         $this->coursecode = '';
         $this->lectures = 0;
         $this->requiredtextbooks = '';
@@ -121,6 +124,7 @@ class classrec {
         $this->description = '';
         $this->coursehours = 0;
         $this->instructor = 0;
+        $this->extrafee = 0;
         $this->comments = '';
     }
 
@@ -141,6 +145,7 @@ class classrec {
         $this->description = $rec->description;
         $this->coursehours = $rec->coursehours;
         $this->instructor = $rec->instructor;
+        $this->extrafee = $rec->extrafee;
         $this->comments = $rec->comments;
     }
     /**

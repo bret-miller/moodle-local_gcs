@@ -48,7 +48,7 @@ class regfox_class {
 
     /**
      * Initializes a regfox class record
-     * 
+     *
      * @param none for blank record
      *     or int $id to read from database
      *     or object $rec to build from object properties

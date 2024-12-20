@@ -64,7 +64,7 @@ class students_get_by_name extends \external_api {
     /**
      * Get a student record
      * @param  string  $fn partial first name
-	 * @param  string  $ln partial last name
+     * @param  string  $ln partial last name
      * @return array of student records
      */
     public static function execute($fn, $ln) {

@@ -24,36 +24,34 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class schgivenrecord {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */
     public function __construct() {
         $this->recdef = [
-			'id' => new external_value(PARAM_INT, 'Identity Key|ro|nolist'),
-			'studentid' => new external_value(PARAM_INT, 'Student id'),
-			'termyear' => new external_value(PARAM_INT, 'Term year'),
-			'requestdate' => new external_value(PARAM_INT, 'Request date|date'),
-			'programcode' => new external_value(PARAM_TEXT, 'Program code'),
-			'occupation' => new external_value(PARAM_TEXT, 'Occupation|nolist'),
-			'employer' => new external_value(PARAM_TEXT, 'Employer|nolist'),
-			'cadinfoauth' => new external_value(PARAM_BOOL, 'CAD info auth|nolist'),
-			'perunitamount' => new external_value(PARAM_FLOAT, 'Per unit amount|nolist'),
-			'coursemax' => new external_value(PARAM_INT, 'Maximum courses|nolist'),
-			'eligiblefrom' => new external_value(PARAM_INT, 'Eligible from|date|nolist'),
-			'eligiblethru' => new external_value(PARAM_INT, 'Eligible thru|nolist|date|nolist'),
-			'decision' => new external_value(PARAM_TEXT, 'Decision|nolist'),
-			'reviewdate' => new external_value(PARAM_INT, 'Review date|date'),
-			'comments' => new external_value(PARAM_TEXT, 'Comments|nolist'),
-			'studentnotified' => new external_value(PARAM_INT, 'Student notified|date|nolist'),
-			'category' => new external_value(PARAM_TEXT, 'Scholarship Code|nolist'),
+            'id' => new external_value(PARAM_INT, 'Identity Key|ro|nolist'),
+            'studentid' => new external_value(PARAM_INT, 'Student id'),
+            'termyear' => new external_value(PARAM_INT, 'Term year'),
+            'requestdate' => new external_value(PARAM_INT, 'Request date|date'),
+            'programcode' => new external_value(PARAM_TEXT, 'Program code'),
+            'occupation' => new external_value(PARAM_TEXT, 'Occupation|nolist'),
+            'employer' => new external_value(PARAM_TEXT, 'Employer|nolist'),
+            'cadinfoauth' => new external_value(PARAM_BOOL, 'CAD info auth|nolist'),
+            'perunitamount' => new external_value(PARAM_FLOAT, 'Per unit amount|nolist'),
+            'coursemax' => new external_value(PARAM_INT, 'Maximum courses|nolist'),
+            'eligiblefrom' => new external_value(PARAM_INT, 'Eligible from|date|nolist'),
+            'eligiblethru' => new external_value(PARAM_INT, 'Eligible thru|nolist|date|nolist'),
+            'decision' => new external_value(PARAM_TEXT, 'Decision|nolist'),
+            'reviewdate' => new external_value(PARAM_INT, 'Review date|date'),
+            'comments' => new external_value(PARAM_TEXT, 'Comments|nolist'),
+            'studentnotified' => new external_value(PARAM_INT, 'Student notified|date|nolist'),
+            'category' => new external_value(PARAM_TEXT, 'Scholarship Code|nolist'),
         ];
     }
 }

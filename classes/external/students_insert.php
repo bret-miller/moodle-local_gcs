@@ -46,7 +46,7 @@ class students_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new studentrecord();
+        $def = new studentrecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'Student Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class students_insert extends \external_api {
      * @return object student record
      */
     public static function execute_returns() {
-		$def = new studentrecord();
+        $def = new studentrecord();
         return new external_single_structure($def->recdef);
     }
     /**

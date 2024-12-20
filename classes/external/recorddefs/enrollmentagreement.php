@@ -24,24 +24,22 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class enrollmentagreementrecord {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */
     public function __construct() {
         $this->recdef = [
-			'id' => new external_value(PARAM_INT, 'Identity Key|ro'),
-			'seqn' => new external_value(PARAM_INT, 'Old Sequence Number|nolist|ro'),
-			'credittype' => new external_value(PARAM_TEXT, 'Credit Type Code'),
-			'agreement' => new external_value(PARAM_TEXT, 'Agreement Text|nolist'),
-			'adddate' => new external_value(PARAM_INT, 'Add Date|date'),
-		];
+            'id' => new external_value(PARAM_INT, 'Identity Key|ro'),
+            'seqn' => new external_value(PARAM_INT, 'Old Sequence Number|nolist|ro'),
+            'credittype' => new external_value(PARAM_TEXT, 'Credit Type Code'),
+            'agreement' => new external_value(PARAM_TEXT, 'Agreement Text|nolist'),
+            'adddate' => new external_value(PARAM_INT, 'Add Date|date'),
+        ];
     }
 }

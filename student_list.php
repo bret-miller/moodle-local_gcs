@@ -49,5 +49,5 @@ $html = '<div>
 	</select> &nbsp;
 </div>
 <div class="reportcontent"></div>';
-$htmlpage = new \local_gcs\html_page($html,['amd/webservice.js']);
+$htmlpage = new \local_gcs\html_page($html, ['amd/webservice.js']);
 echo $htmlpage->output->render($htmlpage);

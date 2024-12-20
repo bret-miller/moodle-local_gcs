@@ -48,8 +48,8 @@ class regfox_registrant_update extends \external_api {
     public static function execute_parameters() {
         $rf = new regfoxregistrantrecord();
         return new external_function_parameters([
-		    'rec' => $rf->rec,
-			], 'regfox_registrant Record', VALUE_REQUIRED);
+            'rec' => $rf->rec,
+            ], 'regfox_registrant Record', VALUE_REQUIRED);
     }
     /**
      * Returns description of method returns

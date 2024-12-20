@@ -53,12 +53,12 @@ class regfox_trigger_processing extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
-		return new external_value(PARAM_INT, 'code');
+        return new external_value(PARAM_INT, 'code');
         return new external_multiple_structure(
             new external_single_structure([
                 'log' => new external_value(PARAM_TEXT, 'log'),
-			])
-	    );
+            ])
+        );
     }
     /**
      * Get current list of programs
@@ -66,18 +66,10 @@ class regfox_trigger_processing extends \external_api {
      */
     public static function execute() {
         $task = new \local_gcs\task\process_regfox_registrations();
-		$task->set_next_run_time(time()-1);
+        $task->set_next_run_time(time() - 1);
         \core\task\manager::reschedule_or_queue_adhoc_task($task);
-		$log = (object)['log'=>'done'];
-        $ret = (object)['0'=>$log];
-        $f = fopen(__DIR__ . "/debug.log", "w");
-        fwrite($f, print_r($ret, true));
-        fwrite($f, "------------------------------------------------------------------------------------------\n");
-        fclose($f);
-		return 0;
-
-    /*    $logrecs = \local_gcs\task\process_regfox_registrations::execute();
-		$ret = [ ['log'=>$logrecs] ];
-        return $ret;
-    */}
+        $log = (object)['log' => 'done'];
+        $ret = (object)['0' => log];
+        return 0;
+    }
 }

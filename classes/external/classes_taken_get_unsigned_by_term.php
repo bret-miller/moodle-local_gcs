@@ -55,7 +55,7 @@ class classes_taken_get_unsigned_by_term extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
-		$def = new classtakenrecord();
+        $def = new classtakenrecord();
         return new external_multiple_structure(
             new external_single_structure($def->recdef)
         );
@@ -63,24 +63,24 @@ class classes_taken_get_unsigned_by_term extends \external_api {
     /**
      * Get current list of classes taken
      * @param  int  $termyear the year of the selected term
-	 * @param  string $termcode the term code of the selected term
+     * @param  string $termcode the term code of the selected term
      * @return classes taken records
      */
     public static function execute($termyear, $termcode) {
-		global $DB;
-		$sql = 'SELECT * FROM {local_gcs_classes_taken} 
-		         WHERE termyear=:termyear AND termcode=:termcode AND coalesce(agreementsigned,0)=0';
-		$param = ['termyear' => $termyear, 'termcode' => $termcode];
-		$recs = $DB->get_records_sql(
+        global $DB;
+        $sql = 'SELECT * FROM {local_gcs_classes_taken}
+                 WHERE termyear=:termyear AND termcode=:termcode AND coalesce(agreementsigned,0)=0';
+        $param = ['termyear' => $termyear, 'termcode' => $termcode];
+        $recs = $DB->get_records_sql(
             $sql,
             $param,
             $limitfrom = 0,
             $limitnum = 0
         );
-		foreach ($recs as $rec) {
-			(bool) $rec->elective = (bool) $rec->elective ;
-			(bool) $rec->manualpricing = (bool) $rec->manualpricing;
-		}
+        foreach ($recs as $rec) {
+            (bool) $rec->elective = (bool) $rec->elective;
+            (bool) $rec->manualpricing = (bool) $rec->manualpricing;
+        }
         return $recs;
     }
 }

@@ -3,37 +3,38 @@ Array
     [processed] => 1
     [registrant] => stdClass Object
         (
-            [id] => 11
-            [email] => dankrupp0@gmail.com
-            [firstname] => Dan
-            [lastname] => Krupp
+            [id] => 98
+            [email] => angietabin87@gmail.com
+            [firstname] => Angelita
+            [lastname] => Tabin
             [scholarshipcode] => 
-            [amount] => 735.00
-            [tranid] => 15
-            [processedtime] => 1714411714
-            [studentid] => 142
+            [amount] => 367.50
+            [tranid] => 231
+            [processedtime] => 1725901593
+            [studentid] => 336
         )
 
     [log] => --------------------------------------------------------------------------------
 Interactive: true
-Found order GCS20242-GW90002, for registrant Dan Krupp
-Found student id = 142  
+Found order GCS20243-GW9000V, for registrant Angelita Tabin
+Found student id = 336  
 Created classes taken record:
 local_gcs\classes_taken Object
 (
     [id] => 0
     [termyear] => 2024
-    [termcode] => 2
-    [coursecode] => BI501
-    [studentid] => 142
-    [idnumber] => 1022900
+    [termcode] => 3
+    [coursecode] => TH515
+    [studentid] => 336
+    [idnumber] => 1371451
     [shorttitleoverride] => 
     [titleoverride] => 
-    [credittypecode] => CR
+    [credittypecode] => AUD
     [gradecode] => 
     [coursehoursoverride] => 0
-    [registrationdate] => 1714397045
-    [tuitionpaid] => 735.00
+    [registrationdate] => 1725830236
+    [tuitionpaid] => 367.50
+    [classtuition] => 367.50
     [completiondate] => 
     [canceldate] => 
     [comments] => 
@@ -46,14 +47,16 @@ local_gcs\classes_taken Object
     [agreementid] => 0
     [ordernumber] => 0
     [linenumber] => 0
-    [fee] => 0
-    [studentpaid] => 735.00
+    [fee] => 
+    [studentpaid] => 367.50
     [regfoxcode] => 
     [manualpricing] => 0
-    [classtuition] => 735.00
-    [ordertotal] => 735
+    [changeddate] => 
+    [changedbyuserid] => 0
+    [ordertotal] => 367.5
 )
 
+Reminded Angie Tabin to sign agreement for TH515 - Theological Ethics
 
 )
 ------------------------------------------------------------------------------------------

@@ -53,26 +53,25 @@ function local_gcs_extend_navigation(global_navigation $nav) {
         'classes_roster',
         'program_req_completed',
         'student_list',
-		'enrollment_agreements_unsigned',
+        'enrollment_agreements_unsigned',
         ];
     $systemcontext = context_system::instance();
-    //$navtree = $nav->find('home', global_navigation::TYPE_SETTING);
     $navtree = $nav;
     if ($nav) {
-		$navurl = new moodle_url("/local/gcs/menu.php");
-		$navtype = global_navigation::TYPE_CUSTOM;
+        $navurl = new moodle_url("/local/gcs/menu.php");
+        $navtype = global_navigation::TYPE_CUSTOM;
         if (has_capability('local/gcs:administrator', $systemcontext)) {
             $foldername = get_config('local_gcs', 'menuadmin');
             $navfld = $navtree->add($foldername, $navurl, $navtype, null, 'gcspm');
-			$navfld->set_force_into_more_menu(true);
-			$navurl = null;
-			$navtype = global_navigation::TYPE_CATEGORY;
+            $navfld->set_force_into_more_menu(true);
+            $navurl = null;
+            $navtype = global_navigation::TYPE_CATEGORY;
             foreach ($adminmenu as $menuitem) {
                 $name = get_string("menu$menuitem", 'local_gcs');
                 $url = new moodle_url("/local/gcs/$menuitem.php");
                 $navfld->add($name, $url, global_navigation::NODETYPE_LEAF);
             }
-			$navtree = $navfld;
+            $navtree = $navfld;
             $foldername = get_config('local_gcs', 'menureports');
             $navfld = $navtree->add($foldername, null, global_navigation::TYPE_CATEGORY, null, 'gcsrpt');
             foreach ($reportsmenu as $menuitem) {
@@ -83,9 +82,9 @@ function local_gcs_extend_navigation(global_navigation $nav) {
         }
         $foldername = get_config('local_gcs', 'menustudent');
         $navfld = $navtree->add($foldername, $navurl, $navtype, null, 'gcsstu');
-		if ($navurl) {
-			$navfld->set_force_into_more_menu(true);
-		}
+        if ($navurl) {
+            $navfld->set_force_into_more_menu(true);
+        }
         foreach ($studmenu as $menuitem) {
             $name = get_string("menu$menuitem", 'local_gcs');
             $url = new moodle_url("/local/gcs/$menuitem.php");

@@ -32,12 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$req) {
         $req = "** Invalid JSON data **";
     }
-    $html = "\n\n<!--\n_REQUEST:\n".print_r($_REQUEST,true)."\n\n\n_SERVER:\n".print_r($_SERVER,true)."\n\n\n";
+    $html = "\n\n<!--\n_REQUEST:\n".print_r($_REQUEST, true)."\n\n\n_SERVER:\n".print_r($_SERVER, true)."\n\n\n";
 
     $f = fopen("/home/gcswww/dev.gcs.edu/local/gcs/debug.log", "w");
     fwrite($f, print_r($html, true));
     fwrite($f, "POST data:\n$postdata\n\n\n\n");
-    fwrite($f, "decoded data:\n".print_r($req,true)."\n\n\n\n");
+    fwrite($f, "decoded data:\n".print_r($req, true)."\n\n\n\n");
     fclose($f);
 
     $now = time();
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ];
     \local_gcs\data::insert_regfox_webhook($rec);
     $secret = '3213b1dee75d47c4acfb32e295ae2dcd';
-    $hash = hash_hmac('sha256',$postdata,$secret);
+    $hash = hash_hmac('sha256', $postdata, $secret);
     $task = new \local_gcs\task\process_regfox_registrations();
     \core\task\manager::reschedule_or_queue_adhoc_task($task);
 
@@ -64,15 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 } else {
     require_login(null, false);
     $html  = '<div class="gcswebhooks"><span>&nbsp;</span><br />'.PHP_EOL;
-    $html .= '    <button id="gcstriggerbutton" onclick="local_gcs_trigger_processing();">Trigger Webhook Processing</button><br />'.PHP_EOL;
+    $html .= '    <button id="gcstriggerbutton" onclick="local_gcs_trigger_task(\'webhooks\');">';
+    $html .= 'Trigger Webhook Processing</button><br />'.PHP_EOL;
     $html .= '    <button id="gcsprocessbutton" onclick="local_gcs_process_webhooks();">Process Webhooks</button><br />'.PHP_EOL;
-    $html .= '    <button id="gcsprocessbutton" onclick="local_gcs_process_registrants();">Process Registrants</button><br />'.PHP_EOL;
-    $html .= '    <button id="gcstriggermatching" onclick="local_gcs_trigger_task(\'matching\');">Trigger Student Matching</button><br />'.PHP_EOL;
+    $html .= '    <button id="gcsprocessbutton" onclick="local_gcs_process_registrants();">';
+    $html .= 'Process Registrants</button><br />'.PHP_EOL;
+    $html .= '    <button id="gcstriggermatching" onclick="local_gcs_trigger_task(\'matching\');">';
+    $html .= 'Trigger Student Matching</button><br />'.PHP_EOL;
     $html .= '    <div class="response"></div>'.PHP_EOL;
     $html .= '</div>'.PHP_EOL;
     $html .= '<div class="gcscontent">Loading...</div>'.PHP_EOL;
-    $htmlpage = new \local_gcs\html_page($html,['amd/webservice.js']);
-    //$x = new \local_gcs\regfox_class();
-    //$x = new \local_gcs\regfox_processor();
+    $html .= '<dialog id="local_gcs_match_dialog" style="width:33%;"></dialog>'.PHP_EOL;
+    $html .= '<dialog id="waitdialog">Loading students. Please wait...</dialog>'.PHP_EOL;
+    $htmlpage = new \local_gcs\html_page($html, ['amd/webservice.js']);
     echo $htmlpage->output->render($htmlpage);
 }

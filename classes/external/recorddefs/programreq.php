@@ -24,25 +24,23 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class programreqrecord {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */
     public function __construct() {
         $this->recdef = [
-			'id' => new external_value(PARAM_INT, 'program record id'),
-			'programcode' => new external_value(PARAM_TEXT, 'id of program'),
-			'categorycode' => new external_value(PARAM_TEXT, 'category'),
-			'description' => new external_value(PARAM_TEXT, 'program description text'),
-			'coursesrequired' => new external_value(PARAM_INT, 'number of courses required in this category'),
-			'reportseq' => new external_value(PARAM_INT, 'order to display on reports, lowest first'),
+            'id' => new external_value(PARAM_INT, 'program record id'),
+            'programcode' => new external_value(PARAM_TEXT, 'id of program'),
+            'categorycode' => new external_value(PARAM_TEXT, 'category'),
+            'description' => new external_value(PARAM_TEXT, 'program description text'),
+            'coursesrequired' => new external_value(PARAM_INT, 'number of courses required in this category'),
+            'reportseq' => new external_value(PARAM_INT, 'order to display on reports, lowest first'),
             ];
     }
 }

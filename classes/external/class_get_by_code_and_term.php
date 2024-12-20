@@ -49,7 +49,7 @@ class class_get_by_code_and_term extends \external_api {
         return new external_function_parameters([
             'coursecode' => new external_value(PARAM_TEXT, VALUE_REQUIRED),
             'termyear' => new external_value(PARAM_INT, VALUE_REQUIRED),
-            'termcode ' => new external_value(PARAM_INT, VALUE_REQUIRED),
+            'termcode' => new external_value(PARAM_INT, VALUE_REQUIRED),
         ]);
     }
     /**
@@ -57,7 +57,7 @@ class class_get_by_code_and_term extends \external_api {
      * @return external_external_single_structure
      */
     public static function execute_returns() {
-		$def = new classrecord();
+        $def = new classrecord();
         new external_single_structure($def->recdef);
     }
     /**
@@ -65,8 +65,7 @@ class class_get_by_code_and_term extends \external_api {
      * @param  int  $id  id of class to get
      * @return object class record
      */
-    public static function execute($coursecode,$termyear,$termcode) {
-        $class = \local_gcs\data::get_class_by_code_and_term($coursecode,$termyear,$termcode);
-        return $class;
+    public static function execute($coursecode, $termyear, $termcode) {
+        return \local_gcs\data::get_class_by_code_and_term($coursecode, $termyear, $termcode);
     }
 }

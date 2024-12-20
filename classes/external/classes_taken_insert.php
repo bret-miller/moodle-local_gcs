@@ -46,7 +46,7 @@ class classes_taken_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new classtakenrecord();
+        $def = new classtakenrecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'Classes Taken Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class classes_taken_insert extends \external_api {
      * @return object classes taken record
      */
     public static function execute_returns() {
-		$def = new classtakenrecord();
+        $def = new classtakenrecord();
         return new external_single_structure($def->recdef);
     }
     /**

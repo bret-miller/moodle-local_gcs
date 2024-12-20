@@ -24,29 +24,27 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class schavailablerecord {
     public $recdef;
-    
+
     /**
      * Initializes the record field list definition
      */
     public function __construct() {
         $this->recdef = [
-			'id' => new external_value(PARAM_INT, 'Identity Key|ro'),
-			'scholarshipcode' => new external_value(PARAM_TEXT, 'Scholarship code'),
-			'description' => new external_value(PARAM_TEXT, 'Description'),
-			'scholarshiptext' => new external_value(PARAM_TEXT, 'Scholarship text|nolist'),
-			'statusconfirm' => new external_value(PARAM_TEXT, 'Scholarship text|nolist'),
-			'perunitamount' => new external_value(PARAM_FLOAT, 'Per unit amount|nolist'),
-			'coursemax' => new external_value(PARAM_INT, 'Maximum courses|nolist'),
-			'eligibleyears' => new external_value(PARAM_INT, 'Eligible years|nolist'),
-			'applyfrom' => new external_value(PARAM_INT, 'Apply from|date'),
-			'applythru' => new external_value(PARAM_INT, 'Apply thru|nolist|date'),
-		];
+            'id' => new external_value(PARAM_INT, 'Identity Key|ro'),
+            'scholarshipcode' => new external_value(PARAM_TEXT, 'Scholarship code'),
+            'description' => new external_value(PARAM_TEXT, 'Description'),
+            'scholarshiptext' => new external_value(PARAM_TEXT, 'Scholarship text|nolist'),
+            'statusconfirm' => new external_value(PARAM_TEXT, 'Scholarship text|nolist'),
+            'perunitamount' => new external_value(PARAM_FLOAT, 'Per unit amount|nolist'),
+            'coursemax' => new external_value(PARAM_INT, 'Maximum courses|nolist'),
+            'eligibleyears' => new external_value(PARAM_INT, 'Eligible years|nolist'),
+            'applyfrom' => new external_value(PARAM_INT, 'Apply from|date'),
+            'applythru' => new external_value(PARAM_INT, 'Apply thru|nolist|date'),
+        ];
     }
 }

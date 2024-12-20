@@ -42,11 +42,15 @@ class angular_module implements renderable {
     public $appcode;
     /** @var array scripts to loa
     public $scripts;
+    /** @var bool flag to indicate the body tag and not one of its children is being processed */
+    public $inbody;
     /** @var app index.html modification time */
     public $modtime;
     /** @var app definition is from cache */
     public $cachetime;
-    /** @var app definition from cache */
+    /** @var bool flag to indicate from cache */
+    public $fromcache;
+    /** @var cache array */
     public $cache;
 
     /**

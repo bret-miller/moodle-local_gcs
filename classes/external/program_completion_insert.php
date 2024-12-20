@@ -46,7 +46,7 @@ class program_completion_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new programcompletedrecord();
+        $def = new programcompletedrecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'Program Completion Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class program_completion_insert extends \external_api {
      * @return object program completion record
      */
     public static function execute_returns() {
-		$def = new programcompletedrecord();
+        $def = new programcompletedrecord();
         return new external_single_structure($def->recdef);
     }
     /**

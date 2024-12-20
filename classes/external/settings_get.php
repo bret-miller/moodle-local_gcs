@@ -31,7 +31,6 @@ use external_multiple_structure;
 use external_single_structure;
 use external_value;
 require_once($_SERVER['DOCUMENT_ROOT'].'/lib/externallib.php');
-//require_once(__dir__.'/../settings.php');
 
 require_login();
 
@@ -67,14 +66,14 @@ class settings_get extends \external_api {
      * @return settings object
      */
     public static function execute() {
-		$arr=(object) [];
+        $arr = (object) [];
         $settings = new \local_gcs\settings();
-		$arr->menuadmin = $settings->menuadmin;
-		$arr->menustudent = $settings->menustudent;
-		$arr->logourl = (string) $settings->logourl;
-		$arr->printlogoenabled = (bool) $settings->printlogoenabled;
-		$arr->version = $settings->version;
-		$arr->release = $settings->release;
+        $arr->menuadmin = $settings->menuadmin;
+        $arr->menustudent = $settings->menustudent;
+        $arr->logourl = (string) $settings->logourl;
+        $arr->printlogoenabled = (bool) $settings->printlogoenabled;
+        $arr->version = $settings->version;
+        $arr->release = $settings->release;
         return $arr;
     }
 }

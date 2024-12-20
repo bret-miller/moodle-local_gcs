@@ -52,14 +52,14 @@ class users_get_all extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
-		$def = new userrecord();
+        $def = new userrecord();
         return new external_multiple_structure(
             new external_single_structure($def->recdef)
         );
     }
     /**
      * Get current list of students
-     * @param  
+     * @param
      * @return list
      */
     public static function execute() {

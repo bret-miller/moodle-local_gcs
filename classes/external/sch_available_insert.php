@@ -46,7 +46,7 @@ class sch_available_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new schavailablerecord();
+        $def = new schavailablerecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'Enrollment Agreement Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class sch_available_insert extends \external_api {
      * @return object scholarships available record
      */
     public static function execute_returns() {
-		$def = new schavailablerecord();
+        $def = new schavailablerecord();
         return new external_single_structure($def->recdef);
     }
     /**

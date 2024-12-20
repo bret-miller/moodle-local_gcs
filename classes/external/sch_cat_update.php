@@ -70,7 +70,7 @@ class sch_cat_update extends \external_api {
      * @return hash of program records
      */
     public static function execute($rec) {
-		$rec = (object) $rec;
+        $rec = (object) $rec;
         return \local_gcs\data::update_sch_cat($schcatrec);
     }
 }

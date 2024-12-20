@@ -46,7 +46,7 @@ class course_update extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new courserecord();
+        $def = new courserecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'course Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class course_update extends \external_api {
      * @return nothing
      */
     public static function execute_returns() {
-		$def = new courserecord();
+        $def = new courserecord();
         return new external_single_structure($def->recdef);
     }
     /**

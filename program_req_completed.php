@@ -40,5 +40,5 @@ $html = '<div class="studentselect"></div>
         var local_gcs_printlogoenabled='.$settings->printlogoenabled.';
 		var local_gcs_printlogo="'.$settings->logourl.'";
     </script>';
-$htmlpage = new \local_gcs\html_page($html,['amd/webservice.js']);
+$htmlpage = new \local_gcs\html_page($html, ['amd/webservice.js']);
 echo $htmlpage->output->render($htmlpage);

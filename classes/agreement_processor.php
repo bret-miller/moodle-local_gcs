@@ -48,11 +48,11 @@ class agreement_processor {
         $this->logrecs = '';
         $this->ntfmsg = '';
         $this->settings = new settings();
-        if (!utils::is_live()){
+        if (!utils::is_live()) {
             $this->ntfmsg .= '--> ** Not running in live instance **'.PHP_EOL;
         }
         $this->ntfmsg .= '--> Running in "' . utils::get_instance_label() . '" instance'.PHP_EOL;
-		$this->logthis($this->ntfmsg);
+        $this->logthis($this->ntfmsg);
     }
 
     /**
@@ -62,7 +62,7 @@ class agreement_processor {
      */
     public function process_agreements() {
         global $DB;
-        // Get the minimum enrollment agreement date. 
+        // Get the minimum enrollment agreement date.
         // We only process the classes where the registration date is equal to or greater than this.
         $sql = 'SELECT 1 as id, MIN(adddate) as adddate FROM {local_gcs_enroll_agreements}';
         $recs = $DB->get_records_sql($sql, [], $limitfrom = 0, $limitnum = 0);
@@ -70,12 +70,12 @@ class agreement_processor {
             $rec = array_pop($recs);
             $mindate = $rec->adddate;
         }
-        
+
         // Get the current term.
         // We only remind students to sign agreements for the current term.
         $currtermarr = data::get_term_date_current();
         $curterm = array_pop($currtermarr);
-        
+
         // Get the classes with unsigned agreements.
         $sql = 'SELECT * FROM {local_gcs_classes_taken}
              WHERE COALESCE(agreementsigned,0) = 0
@@ -92,24 +92,25 @@ class agreement_processor {
             if (!$ctr->agreementid) {
                 $earec = data::get_class_enrollment_agreement_rec ($ctr);
                 if ($earec) {
-                    $ctr->agreementid = $earec->id;    
+                    $ctr->agreementid = $earec->id;
                     $needsave = true;
                 } else {
-					$stud = data::get_students($ctr->studentid);
-					$term = data::get_code_by_code('term',$ctr->termcode);
-					$msg = 'No agreement found for ' . $stud->preferredfirstname . ' ' . $stud->legallastname;
-					$msg .= ' for ' . $ctr->coursecode . ' taken in ' . $term->description . ' ' . $ctr->termyear . '. Skipping.' . PHP_EOL;
-					$this->ntfmsg .= $msg;
-				}					
+                    $stud = data::get_students($ctr->studentid);
+                    $term = data::get_code_by_code('term', $ctr->termcode);
+                    $msg = 'No agreement found for ' . $stud->preferredfirstname . ' ' . $stud->legallastname;
+                    $msg .= ' for ' . $ctr->coursecode . ' taken in ' . $term->description .
+                        ' ' . $ctr->termyear . '. Skipping.' . PHP_EOL;
+                    $this->ntfmsg .= $msg;
+                }
             }
-            // For completed classes, auto-sign with the completion date.
             if (($ctr->agreementid) && ($ctr->completiondate)) {
+                // For completed classes, auto-sign with the completion date.
                 $this->autosign($ctr, $ctr->completiondate);
-            // For classes withdrawn from, auto-sign with the cancel date.
             } else if (($ctr->agreementid) && ($ctr->canceldate)) {
+                // For classes withdrawn from, auto-sign with the cancel date.
                 $this->autosign($ctr, $ctr->canceldate);
-            // For classes in the current term, remind student to sign.
             } else {
+                // For classes in the current term, remind student to sign.
                 if (($ctr->termyear == $curterm->termyear) && ($ctr->termcode == $curterm->termcode)) {
                     $this->reminder($ctr);
                 }
@@ -117,7 +118,7 @@ class agreement_processor {
                 if ($needsave) {
                     $ctr->save();
                 }
-            } 
+            }
         }
         if ($this->ntfmsg) {
             $msg = '<pre>'.$this->ntfmsg.'</pre>';
@@ -145,7 +146,7 @@ class agreement_processor {
         $ctr->agreementsigned = $signdate;
         $ctr->save();
         $stud = data::get_students($ctr->studentid);
-        $term = data::get_code_by_code('term',$ctr->termcode);
+        $term = data::get_code_by_code('term', $ctr->termcode);
         $msg = 'Autosigned agreement for ' . $stud->preferredfirstname . ' ' . $stud->legallastname;
         $msg .= ' for ' . $ctr->coursecode . ' taken in ' . $term->description . ' ' . $ctr->termyear;
         $this->ntfmsg .= $msg.PHP_EOL;
@@ -156,7 +157,7 @@ class agreement_processor {
      * Remind student to sign enrollment agreement.
      *
      * @param classes_taken $ctr classes taken record.
-	 * @return string log message
+     * @return string log message
      */
     public function reminder($ctr) {
         global $CFG;
@@ -166,10 +167,10 @@ class agreement_processor {
         $msg = '<p>Please sign your enrollment agreement for ' . $ctr->coursecode . ' - ' . $crs->title . '</p>' . PHP_EOL;;
         $msg .= '<p><a href="' . $CFG->wwwroot . '/local/gcs/enrollment_agreements_signing.php">';
         $msg .= 'Click here to sign.</a></p>' . PHP_EOL;
-		$msg .= '<p>If that does not work, here is how to find it manually:</p>' . PHP_EOL;
-		$msg .= '<ol><li>Sign in at <a href="' . $CFG->wwwroot . '">' . $CFG->wwwroot . '</a></li>' . PHP_EOL;
-		$msg .= '<li>Click Student Reports on the low left column.</li>' . PHP_EOL;
-		$msg .= '<li>Click Sign Enrollment Agreements.</li></ol>' . PHP_EOL;
+        $msg .= '<p>If that does not work, here is how to find it manually:</p>' . PHP_EOL;
+        $msg .= '<ol><li>Sign in at <a href="' . $CFG->wwwroot . '">' . $CFG->wwwroot . '</a></li>' . PHP_EOL;
+        $msg .= '<li>Click Student Reports on the low left column.</li>' . PHP_EOL;
+        $msg .= '<li>Click Sign Enrollment Agreements.</li></ol>' . PHP_EOL;
         // Only actually send emails in the live system.
         if (utils::is_live()) {
             utils::send_email($studuser->email, 'Reminder: Sign Enrollment Agreement', $msg);
@@ -181,7 +182,7 @@ class agreement_processor {
             $this->logthis($msg);
             $this->ntfmsg .= $msg.PHP_EOL;
         }
-		return $msg;
+        return $msg;
     }
 
     /**

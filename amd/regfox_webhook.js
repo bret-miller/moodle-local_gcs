@@ -150,7 +150,12 @@ function local_gcs_got_potential_matches(matches) {
         html += '<option value="act">Show all active students</option>' + "\n";
         html += '<option value="all">Show all students</option>' + "\n";
         html += "</select></dialog>";
-        document.getElementsByTagName('body')[0].innerHTML += html;
+		var dlg = document.getElementById('local_gcs_match_dialog');
+		if (dlg) {
+			dlg.outerHTML = html;
+		} else {
+			document.getElementsByTagName('body')[0].innerHTML += html;
+		}
         document.getElementById('local_gcs_match_dialog').showModal();
     }
 }
@@ -185,10 +190,10 @@ async function local_gcs_match_selected(el) {
         } else {
             student.regfoxemails += ',' + local_gcs_processing_registrant.email;
         }
-        local_gcs_ajax_queue('local_gcs_students_update', {'rec' : student});
+        local_gcs_ajax.queue('local_gcs_students_update', {'rec' : student});
         var r = await local_gcs_ajax.process();
         // Add the student record id to the registrant record.
-        local_gcs_ajax_queue('local_gcs_regfox_registrant_update', {'rec' : local_gcs_processing_registrant});
+        local_gcs_ajax.queue('local_gcs_regfox_registrant_update', {'rec' : local_gcs_processing_registrant});
         var r = await local_gcs_ajax.process();
         // Attempt to process again.
         local_gcs_process_registrant(local_gcs_processing_registrant_el);
@@ -196,20 +201,14 @@ async function local_gcs_match_selected(el) {
 }
 
 function local_gcs_process_registrants() {
-    local_gcs_ajax_call('local_gcs_regfox_process_registrants',[],local_gcs_process_registrants_callback);
+    local_gcs_ajax.call('local_gcs_regfox_process_registrants',[],local_gcs_process_registrants_callback);
 }
 
-function local_gcs_process_registrants_callback(resp) {
-    r = JSON.parse(resp);
-    if (r[0].error) {
-        err = '<p>' + r[0].exception.message + '</p><pre>' + r[0].exception.backtrace + '</pre>';
-        document.getElementsByClassName('response')[0].innerHTML = err;
-    } else {
-        var result = r[0]['data'][0];
-        var log = result.log;
-        document.getElementsByClassName('response')[0].innerHTML = '<pre>'+log+"</pre>\n";
-        local_gcs_get_unprocessed_webhooks();
-    }
+function local_gcs_process_registrants_callback(data) {
+	var result = ['data'][0];
+	var log = result.log;
+	document.getElementsByClassName('response')[0].innerHTML = '<pre>'+log+"</pre>\n";
+	local_gcs_get_unprocessed_webhooks();
 }
 
 setTimeout('local_gcs_get_unprocessed_webhooks()',100);

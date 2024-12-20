@@ -26,8 +26,6 @@
 
 namespace local_gcs\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 class process_agreements extends \core\task\scheduled_task {
     /** @var string log records to write to debug log */
     public $logrecs;
@@ -45,13 +43,13 @@ class process_agreements extends \core\task\scheduled_task {
     public function execute() {
         $this->logrecs = '';
         $this->logthis('local_gcs: agreement processing started');
-		
-		// Debugging is easier if the processing code isn't in the task itself.
-		$processor = new \local_gcs\agreement_processor();
+
+        // Debugging is easier if the processing code isn't in the task itself.
+        $processor = new \local_gcs\agreement_processor();
 
         // Autosign or remind students to sign agreements.
-		$this->logrecs .= $processor->process_agreements();
-        
+        $this->logrecs .= $processor->process_agreements();
+
         return $this->logrecs;
     }
     public function logthis($logrec) {

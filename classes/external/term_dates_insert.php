@@ -46,7 +46,7 @@ class term_dates_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new termdaterecord();
+        $def = new termdaterecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'Term Definition Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class term_dates_insert extends \external_api {
      * @return object term defnition record
      */
     public static function execute_returns() {
-		$def = new termdaterecord();
+        $def = new termdaterecord();
         return new external_single_structure($def->recdef);
     }
     /**

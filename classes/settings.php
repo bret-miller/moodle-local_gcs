@@ -29,7 +29,7 @@ namespace local_gcs;
  */
 class settings {
     /** @var string name of the program manqagement plugin */
-    public $pluginnamne;
+    public $pluginname;
     /** @var string name of the program manqagement menu item */
     public $menuadmin;
     /** @var string name of the student menu item */
@@ -60,7 +60,7 @@ class settings {
      */
     public function __construct() {
         $config = get_config('local_gcs');
-        if (property_exists($config,'pluginname')) {
+        if (property_exists($config, 'pluginname')) {
             $this->pluginname = $config->pluginname;
         } else {
             $this->pluginname = get_string('pluginname', 'local_gcs');
@@ -76,9 +76,9 @@ class settings {
             null, $config->printlogo);
         $this->fromemail = $config->fromemail;
         $this->notificationemails = explode(',', $config->notificationemails);
-		$this->notificationenabled = $config->notificationsenabled;
-		$this->livesites = $config->livesites;
-		$this->devsites = $config->devsites;
-		$this->testsites = $config->testsites;
-	}
+        $this->notificationenabled = $config->notificationsenabled;
+        $this->livesites = $config->livesites;
+        $this->devsites = $config->devsites;
+        $this->testsites = $config->testsites;
+    }
 }

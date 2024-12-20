@@ -66,6 +66,7 @@ class regfox_process_registrants extends \external_api {
     public static function execute() {
         $rfp = new \local_gcs\regfox_processor(true);
         $log = $rfp->process_registrants();
-        return array(['log' => $log]);
+        $resultarr = ['log' => $log];
+        return $resultarr;
     }
 }

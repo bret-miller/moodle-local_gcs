@@ -46,7 +46,7 @@ class permittedcourse_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new permittedcourserecord();
+        $def = new permittedcourserecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'course permitted Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class permittedcourse_insert extends \external_api {
      * @return nothing
      */
     public static function execute_returns() {
-		$def = new permittedcourserecord();
+        $def = new permittedcourserecord();
         new external_single_structure($def->recdef);
     }
     /**

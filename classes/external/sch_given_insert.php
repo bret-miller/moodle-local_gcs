@@ -45,7 +45,7 @@ class sch_given_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new schgivenrecord();
+        $def = new schgivenrecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'Scholarship Given Record', VALUE_REQUIRED),
         ]);
@@ -55,7 +55,7 @@ class sch_given_insert extends \external_api {
      * @return object scholarships given record
      */
     public static function execute_returns() {
-		$def = new schgivenrecord();
+        $def = new schgivenrecord();
         return new external_single_structure($def->recdef);
     }
     /**

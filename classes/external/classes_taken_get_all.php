@@ -54,7 +54,7 @@ class classes_taken_get_all extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
-		$def = new classtakenrecord();
+        $def = new classtakenrecord();
         return new external_multiple_structure(
             new external_single_structure($def->recdef)
         );

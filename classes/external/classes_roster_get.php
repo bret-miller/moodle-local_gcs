@@ -77,24 +77,26 @@ class classes_roster_get extends \external_api {
      * @param  string term code
      * @return hash of class roster records
      */
-    public static function execute($termyear,$termcode) {
+    public static function execute($termyear, $termcode) {
         global $DB;
         $sql = "SELECT ROW_NUMBER() OVER( ORDER BY c.coursecode, s.legallastname, s.legalfirstname ) as rowid,
                        c.coursecode, c.title, c.coursehours, c.instructor, coalesce(ud.data,'** none **') as instructorname,
-                       ct.studentid, s.legallastname, s.legalfirstname, crt.description as credittype, 
-                       coalesce(gr.description,'') AS grade, 
-                       case when ct.completiondate=0 or ct.completiondate is null then 'In-progress' else 'Completed' end as completion
+                       ct.studentid, s.legallastname, s.legalfirstname, crt.description as credittype,
+                       coalesce(gr.description,'') AS grade,
+                       case when ct.completiondate=0 or ct.completiondate is null
+                           then 'In-progress' else 'Completed' end as completion
                   FROM mdl_local_gcs_classes c
-             LEFT JOIN mdl_local_gcs_classes_taken ct 
+             LEFT JOIN mdl_local_gcs_classes_taken ct
                     ON ct.coursecode=c.coursecode
                    AND ct.termyear=c.termyear
                    AND ct.termcode=c.termcode
              LEFT JOIN mdl_local_gcs_student s ON s.id=ct.studentid
-             LEFT JOIN mdl_local_gcs_codes crt ON crt.codeset='cr_type' AND crt.code=ct.credittypecode 
+             LEFT JOIN mdl_local_gcs_codes crt ON crt.codeset='cr_type' AND crt.code=ct.credittypecode
              LEFT JOIN mdl_user_info_data ud on ud.userid = c.instructor
              LEFT JOIN mdl_user_info_field uf on uf.id = ud.fieldid
              LEFT JOIN mdl_local_gcs_codes gr ON gr.codeset='grade' AND gr.code=ct.gradecode
-                 WHERE c.termyear=:termyear AND c.termcode=:termcode and coalesce(uf.shortname,'local_gcs_fullname')='local_gcs_fullname'
+                 WHERE c.termyear=:termyear AND c.termcode=:termcode
+                   AND coalesce(uf.shortname,'local_gcs_fullname')='local_gcs_fullname'
               ORDER BY c.coursecode, s.legallastname, s.legalfirstname";
         $param = ['termyear' => $termyear, 'termcode' => $termcode];
         $classlist = $DB->get_records_sql(

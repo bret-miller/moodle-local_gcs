@@ -55,7 +55,7 @@ class course_get_by_coursecode extends \external_api {
      * @return external_external_single_structure
      */
     public static function execute_returns() {
-		$def = new courserecord();
+        $def = new courserecord();
         new external_single_structure($def->recdef);
     }
     /**

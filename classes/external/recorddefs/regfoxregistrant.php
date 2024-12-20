@@ -24,15 +24,12 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class regfoxregistrantrecord {
     /** @var external single_structure $rec regfox registrant record */
     public $rec;
-    
 
     /**
      * Initializes the RegFox registrant record definition

@@ -47,8 +47,6 @@ class program_completion_get_all extends \external_api {
      */
     public static function execute_parameters() {
         return new external_function_parameters([
-        //    'studentid' => new external_value(PARAM_TEXT, 'student id or empty for all students', VALUE_REQUIRED),
-        //    'programcode' => new external_value(PARAM_TEXT, 'program code or empty for all programs', VALUE_REQUIRED),
         ]);
     }
     /**
@@ -56,7 +54,7 @@ class program_completion_get_all extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
-		$def = new programcompletedrecord();
+        $def = new programcompletedrecord();
         return new external_multiple_structure(
             new external_single_structure($def->recdef)
         );

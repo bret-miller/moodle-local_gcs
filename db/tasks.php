@@ -21,16 +21,19 @@
  * @author     Bret Miller
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+defined('MOODLE_INTERNAL') || die();
+
 $tasks = [
     [
-	    'classname' => 'local_gcs\task\daily_automation',
-		'hour' => 6,
-		'minute' => 0
-	],
+        'classname' => 'local_gcs\task\daily_automation',
+        'hour' => 6,
+        'minute' => 0,
+    ],
     [
-	    'classname' => 'local_gcs\task\process_agreements',
-		'dayofweek' => 1,
-		'hour' => 6,
-		'minute' => 0
-	]
+        'classname' => 'local_gcs\task\process_agreements',
+        'dayofweek' => 1,
+        'hour' => 6,
+        'minute' => 0,
+    ],
 ];

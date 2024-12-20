@@ -24,8 +24,6 @@
 
 namespace local_gcs\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 class student_user_matching extends \core\task\adhoc_task {
     /** @var string log records to write to debug log */
     public $logrecs;
@@ -43,13 +41,13 @@ class student_user_matching extends \core\task\adhoc_task {
     public function execute() {
         $this->logrecs = '';
         $this->log('local_gcs: student user matching started');
-		
-		// Debugging is easier if the processing code isn't in the task itself.
-		$processor = new \local_gcs\student_user_match();
+
+        // Debugging is easier if the processing code isn't in the task itself.
+        $processor = new \local_gcs\student_user_match();
 
         // Match any student records without a userid to user accounts.
-		$this->logrecs .= $processor->match();
-        
+        $this->logrecs .= $processor->match();
+
         return $this->logrecs;
     }
     public function log($logrec) {

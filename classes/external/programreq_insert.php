@@ -46,7 +46,7 @@ class programreq_insert extends \external_api {
      * @return external_function_parameters
      */
     public static function execute_parameters() {
-		$def = new programreqrecord();
+        $def = new programreqrecord();
         return new external_function_parameters([
             'rec' => new external_single_structure($def->recdef, 'Program Requirement Record', VALUE_REQUIRED),
         ]);
@@ -56,7 +56,7 @@ class programreq_insert extends \external_api {
      * @return nothing
      */
     public static function execute_returns() {
-		$def = new programreqrecord();
+        $def = new programreqrecord();
         new external_single_structure($def->recdef);
     }
     /**
@@ -64,7 +64,6 @@ class programreq_insert extends \external_api {
      * @param object $rec program requirement record
      */
     public static function execute($rec) {
-        $program = \local_gcs\data::insert_program_req($rec);
-        return $program;
+        return \local_gcs\data::insert_program_req($rec);
     }
 }

@@ -54,9 +54,9 @@ class html_page implements renderable {
         $name = basename(debug_backtrace()[0]['file'], '.php');
         $this->name = $name;
         $this->url = "/local/gcs/$name.php";
-		if (!$pagetitle) {
-			$pagetitle = get_string("menu$name", 'local_gcs');
-		}
+        if (!$pagetitle) {
+            $pagetitle = get_string("menu$name", 'local_gcs');
+        }
         $this->title = $pagetitle;
         $this->content = $content;
 
@@ -78,16 +78,16 @@ class html_page implements renderable {
         $jsfile = "amd/".$this->name.".js";
         if ($url = $this->timeurl($jsfile, true)) {
             $murl = new \moodle_url($url);
-			$jsmodule = ['name' => $this->name, 'fullpath' => $url, 'requires' => [], 'strings' => []];
+            $jsmodule = ['name' => $this->name, 'fullpath' => $url, 'requires' => [], 'strings' => []];
             $PAGE->requires->js($murl);
         }
 
         // Load any scripts the page wanted too.
         foreach ($jsfiles as $jsfile) {
-			if ($url = $this->timeurl($jsfile, true)) {
-				$scriptfile = new \moodle_url($url);
-				$PAGE->requires->js($scriptfile);
-			}
+            if ($url = $this->timeurl($jsfile, true)) {
+                $scriptfile = new \moodle_url($url);
+                $PAGE->requires->js($scriptfile);
+            }
         }
 
         // Output the header.
@@ -100,17 +100,17 @@ class html_page implements renderable {
      * @return string full url
      */
     private function timeurl($relurl, $relative=false) {
-		global $CFG;
+        global $CFG;
         $url = false;
         $mydir = $CFG->dirroot . "/local/gcs/";
         $myurl = "/local/gcs/";
         if (file_exists($mydir . $relurl)) {
             $tm = filemtime($mydir . $relurl);
-			if ($relative) {
-				$url = '';
-			} else {
-				$url = $CFG->wwwroot;
-			}
+            if ($relative) {
+                $url = '';
+            } else {
+                $url = $CFG->wwwroot;
+            }
             $url .= $myurl . $relurl . "?t=" . $tm;
         }
         return $url;

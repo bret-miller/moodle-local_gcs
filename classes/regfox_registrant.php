@@ -56,7 +56,7 @@ class regfox_registrant {
         if (!$arg) {
             // Create empty registrant.
             $this->blankrec();
-        } else if ( (gettype($arg)=='integer') 
+        } else if ( (gettype($arg) == 'integer')
             || ( (gettype($arg) == 'string') && (intval($arg) > 0) ) ) {
             // Load registrant from database.
             $id = intval($arg);
@@ -66,32 +66,32 @@ class regfox_registrant {
                 $this->fill($rec);
             }
         } else {
-            // Build from object properties
+            // Build from object properties.
             $this->fill($arg);
         }
     }
-    
+
     /** Initialize blank registrant class
-    *
-    * @param onone
-    */
+     *
+     * @param onone
+     */
     public function blankrec() {
-        $this->id = $rec->id;
+        $this->id = 0;
         $this->email = '';
         $this->firstname = '';
         $this->lastname = '';
         $this->scholarshipcode = '';
         $this->amount = 0;
         $this->tranid = 0;
-        $this->processedtime=0;
+        $this->processedtime = 0;
         $this->studentid = 0;
-        $this->classes=[];
-    }        
-    
+        $this->classes = [];
+    }
+
     /** Initialize registrant class from object properties
-    *
-    * @param object $rec registrant data
-    */
+     *
+     * @param object $rec registrant data
+     */
     public function fill($rec) {
         $this->id = $rec->id;
         $this->email = $rec->email;
@@ -99,36 +99,36 @@ class regfox_registrant {
         $this->lastname = $rec->lastname;
         $this->scholarshipcode = $rec->scholarshipcode;
         $this->amount = $rec->amount;
-		if (is_null($this->amount)) {
-			$this->amount = 0;
-		}
-        if (property_exists($rec,'processedtime')) {
+        if (is_null($this->amount)) {
+            $this->amount = 0;
+        }
+        if (property_exists($rec, 'processedtime')) {
             $this->processedtime = $rec->processedtime;
         } else {
             $this->processedtime = 0;
         }
         $this->tranid = $rec->tranid;
-        $this->classes=[];
+        $this->classes = [];
         if (property_exists($rec, 'studentid')) {
             $this->studentid = $rec->studentid;
         } else {
             $this->studentid = 0;
         }
-    }        
+    }
 
     /**
      * Initializes a RegFox registrant from webhook transaction data
      *
      * @param object $reg registrant data from transaction
      */
-     public function from_webhook($reg) {
+    public function from_webhook($reg) {
         // Build registrant from transaction data.
         $this->blankrec();
         $this->id = 0;
         $this->amount = $reg->amount;
-		if (is_null($this->amount)) {
-			$this->amount = 0;
-		}
+        if (is_null($this->amount)) {
+            $this->amount = 0;
+        }
         $this->classes = [];
         $regitems = $reg->data;
         $products = [];
@@ -151,8 +151,8 @@ class regfox_registrant {
             }
             foreach ($products as $product) {
                 $class = new regfox_class();
-                $cinf = explode(' – ',$product->label);
-                if (sizeof($cinf) == 2) {
+                $cinf = explode(' – ', $product->label);
+                if (count($cinf) == 2) {
                     $class->coursecode = trim($cinf[0]);
                     $class->title = trim($cinf[1]);
                 } else {
@@ -165,10 +165,10 @@ class regfox_registrant {
                     $class->paid = $var->amount;
                     $class->discount = $var->discount;
                 }
-                array_push($this->classes,$class);
+                array_push($this->classes, $class);
             }
         }
-	 }
+    }
 
 
     /**
@@ -176,9 +176,9 @@ class regfox_registrant {
      *
      */
     public function remove_classes() {
-		unset($this->classes);
-	}
-  
+        unset($this->classes);
+    }
+
 
     /**
      * Saves a RegFox registrant record from the current object
@@ -186,7 +186,7 @@ class regfox_registrant {
      * @param int $tranid transaction id
      */
     public function save($tranid=0) {
-        if ($tranid) { 
+        if ($tranid) {
             $this->tranid = $tranid;
         }
         $rec = [
@@ -203,7 +203,7 @@ class regfox_registrant {
         if ($this->id == 0) {
             $regid = data::insert_regfox_registrant($rec);
             $this->id = $regid;
-            foreach($this->classes as $class) {
+            foreach ($this->classes as $class) {
                 $class->regid = $regid;
                 $class->save();
             }

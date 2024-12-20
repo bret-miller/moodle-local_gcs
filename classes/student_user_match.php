@@ -47,27 +47,20 @@ class student_user_match {
      * @param none
      */
     public function match() {
-		global $DB;
-		$students = data::get_students_with_no_user();
-		$this->logthis('Found '.count($students).' students without user account.');
-		foreach ($students as $student) {
-			$users = $DB->get_records_list('user','idnumber',[$student->idnumber]);
-			if (count($users) == 1) {
-				$user = array_pop($users);
-				$f = fopen(__DIR__ . "/debug-bret.log", "w");
-				fwrite($f, print_r($student, true));
-				fwrite($f, "------------------------------------------------------------------------------------------\n");
-				fwrite($f, print_r($user, true));
-				fclose($f);
-				$this->logthis('user: '.print_r($user,true));
-				$this->logthis('student: '.print_r($student,true));
-				$student->userid = $user->id;
-				data::update_students($student);
-				$this->logthis('Matched student '.$student->legalfirstname.' id '.$student->id.' to user id '.$user->id);
-			} else {
-				$this->logthis('Unable to match student '.$student->legalfirstname.' id '.$student->id.' to user.');
-			}
-		}
+        global $DB;
+        $students = data::get_students_with_no_user();
+        $this->logthis('Found '.count($students).' students without user account.');
+        foreach ($students as $student) {
+            $users = $DB->get_records_list('user', 'idnumber', [$student->idnumber]);
+            if (count($users) == 1) {
+                $user = array_pop($users);
+                $student->userid = $user->id;
+                data::update_students($student);
+                $this->logthis('Matched student '.$student->legalfirstname.' id '.$student->id.' to user id '.$user->id);
+            } else {
+                $this->logthis('Unable to match student '.$student->legalfirstname.' id '.$student->id.' to user.');
+            }
+        }
         $log = $this->logrecs;
         $this->logrecs = PHP_EOL;
         return $log;

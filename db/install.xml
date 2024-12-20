@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/gcs/db" VERSION="20240426" COMMENT="XMLDB file for Moodle local/gcs"
+<XMLDB PATH="local/gcs/db" VERSION="20240606" COMMENT="XMLDB file for Moodle local/gcs"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -27,6 +27,7 @@
         <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="coursehours" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="instructor" TYPE="int" LENGTH="5" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="extrafee" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
         <FIELD NAME="comments" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
@@ -70,6 +71,8 @@
         <FIELD NAME="regfoxcode" TYPE="char" LENGTH="20" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="manualpricing" TYPE="int" LENGTH="1" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="seqn" TYPE="int" LENGTH="5" NOTNULL="false" SEQUENCE="false" COMMENT="Used for record matching during data conversion."/>
+        <FIELD NAME="changeddate" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="changedbyuserid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -104,6 +107,7 @@
         <FIELD NAME="lectures" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false" COMMENT="Number of lectures in this course"/>
         <FIELD NAME="requiredtextbooks" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The textbooks required for the course"/>
         <FIELD NAME="defaultinstructor" TYPE="int" LENGTH="5" NOTNULL="false" SEQUENCE="false" COMMENT="The Moodle user id of the default instructor for the course"/>
+        <FIELD NAME="extrafee" TYPE="number" LENGTH="10" NOTNULL="false" SEQUENCE="false" DECIMALS="2"/>
         <FIELD NAME="comments" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Miscellaneous comments about the course, like prerequisites."/>
       </FIELDS>
       <KEYS>
@@ -219,7 +223,7 @@
         <FIELD NAME="occupation" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="employer" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="cadinfoauth" TYPE="int" LENGTH="1" NOTNULL="true" SEQUENCE="false"/>
-        <FIELD NAME="category" TYPE="char" LENGTH="3" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="category" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="perunitamount" TYPE="number" LENGTH="11" NOTNULL="true" SEQUENCE="false" DECIMALS="2"/>
         <FIELD NAME="coursemax" TYPE="int" LENGTH="2" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="eligiblefrom" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
@@ -347,11 +351,39 @@
         <FIELD NAME="coursecode" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Course code registered"/>
         <FIELD NAME="title" TYPE="char" LENGTH="60" NOTNULL="true" SEQUENCE="false" COMMENT="Course title"/>
         <FIELD NAME="credittypecode" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Credit type"/>
-        <FIELD NAME="cost" TYPE="number" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="The cost for this class based on credit type"/>
-        <FIELD NAME="paid" TYPE="number" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Amount paid"/>
-        <FIELD NAME="discount" TYPE="number" LENGTH="5" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Discount amount for this course"/>
+        <FIELD NAME="cost" TYPE="number" LENGTH="7" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="The cost for this class based on credit type"/>
+        <FIELD NAME="paid" TYPE="number" LENGTH="7" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Amount paid"/>
+        <FIELD NAME="discount" TYPE="number" LENGTH="7" NOTNULL="true" DEFAULT="0" SEQUENCE="false" DECIMALS="2" COMMENT="Discount amount for this course"/>
         <FIELD NAME="processedtime" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Time this class registration was processed"/>
         <FIELD NAME="ctrid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Classes taken record id"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="local_gcs_table_field_def" COMMENT="Defines GCS table fields for dynamic processes">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="tableid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="fieldname" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="dbdatatype" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="datatype" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="colhdr" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="widthval" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="ishtml" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="tooltip" TYPE="char" LENGTH="1333" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="islist" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="issort" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="addshow" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="addisnewline" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="addpopupid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="addsellistid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="addisrequired" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="updshow" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="updisnewline" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="updpopupid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="updsellistid" TYPE="char" LENGTH="50" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="updisrequired" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

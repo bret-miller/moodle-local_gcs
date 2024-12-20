@@ -24,14 +24,12 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class termdaterecord {
     public $recdef;
-    
+
     /**
      * Initializes the record field list definition
      */
@@ -47,12 +45,12 @@ class termdaterecord {
                 'registrationend' => new external_value(PARAM_INT, 'Registration Ends'),
                 'classesstart' => new external_value(PARAM_INT, 'Classes Starts'),
                 'classesend' => new external_value(PARAM_INT, 'Classes Ends'),
-			/*
+            /*
                 'address' => new external_value(PARAM_TEXT, 'Address|nolist|width=400px|newline'),
                 'city' => new external_value(PARAM_TEXT, 'City|nolist|width=300px'),
                 'state' => new external_value(PARAM_TEXT, 'State|nolist|width=80px'),
                 'zip' => new external_value(PARAM_TEXT, 'Zip code|nolist|width=150px'),
-			*/
+            */
             ];
     }
 }

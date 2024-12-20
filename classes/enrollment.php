@@ -42,7 +42,7 @@ class enrollment {
         $this->ntfmsg = '';
         $this->settings = new settings();
     }
-    
+
     /**
      * Verify enrollments - Make sure students registered for classes in the current
      * term and enrolled in the courses they registered for. Make sure students
@@ -62,7 +62,7 @@ class enrollment {
         // Get the prior term dates record.
         if ($thisterm) {
             $sql = "
-                SELECT * 
+                SELECT *
                   FROM {local_gcs_term_dates} td
                  WHERE td.registrationstart < :curstart
               ORDER BY td.registrationstart desc
@@ -98,7 +98,7 @@ class enrollment {
                 } else if (($ctr->completiondate) && ($ctr->completiondate < $checkdate)) {
                     $unenroll = true;
                 }
-                
+
                 // Get the student record.
                 $stus = data::get_student_by_id($ctr->studentid);
                 $stu = array_pop($stus);
@@ -107,8 +107,8 @@ class enrollment {
                     if ($userid && $unenroll) {
                         if (self::unenroll_user($userid, $ctr->coursecode)) {
                             $crs = data::get_course_by_code($ctr->coursecode);
-                            $msg = 'Unenrolled ' . $stu->preferredfirstname . " " . $stu->legallastname 
-                                . " from " . $crs->coursecode . ' - ' . $crs->title 
+                            $msg = 'Unenrolled ' . $stu->preferredfirstname . " " . $stu->legallastname
+                                . " from " . $crs->coursecode . ' - ' . $crs->title
                                 . ' in ' . $this->termcodes[$ctr->termcode] . ' ' . $ctr->termyear;
                             $this->logthis($msg);
                         }
@@ -137,8 +137,8 @@ class enrollment {
                 if (!$ctr->completiondate && !$ctr->canceldate) {
                     // If a student has not completed or withdrawn, enroll the student in the course.
                     if (self::enroll_user($userid, $ctr->coursecode)) {
-                        $msg = 'Enrolled ' . $stu->preferredfirstname . " " . $stu->legallastname 
-                            . " in " . $crs->coursecode . ' - ' . $crs->title 
+                        $msg = 'Enrolled ' . $stu->preferredfirstname . " " . $stu->legallastname
+                            . " in " . $crs->coursecode . ' - ' . $crs->title
                             . ' in ' . $this->termcodes[$ctr->termcode] . ' ' . $ctr->termyear;
                         $this->logthis($msg);
                     }
@@ -146,8 +146,8 @@ class enrollment {
                     if (($ctr->gradecode == 'DRP') || ($ctr->canceldate)) {
                         // Otherwise, we unenroll a student who withdrew or cancelled to prevent further access.
                         if (self::unenroll_user($userid, $ctr->coursecode)) {
-                            $msg = 'Unenrolled ' . $stu->preferredfirstname . " " . $stu->legallastname 
-                                . " from " . $crs->coursecode . ' - ' . $crs->title 
+                            $msg = 'Unenrolled ' . $stu->preferredfirstname . " " . $stu->legallastname
+                                . " from " . $crs->coursecode . ' - ' . $crs->title
                                 . ' in ' . $this->termcodes[$ctr->termcode] . ' ' . $ctr->termyear;;
                             $this->logthis($msg);
                         }
@@ -170,12 +170,12 @@ class enrollment {
         $this->logrecs = PHP_EOL;
         return $log;
     }
-    
+
     /**
      * Get classes taken for a term
      *
      * @param  int    $termyear term year
-     * @param  string $termcode term code 
+     * @param  string $termcode term code
      * @return array an array of classes taken records
      */
     private static function get_classes_taken_for_term($termyear, $termcode) {
@@ -193,7 +193,7 @@ class enrollment {
         );
         return $recs;
     }
-    
+
     /**
      * Get enrollments for a course.
      *
@@ -212,7 +212,7 @@ class enrollment {
         }
         return $users;
     }
-    
+
     /**
      * Enroll a user in a course.
      *
@@ -220,7 +220,7 @@ class enrollment {
      * @param string $coursecode the course code (short name) to enroll the student in
      * @return bool true if user was enrolled, false if not.
      */
-    public static function enroll_user($userid,$coursecode) {
+    public static function enroll_user($userid, $coursecode) {
         global $DB;
         // Get the course and role records from the database so we have the ids.
         $crs  = $DB->get_record('course', ['shortname' => $coursecode]);
@@ -230,7 +230,7 @@ class enrollment {
             $context = \context_course::instance($crs->id);
             $thisuser = \core_user::get_user($userid);
             // Make sure the user isn't already enrolled.
-            if (!is_enrolled($context,$thisuser, null, true)) {
+            if (!is_enrolled($context, $thisuser, null, true)) {
                 // Get the enrollment plugin for manual enrollments.
                 $epr = $DB->get_record('enrol', ['courseid' => $crs->id, 'enrol' => 'manual']);
                 $ep  = enrol_get_plugin($epr->enrol);
@@ -240,7 +240,7 @@ class enrollment {
         }
         return $rv;
     }
-    
+
     /**
      * Unenroll a user from a course.
      *
@@ -248,7 +248,7 @@ class enrollment {
      * @param string $coursecode the course code (short name) to enroll the student in
      * @return bool true if student was unenrolled, false if not.
      */
-    public static function unenroll_user($userid,$coursecode) {
+    public static function unenroll_user($userid, $coursecode) {
         global $DB;
         // Get the course and role records from the database so we have the ids.
         $crs  = $DB->get_record('course', ['shortname' => $coursecode]);
@@ -258,7 +258,7 @@ class enrollment {
             $context = \context_course::instance($crs->id);
             $thisuser = \core_user::get_user($userid);
             // Make sure the user isn't already enrolled.
-            if (is_enrolled($context,$thisuser, null, true)) {
+            if (is_enrolled($context, $thisuser, null, true)) {
                 // Get the enrollment plugin for manual enrollments.
                 $epr = $DB->get_record('enrol', ['courseid' => $crs->id, 'enrol' => 'manual']);
                 $ep  = enrol_get_plugin($epr->enrol);

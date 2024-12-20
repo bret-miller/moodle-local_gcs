@@ -852,7 +852,7 @@ $functions = [
     ],
     'local_gcs_class_get_by_code_and_term' => [
         // The name of the namespaced class that the function is located in.
-        'classname'   => 'local_gcs\external\class_get',
+        'classname'   => 'local_gcs\external\class_get_by_code_and_term',
 
         // A brief, human-readable, description of the web service function.
         'description' => 'Retrieves a class record for coursecode and term.',
@@ -2298,6 +2298,116 @@ $functions = [
 
         // A brief, human-readable, description of the web service function.
         'description' => 'Retrieves a list of table names and record ids of record dependents.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_table_field_def_get_by_tableid' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\table_field_def_get_by_tableid',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Retrieves a list of field definitions given a tableid.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_table_field_def_get' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\table_field_def_get',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Retrieves a field definition record given its id.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_table_field_def_update' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\table_field_def_update',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Updates a field definition record.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_table_field_def_insert' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\table_field_def_insert',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Inserts a new field definition record.',
+
+        // Options include read, and write.
+        'type'        => 'read',
+
+        // Whether the service is available for use in AJAX calls from the web.
+        'ajax'        => true,
+
+        // An optional list of services where the function will be included.
+        'services' => [
+            // A standard Moodle install includes one default service:
+            // - MOODLE_OFFICIAL_MOBILE_SERVICE.
+            // Specifying this service means that your function will be available for
+            // use in the Moodle Mobile App.
+            'gcs',
+        ],
+    ],
+    'local_gcs_table_field_def_delete' => [
+        // The name of the namespaced class that the function is located in.
+        'classname'   => 'local_gcs\external\table_field_def_delete',
+
+        // A brief, human-readable, description of the web service function.
+        'description' => 'Deletes a field definition record.',
 
         // Options include read, and write.
         'type'        => 'read',

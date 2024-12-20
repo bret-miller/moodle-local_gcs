@@ -1175,11 +1175,11 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
             $dbman->add_field($table, $field);
         }
 
-        // Define field id to be added to local_gcs_regfox_class.
+        // Define field ctrid to be added to local_gcs_regfox_class.
         $table = new xmldb_table('local_gcs_regfox_class');
-        $field = new xmldb_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null, null);
+        $field = new xmldb_field('ctrid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0, null);
 
-        // Conditionally launch add field id.
+        // Conditionally launch add field ctrid.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
@@ -1205,20 +1205,20 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
     }
 
     // Add new page for class list with roster & transcript.
-	// Add new reports menu folder & student listing.
-	// Add new service function class_get_by_code_and_term.
-	// Add new service function students_get_with_unsigned_enrollment_agreements.
-	// Add new swervice users_get_instructors.
-	// Add Program Completion menu item.
-	// Add Unsigned Enrollment agreements.
-	// Add formatted enrollment agreement services
-	// Add students with scholarships service
+    // Add new reports menu folder & student listing.
+    // Add new service function class_get_by_code_and_term.
+    // Add new service function students_get_with_unsigned_enrollment_agreements.
+    // Add new swervice users_get_instructors.
+    // Add Program Completion menu item.
+    // Add Unsigned Enrollment agreements.
+    // Add formatted enrollment agreement services.
+    // Add students with scholarships service.
     if ($oldversion < 2024040402) {
         // Gcs savepoint reached.
         upgrade_plugin_savepoint(true, 2024040402, 'local', 'gcs');
     }
-	
-	// Add student birthdate
+
+    // Add student birthdate.
     if ($oldversion < 2024041601) {
 
         // Define field birthdate to be added to local_gcs_student.
@@ -1234,7 +1234,7 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
         upgrade_plugin_savepoint(true, 2024041601, 'local', 'gcs');
     }
 
-    // Restructure scholarship accounting table
+    // Restructure scholarship accounting table.
     if ($oldversion < 2024042600) {
 
         // Define field scholarship to be dropped from local_gcs_acct_sch_cat.
@@ -1279,10 +1279,155 @@ function xmldb_local_gcs_upgrade($oldversion = 0) {
         upgrade_plugin_savepoint(true, 2024042601, 'local', 'gcs');
     }
 
-	// Add local_gcs_course_get_by_coursecode service
-	// Add local_gcs_dependents_get service
+    // Add local_gcs_course_get_by_coursecode service.
+    // Add local_gcs_dependents_get service.
     if ($oldversion < 2024050303) {
         // Gcs savepoint reached.
         upgrade_plugin_savepoint(true, 2024050303, 'local', 'gcs');
+    }
+
+    // Increase size of amount fields. Some amounts are greater than 999.99.
+    if ($oldversion < 2024051300) {
+
+        // Changing precision of field cost on table local_gcs_regfox_class to (7, 2).
+        $table = new xmldb_table('local_gcs_regfox_class');
+        $field = new xmldb_field('cost', XMLDB_TYPE_NUMBER, '7, 2', null, XMLDB_NOTNULL, null, '0', 'credittypecode');
+        $dbman->change_field_precision($table, $field);
+
+        // Changing precision of field paid on table local_gcs_regfox_class to (7, 2).
+        $field = new xmldb_field('paid', XMLDB_TYPE_NUMBER, '7, 2', null, XMLDB_NOTNULL, null, '0', 'cost');
+        $dbman->change_field_precision($table, $field);
+
+        // Changing precision of field discount on table local_gcs_regfox_class to (7, 2).
+        $field = new xmldb_field('discount', XMLDB_TYPE_NUMBER, '7, 2', null, XMLDB_NOTNULL, null, '0', 'paid');
+        $dbman->change_field_precision($table, $field);
+
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024051300, 'local', 'gcs');
+    }
+
+    // Add table to store table record field definitions.
+    if ($oldversion < 2024060600) {
+
+        // Define table local_gcs_table_field_def to be created.
+        $table = new xmldb_table('local_gcs_table_field_def');
+
+        // Adding fields to table local_gcs_table_field_def.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('tableid', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('fieldname', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('dbdatatype', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('datatype', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('colhdr', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('widthval', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('ishtml', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('tooltip', XMLDB_TYPE_CHAR, '1333', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('islist', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('issort', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('addshow', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('addisnewline', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('addpopupid', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('addsellistid', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('addisrequired', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('updshow', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('updisnewline', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('updpopupid', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('updsellistid', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('updisrequired', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table local_gcs_table_field_def.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for local_gcs_regfox_transaction.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024060600, 'local', 'gcs');
+    }
+
+    // Add table to store table record field definitions.
+    if ($oldversion < 2024082900) {
+
+        // Classes_taken.
+        // Define table to be added.
+        $table = new xmldb_table('local_gcs_classes_taken');
+
+        // Define field to be added.
+        $field = new xmldb_field('changeddate', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'seqn');
+        // Conditionally add field.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field to be added.
+        $field = new xmldb_field('changedbyuserid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'changeddate');
+        // Conditionally add field.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Classes.
+        // Define table to be added.
+        $table = new xmldb_table('local_gcs_classes');
+
+        // Define field to be added.
+        $field = new xmldb_field('extrafee', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'instructor');
+        // Conditionally add field.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Courses.
+        // Define table to be added.
+        $table = new xmldb_table('local_gcs_courses');
+
+        // Define field to be added.
+        $field = new xmldb_field('extrafee', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'defaultinstructor');
+        // Conditionally add field.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024082900, 'local', 'gcs');
+    }
+
+    // Add studentid field to regfox registrant table and ctrid to regfox class registration.
+    if ($oldversion < 2024083000) {
+
+        // Define field ctrid to be added to local_gcs_regfox_class.
+        $table = new xmldb_table('local_gcs_regfox_class');
+        $field = new xmldb_field('ctrid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0, null);
+
+        // Conditionally launch add field ctrid.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024083000, 'local', 'gcs');
+    }
+    
+	// Support service class_get_by_code_and_term.php
+    if ($oldversion < 2024092402) {
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024092402, 'local', 'gcs');
+    }
+	
+    // Support changes needed for using the scholarship code throughout the application, registration and accounting process
+    if ($oldversion < 2024102100) {
+        // Define table local_gcs_sch_given to be altered.
+        $table = new xmldb_table('local_gcs_sch_given');
+
+        // Define field category to be changed.
+        $field = new xmldb_field('category', XMLDB_TYPE_CHAR, '10', null, XMLDB_NOTNULL, null, null, 'cadinfoauth');
+
+        // Change field length.
+        $dbman->change_field_precision($table, $field);
+
+        // Gcs savepoint reached.
+        upgrade_plugin_savepoint(true, 2024102100, 'local', 'gcs');
     }
 }

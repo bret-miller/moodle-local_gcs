@@ -80,10 +80,7 @@ class regfox_process_registrant extends \external_api {
             $result['registrant']->remove_classes();
         }
         $result['registrant'] = (object) ((array) $result['registrant']);
-        $f = fopen(__DIR__ . "/debug-rfproc.log", "w");
-        fwrite($f, print_r($result, true));
-        fwrite($f, "------------------------------------------------------------------------------------------\n");
-        fclose($f);
-        return array($result);
+        $resultarr = [$result];
+        return $resultarr;
     }
 }

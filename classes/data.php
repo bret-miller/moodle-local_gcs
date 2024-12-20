@@ -69,6 +69,19 @@ class data {
             $limitnum = 0
         );
 
+        // Special case:  for the codeset "codesets" we also add the list of codeset nmes to it.
+        if ( $codeset == 'codesets' ) {
+            $codesets = self::get_codesets();
+            foreach ($codesets as $csrec) {
+                $coderec = [];
+                $coderec['id'] = 0;
+                $coderec['codeset'] = $codeset;
+                $coderec['code'] = 'codeset_' . $csrec->codeset;
+                $coderec['description'] = '(codeset) ' . $csrec->codeset;
+                $codes[] = $coderec;
+            }
+        }
+
         return $codes;
     }
 
@@ -110,7 +123,7 @@ class data {
      */
     public static function update_code ($rec) {
         global $DB;
-        $rec->code = strtoupper($rec->code);
+        $rec->code = $rec->code;
         $DB->update_record('local_gcs_codes', $rec);
         return $rec;
     }
@@ -125,7 +138,7 @@ class data {
         global $DB;
 
         $rec = (object) $rec; // For some reason, we get an array in this function instead of an object.
-        $rec->code = strtoupper($rec->code);
+        $rec->code = $rec->code;
         $id = $DB->insert_record('local_gcs_codes', $rec);
         $coderec = self::get_code($id);
         return $coderec;
@@ -173,7 +186,7 @@ class data {
     public static function get_program ($id) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_program} where id=:id';
+        //$sql = 'select * from {local_gcs_program} where id=:id';
         $pgm = $DB->get_record('local_gcs_program', ['id' => $id]);
         (bool) $pgm->academicdegree = (bool) $pgm->academicdegree;
         (bool) $pgm->inactive = (bool) $pgm->inactive;
@@ -188,7 +201,7 @@ class data {
     public static function get_program_by_programcode ($programcode) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_program} where programcode=:programcode';
+        //$sql = 'select * from {local_gcs_program} where programcode=:programcode';
         $pgm = $DB->get_record('local_gcs_program', ['programcode' => $programcode]);
         (bool) $pgm->academicdegree = (bool) $pgm->academicdegree;
         (bool) $pgm->inactive = (bool) $pgm->inactive;
@@ -265,7 +278,7 @@ class data {
     public static function get_program_req ($id) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_program_req} where id=:id';
+        //$sql = 'select * from {local_gcs_program_req} where id=:id';
         $rec = $DB->get_record('local_gcs_program_req', ['id' => $id]);
         return $rec;
     }
@@ -289,8 +302,7 @@ class data {
 
         $rec = (object) $rec; // For some reason, we get an array in this function instead of an object.
         $id = $DB->insert_record('local_gcs_program_req', $rec);
-        $ppgmreq = self::get_program_req($id);
-        return $pgmreq;
+        return self::get_program_req($id);
     }
     /**
      * deletes single program requirement record in the database
@@ -337,7 +349,7 @@ class data {
     public static function get_course_permitted ($id) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_courses_permitted} where id=:id';
+        //$sql = 'select * from {local_gcs_courses_permitted} where id=:id';
         $rec = $DB->get_record('local_gcs_courses_permitted', ['id' => $id]);
         (bool) $rec->electiveeligible = (bool) $rec->electiveeligible;
         return $rec;
@@ -488,11 +500,11 @@ class data {
         global $DB;
 
         // Get the record.
-        $sql = "select * 
-			from {local_gcs_term_dates} td
-			where td.registrationstart < unix_timestamp()
-			order by td.registrationstart desc
-			limit 1";
+        $sql = "select *
+            from {local_gcs_term_dates} td
+            where td.registrationstart < unix_timestamp()
+            order by td.registrationstart desc
+            limit 1";
 
         $recs = $DB->get_records_sql(
             $sql,
@@ -547,14 +559,14 @@ class data {
 
         $sql = 'select u.id, u.lastname, u.firstname, fn.data as fullname
                   from {user} u
-				  left join {user_info_data} fn on fn.userid=u.id
-				  left join {user_info_field} fnf on fnf.id=fn.fieldid
-                  left join {user_info_data} ins on ins.userid=u.id 
-				  left join {user_info_field} insf on insf.id=ins.fieldid
+                  left join {user_info_data} fn on fn.userid=u.id
+                  left join {user_info_field} fnf on fnf.id=fn.fieldid
+                  left join {user_info_data} ins on ins.userid=u.id
+                  left join {user_info_field} insf on insf.id=ins.fieldid
                  where 1=cast(ins.data as int) and fnf.name=:fnfname and insf.name=:insfname';
         $courses = $DB->get_records_sql(
             $sql,
-            ['fnfname'=>'Full Name', 'insfname'=>'Instsructor?'],
+            ['fnfname' => 'Full Name', 'insfname' => 'Instsructor?'],
             $limitfrom = 0,
             $limitnum = 0
         );
@@ -587,7 +599,7 @@ class data {
     public static function get_course ($id) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_courses} where id=:courseid';
+        //$sql = 'select * from {local_gcs_courses} where id=:courseid';
         $course = $DB->get_record('local_gcs_courses', ['id' => $id]);
         return $course;
     }
@@ -600,9 +612,9 @@ class data {
     public static function get_course_by_coursecode($coursecode) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_courses} where coursecode=:coursecode';
+        //$sql = 'select * from {local_gcs_courses} where coursecode=:coursecode';
         return $DB->get_record('local_gcs_courses', ['coursecode' => $coursecode]);
-	}
+    }
     /**
      * Retrieves single course record from the database
      *
@@ -612,7 +624,7 @@ class data {
     public static function get_course_by_code ($coursecode) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_courses} where coursecode=:coursecode';
+        //$sql = 'select * from {local_gcs_courses} where coursecode=:coursecode';
         $course = $DB->get_record('local_gcs_courses', ['coursecode' => $coursecode]);
         return $course;
     }
@@ -679,7 +691,7 @@ class data {
     public static function get_class ($id) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_classes} where id=:classid';
+        //$sql = 'select * from {local_gcs_classes} where id=:classid';
         $class = $DB->get_record('local_gcs_classes', ['id' => $id]);
         return $class;
     }
@@ -687,21 +699,21 @@ class data {
      * Retrieves single class record from the database
      *
      * @param int $termyear
-	 *        int $termcode
-	 *        string $coursecode
+     *        int $termcode
+     *        string $coursecode
      * @return  object  class record
      */
-    public static function get_class_by_code_and_term ($coursecode,$termyear,$termcode) {
+    public static function get_class_by_code_and_term ($coursecode, $termyear, $termcode) {
         global $DB;
 
-        $sql = 'select * from {local_gcs_classes} where coursecode=:coursecode and termyear=:termyear and termcode=:termcode';
+        //$sql = 'select * from {local_gcs_classes} where coursecode=:coursecode and termyear=:termyear and termcode=:termcode limit 1';
         $class = $DB->get_record('local_gcs_classes', [
             'coursecode' => $coursecode,
             'termyear' => $termyear,
             'termcode' => $termcode,
             ]);
         return $class;
-    }
+	}
     /**
      * updates single class record in the database
      *
@@ -742,7 +754,7 @@ class data {
     /**
      * Retrieves the list of student records.
      *
-	 * @param   bool $onlyactive optional switch to return only "active" students with a user account
+     * @param   bool $onlyactive optional switch to return only "active" students with a user account
      * @return  hash  of student records
      */
     public static function get_students_all ($onlyactive=false) {
@@ -752,9 +764,9 @@ class data {
         $systemcontext = \context_system::instance();
         if (has_capability('local/gcs:administrator', $systemcontext)) {
             $sql  = "select * from {local_gcs_student}";
-			if ($onlyactive) {
-				$sql .= " where statuscode='ACT' and userid <> 0";
-			}
+            if ($onlyactive) {
+                $sql .= " where statuscode='ACT' and userid <> 0";
+            }
             $sql .= ' order by legallastname, legalfirstname, legalmiddlename';
             $sqlvar = [];
         } else {
@@ -779,9 +791,9 @@ class data {
 
     /**
      * For admins - Retrieves the list of students with unsigned enroll agreement class records.
-	 * For student - Always returns his/her student record whether or not there are unsigned enroll agreement records.
+     * For student - Always returns his/her student record whether or not there are unsigned enroll agreement records.
      *
-	 * @param   
+     * @param
      * @return  student record(s)
      */
     public static function get_students_with_unsigned_enrollment_agreements () {
@@ -790,11 +802,11 @@ class data {
 
         $systemcontext = \context_system::instance();
         if (has_capability('local/gcs:administrator', $systemcontext)) {
-			$sql = "
+            $sql = "
 WITH td AS (
-	select max(d.registrationstart) as registrationstart
-	from {local_gcs_term_dates} d
-	where d.registrationstart<unix_timestamp()
+    select max(d.registrationstart) as registrationstart
+    from {local_gcs_term_dates} d
+    where d.registrationstart<unix_timestamp()
 )
 SELECT DISTINCT st.*
 FROM td
@@ -823,12 +835,12 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         }
         return $recs;
     }
-	
+
 
     /**
      * Retrieves the list of student records.
      *
-	 * @param   
+     * @param
      * @return  student records
      */
     public static function get_students_with_scholarships () {
@@ -837,7 +849,7 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
 
         $systemcontext = \context_system::instance();
         if (has_capability('local/gcs:administrator', $systemcontext)) {
-			$sql = "
+            $sql = "
 SELECT DISTINCT st.*
 FROM {local_gcs_student} st
 JOIN {local_gcs_sch_given} sg on sg.studentid = st.id
@@ -896,10 +908,10 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         // Non-Administrators only allowed to read their record.
         $systemcontext = \context_system::instance();
         if (!has_capability('local/gcs:administrator', $systemcontext) && !self::is_student_logged_in($id)) {
-            return [];                
+            return [];
         }
-        
-        // Read single record to list
+
+        // Read single record to list.
         $sql = 'select * from {local_gcs_student} where id=:id';
         $sqlvar = ['id' => $id];
         $recs = $DB->get_records_sql(
@@ -936,12 +948,12 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         global $DB;
         global $USER;
 
-        $id=$USER->id;
+        $id = $USER->id;
         $rec = $DB->get_record(
                 'local_gcs_student',
                 [ 'userid' => $USER->id ]
             );
-        
+
         (bool) $rec->isveteran = (bool) $rec->isveteran;
         (bool) $rec->donotemail = (bool) $rec->donotemail;
         if (is_null($rec->regfoxemails)) {
@@ -958,8 +970,8 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
     public static function get_students_by_email ($email) {
         global $DB;
         $systemcontext = \context_system::instance();
-        $sql = 'select s.*, u.email from {local_gcs_student} s 
-                  join {user} u on u.id=s.userid 
+        $sql = 'select s.*, u.email from {local_gcs_student} s
+                  join {user} u on u.id=s.userid
                   where u.email=:email or s.regfoxemails like :rfepartial';
         $sqlvar = ['email' => $email, 'rfepartial' => "%$email%"];
         $recs = $DB->get_records_sql(
@@ -968,21 +980,21 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
             $limitfrom = 0,
             $limitnum = 0
         );
-		$students = [];
+        $students = [];
         foreach ($recs as $rec) {
             (bool) $rec->isveteran = (bool) $rec->isveteran;
             (bool) $rec->donotemail = (bool) $rec->donotemail;
             if (is_null($rec->regfoxemails)) {
                 $rec->regfoxemails = '';
             }
-			// We only want to include those where the emails truly match.
-			// We can partially match an email in regfoxemails without matching it completely with the sql query.
-			// For example, searching for user@example.com would match user@example.com.au in the query, but not here.
-			$rfemails = explode(',', $rec->regfoxemails);
-			if (($rec->email == $email) || (in_array($email, $rfemails))) {
-				unset($rec->email); // Remove this property since it is not in the original data record.
-				$students[$rec->id] = $rec; // Make the array identical to what is returned from the query.
-			}
+            // We only want to include those where the emails truly match.
+            // We can partially match an email in regfoxemails without matching it completely with the sql query.
+            // For example, searching for user@example.com would match user@example.com.au in the query, but not here.
+            $rfemails = explode(',', $rec->regfoxemails);
+            if (($rec->email == $email) || (in_array($email, $rfemails))) {
+                unset($rec->email); // Remove this property since it is not in the original data record.
+                $students[$rec->id] = $rec; // Make the array identical to what is returned from the query.
+            }
         }
         return $recs;
     }
@@ -993,15 +1005,15 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
      * @param   string $lastname partial last name
      * @return  hash  of student records
      */
-    public static function get_students_by_name ($firstname,$lastname) {
+    public static function get_students_by_name ($firstname, $lastname) {
         global $DB;
         $systemcontext = \context_system::instance();
-		$fncontains = "$firstname%";
-		$lncontains = "$lastname%";
-        $sql = 'select s.* from {local_gcs_student} s 
-                  left join {user} u on u.id=s.userid 
+        $fncontains = "$firstname%";
+        $lncontains = "$lastname%";
+        $sql = 'select s.* from {local_gcs_student} s
+                  left join {user} u on u.id=s.userid
                  where (u.firstname like :fn and u.lastname like :ln)
-				    or (s.legalfirstname like :lfn and s.legallastname like :lln)';
+                    or (s.legalfirstname like :lfn and s.legallastname like :lln)';
         $sqlvar = ['fn' => $fncontains, 'ln' => $lncontains, 'lfn' => $fncontains, 'lln' => $lncontains];
         $recs = $DB->get_records_sql(
             $sql,
@@ -1064,13 +1076,13 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         if (is_null($rec->regfoxemails)) {
             $rec->regfoxemails = '';
         } else {
-			$rfemails = explode(',', $rec->regfoxemails);
-			$elist = [];
-			foreach ($rfemails as $email) {
-				$email = trim($email); // Make sure no leading or trailing white space.
-				array_push($elist,$email);
-			}
-			$rec->regfoxemails = implode(',', $elist);
+            $rfemails = explode(',', $rec->regfoxemails);
+            $elist = [];
+            foreach ($rfemails as $email) {
+                $email = trim($email); // Make sure no leading or trailing white space.
+                array_push($elist, $email);
+            }
+            $rec->regfoxemails = implode(',', $elist);
         }
         $DB->update_record('local_gcs_student', $rec);
         return $rec;
@@ -1089,14 +1101,14 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
         if (is_null($rec->regfoxemails)) {
             $rec->regfoxemails = '';
         } else {
-			$rfemails = explode(',', $rec->regfoxemails);
-			$elist = [];
-			foreach ($rfemails as $email) {
-				$email = trim($email); // Make sure no leading or trailing white space.
-				array_push($elist,$email);
-			}
-			$rec->regfoxemails = implode(',', $elist);
-		}
+            $rfemails = explode(',', $rec->regfoxemails);
+            $elist = [];
+            foreach ($rfemails as $email) {
+                $email = trim($email); // Make sure no leading or trailing white space.
+                array_push($elist, $email);
+            }
+            $rec->regfoxemails = implode(',', $elist);
+        }
         $id = $DB->insert_record('local_gcs_student', $rec);
         $rec = self::get_students($id);
         return $rec;
@@ -1184,18 +1196,18 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
      * @return  enrollment agreement formatted
      */
     public static function format_classes_taken_agreement_info ($ctid) {
-		// read the class taken record
-		$ctrec = self::get_classes_taken ($ctid);
-		
-		// read class def
-		$clrec = self::get_class_by_code_and_term($ctrec->coursecode, $ctrec->termyear, $ctrec->termcode);
-		$eatext = self::format_enrollment_agreement_text ($ctrec);
+        // Read the class taken record.
+        $ctrec = self::get_classes_taken ($ctid);
+
+        // Read class def.
+        $clrec = self::get_class_by_code_and_term($ctrec->coursecode, $ctrec->termyear, $ctrec->termcode);
+        $eatext = self::format_enrollment_agreement_text ($ctrec);
 
         return [
-			'agreementid'   => $ctrec->agreementid,
-			'headertext'    => $clrec->coursecode . ' - ' . $clrec->shorttitle,
-			'agreementtext' => $eatext,
-		];
+            'agreementid'   => $ctrec->agreementid,
+            'headertext'    => $clrec->coursecode . ' - ' . $clrec->shorttitle,
+            'agreementtext' => $eatext,
+        ];
     }
     /**
      * get the enrollment agreement record for a class taken rec
@@ -1203,16 +1215,18 @@ ORDER BY st.legallastname, st.legalfirstname, st.legalmiddlename;
      * @param $ctrec class taken record
      */
     public static function get_class_enrollment_agreement_rec ($ctrec) {
-		$earec = null;
-		global $DB;
-				
-		// lookup the assigned enrollment agreement text
-		if ($ctrec->agreementid > 0) {
-			// lookup specific signed enrollment agreement
-			$earec = self::get_enrollment_agreements ($ctrec->agreementid);
-		} else {
-			// lookup the latest ea for our class type (they can be defined specific to a course or more generally for the credit type, e.g. for credit agreements differ from audits)
-			$sql = "
+        $earec = null;
+        global $DB;
+
+        // Lookup the assigned enrollment agreement text.
+        if ($ctrec->agreementid > 0) {
+            // Lookup specific signed enrollment agreement.
+            $earec = self::get_enrollment_agreements ($ctrec->agreementid);
+        } else {
+            // Lookup the latest ea for our class type.
+            // They can be defined specific to a course or more generally for the credit type.
+            // E.g. for credit agreements differ from audits.
+            $sql = "
 select ea.*
 from {local_gcs_enroll_agreements} ea
 where ea.credittype=:credittypecode
@@ -1220,37 +1234,37 @@ and ea.adddate<=:registrationdate
 order by adddate desc
 limit 1;
 ";
-			// lookup latest ea based on specific coursecode
-			$sqlparam['credittypecode'] = $ctrec->coursecode;
-			$sqlparam['registrationdate'] = $ctrec->registrationdate;
+            // Lookup latest ea based on specific coursecode.
+            $sqlparam['credittypecode'] = $ctrec->coursecode;
+            $sqlparam['registrationdate'] = $ctrec->registrationdate;
 
-			$earecs = $DB->get_records_sql(
-				$sql,
-				$sqlparam,
-				$limitfrom = 0,
-				$limitnum = 0
-			);
-			
-			// if specific coursecode ea not found, try by credittypecode
-			if (count($earecs) == 0) {
-				// lookup latest based on credit type
-				$sqlparam['credittypecode'] = $ctrec->credittypecode;
+            $earecs = $DB->get_records_sql(
+                $sql,
+                $sqlparam,
+                $limitfrom = 0,
+                $limitnum = 0
+            );
 
-				$earecs = $DB->get_records_sql(
-					$sql,
-					$sqlparam,
-					$limitfrom = 0,
-					$limitnum = 0
-				);
-			}
-			
-			// extract id and text (should find one unless no ea was defined before this course was offered)
-			if (count($earecs) > 0) {
-				foreach ($earecs as $ea) {
-					$earec = $ea;
-				}
-			}
-		}
+            // If specific coursecode ea not found, try by credittypecode.
+            if (count($earecs) == 0) {
+                // Lookup latest based on credit type.
+                $sqlparam['credittypecode'] = $ctrec->credittypecode;
+
+                $earecs = $DB->get_records_sql(
+                    $sql,
+                    $sqlparam,
+                    $limitfrom = 0,
+                    $limitnum = 0
+                );
+            }
+
+            // Extract id and text (should find one unless no ea was defined before this course was offered).
+            if (count($earecs) > 0) {
+                foreach ($earecs as $ea) {
+                    $earec = $ea;
+                }
+            }
+        }
 
         return $earec;
     }
@@ -1260,38 +1274,39 @@ limit 1;
      * @return  enrollment agreement formatted
      */
     public static function format_enrollment_agreement_info ($eaid) {
-		// read the class taken record
-		$earec = self::get_enrollment_agreements ($eaid);
+        // Read the class taken record.
+        $earec = self::get_enrollment_agreements ($eaid);
 
         return [
-			'agreementid'   => $earec->id,
-			'headertext'    => '',
-			'agreementtext' => earec->agreement,
-		];
+            'agreementid'   => $earec->id,
+            'headertext'    => '',
+            'agreementtext' => earec->agreement,
+        ];
     }
     /**
      * format enrollment agreement text
      *
      * @param $ctrec class taken record
-	 * all needed settrlite info is looked up in the function.
+     * all needed settrlite info is looked up in the function.
      */
     private static function format_enrollment_agreement_text ($ctrec) {
         $eatext = '';
-		global $DB;
-				
-		// lookup the assigned enrollment agreement text
-		$earec = self::get_class_enrollment_agreement_rec ($ctrec);
-		if ($earec != null) {
-			$eatext = $earec->agreement;
-			$ctrec->agreementid = $earec->id;
+        global $DB;
 
-			// lookup student record
-			$strec = self::get_students ($ctrec->studentid);
-			
-			// lookup corresponding class record
-			$clrec = self::get_class_by_code_and_term($ctrec->coursecode,$ctrec->termyear,$ctrec->termcode);
-			
-            $eatext = str_replace("[STUDENT NAME]", trim($strec->legalfirstname . " " . $strec->legalmiddlename) . " " . $strec->legallastname, $eatext);
+        // Lookup the assigned enrollment agreement text.
+        $earec = self::get_class_enrollment_agreement_rec ($ctrec);
+        if ($earec != null) {
+            $eatext = $earec->agreement;
+            $ctrec->agreementid = $earec->id;
+
+            // Lookup student record.
+            $strec = self::get_students ($ctrec->studentid);
+
+            // Lookup corresponding class record.
+            $clrec = self::get_class_by_code_and_term($ctrec->coursecode, $ctrec->termyear, $ctrec->termcode);
+
+            $eatext = str_replace("[STUDENT NAME]", trim($strec->legalfirstname . " " .
+                $strec->legalmiddlename) . " " . $strec->legallastname, $eatext);
             $eatext = str_replace("[STUDENT NUMBER]", $strec->id, $eatext);
             $eatext = str_replace("[STUDENT ADDRESS]", self::format_address ($strec), $eatext);
             $eatext = str_replace("[COURSE NUMBER]", $clrec->coursecode, $eatext);
@@ -1300,59 +1315,65 @@ limit 1;
             $eatext = str_replace("[COURSE CREDITS]", $clrec->coursehours, $eatext);
             $eatext = str_replace("[COURSE LESSONS]", $clrec->lectures, $eatext);
             $eatext = str_replace("[COURSE DESCRIPTION]", $clrec->description, $eatext);
-            $eatext = str_replace("[COURSE FEE @ 90%]", number_format($ctrec->classtuition * .9), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 80%]", number_format($ctrec->classtuition * .8), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 70%]", number_format($ctrec->classtuition * .7), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 60%]", number_format($ctrec->classtuition * .6), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 50%]", number_format($ctrec->classtuition * .5), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 40%]", number_format($ctrec->classtuition * .4), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 30%]", number_format($ctrec->classtuition * .3), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 20%]", number_format($ctrec->classtuition * .2), $eatext);
-            $eatext = str_replace("[COURSE FEE @ 10%]", number_format($ctrec->classtuition * .1), $eatext);
-            $eatext = str_replace("[COURSE FEE]", number_format($ctrec->classtuition), $eatext);
-			if ($ctrec->scholarshippedamount > 0) {
-                $eatext = str_replace("[SCHOLARSHIP LINE]", 'SCHOLARSHIP:  $' . number_format($ctrec->scholarshippedamount) . '  (This amount has been subtracted from COURSE FEE below.)' . PHP_EOL, $eatext);
-			} else {
-				$eatext = str_replace("[SCHOLARSHIP LINE]", '', $eatext);
-			}
-		}
-		
+            $eatext = str_replace("[STUDENT PAID]", number_format($ctrec->studentpaid, 2), $eatext);
+            // Note we use tuitionpaid (original tuition before any refund) not classtuition.
+            $eatext = str_replace("[COURSE FEE @ 90%]", number_format($ctrec->tuitionpaid * .9, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 80%]", number_format($ctrec->tuitionpaid * .8, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 70%]", number_format($ctrec->tuitionpaid * .7, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 60%]", number_format($ctrec->tuitionpaid * .6, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 50%]", number_format($ctrec->tuitionpaid * .5, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 40%]", number_format($ctrec->tuitionpaid * .4, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 30%]", number_format($ctrec->tuitionpaid * .3, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 20%]", number_format($ctrec->tuitionpaid * .2, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE @ 10%]", number_format($ctrec->tuitionpaid * .1, 2), $eatext);
+            $eatext = str_replace("[COURSE FEE]", number_format($ctrec->tuitionpaid), $eatext);
+
+            // Condition the entire scholarship line on if there is one.
+            // This looks nicer than showing empty scholarships for many students.
+            if ($ctrec->scholarshippedamount > 0) {
+                $eatext = str_replace("[SCHOLARSHIP LINE]", 'SCHOLARSHIP:  $' .
+                    number_format($ctrec->scholarshippedamount, 2) . PHP_EOL, $eatext);
+            } else {
+                $eatext = str_replace("[SCHOLARSHIP LINE]", '', $eatext);
+            }
+        }
+
         return $eatext;
     }
     /**
-     * format the student address block text
+     * Format the student address block text
      *
      * @param $strec supplied student record
      */
     private static function format_address ($strec) {
         $addrblk = '';
-		if (strlen($strec->address) > 0) {
-			$addrblk = $strec->address;
-		}
-		if (strlen($strec->address2) > 0) {
-			if (strlen($addrblk) > 0) {
-			    $addrblk .= PHP_EOL;
-		    }
-			$addrblk .= $strec->address2;
-		}
-		if (strlen($strec->city) > 0) {
-			if (strlen($addrblk) > 0) {
-			    $addrblk .= PHP_EOL;
-		    }
-			$addrblk .= $strec->city;
-		}
-		if (!empty($strec->stateprovince)) {
-			$addrblk .= ' ' . $strec->stateprovince;
-		}
-		if (strlen($strec->zip) > 0) {
-			$addrblk .= ' ' . $strec->zip;
-		}
-		if (strlen($strec->country) > 0) {
-			if (strlen($addrblk) > 0) {
-			    $addrblk .= PHP_EOL;
-		    }
-			$addrblk .= $strec->country;
-		}
+        if (strlen($strec->address) > 0) {
+            $addrblk = $strec->address;
+        }
+        if (strlen($strec->address2) > 0) {
+            if (strlen($addrblk) > 0) {
+                $addrblk .= PHP_EOL;
+            }
+            $addrblk .= $strec->address2;
+        }
+        if (strlen($strec->city) > 0) {
+            if (strlen($addrblk) > 0) {
+                $addrblk .= PHP_EOL;
+            }
+            $addrblk .= $strec->city;
+        }
+        if (!empty($strec->stateprovince)) {
+            $addrblk .= ' ' . $strec->stateprovince;
+        }
+        if (strlen($strec->zip) > 0) {
+            $addrblk .= ' ' . $strec->zip;
+        }
+        if (strlen($strec->country) > 0) {
+            if (strlen($addrblk) > 0) {
+                $addrblk .= PHP_EOL;
+            }
+            $addrblk .= $strec->country;
+        }
         return $addrblk;
     }
 
@@ -1445,13 +1466,13 @@ limit 1;
         global $DB;
 
         if ( empty($stuid) ) {
-			$sql = "
+            $sql = "
 SELECT sg.*
 FROM {local_gcs_student} st
 JOIN {local_gcs_sch_given} sg on sg.studentid = st.id
 WHERE st.statuscode='ACT'
 ";
-			$sqlparam = [];
+            $sqlparam = [];
         } else {
             $sql = 'select * from {local_gcs_sch_given} where studentid=:studentid';
             $sqlparam['studentid'] = $stuid;
@@ -1490,9 +1511,9 @@ WHERE st.statuscode='ACT'
         $systemcontext = \context_system::instance();
         // Non-Administrators only allowed to read their record.
         if (!has_capability('local/gcs:administrator', $systemcontext) && !self::is_student_logged_in($stuid)) {
-            return [];                
+            return [];
         }
-        
+
         $sql = "
             select s.*
             from {local_gcs_sch_given} s
@@ -1518,16 +1539,16 @@ WHERE st.statuscode='ACT'
     public static function update_sch_given ($rec) {
         global $DB;
         $DB->update_record('local_gcs_sch_given', $rec);
-        
-		// notify internally of scholarship application (when appropriate)
-		if (!self::schoolnotify_scholarship_application($rec)) {
-			// if not needed, notify student of review decision (when appropriate)
-			if (self::studentnotify_scholarship_approval($rec)) {
-				// if sent, mark as notified
-				$rec->studentnotified = time();
-				$DB->update_record('local_gcs_sch_given', $rec);
-			}
-		}
+
+        // Notify internally of scholarship application (when appropriate).
+        if (!self::schoolnotify_scholarship_application($rec)) {
+            // If not needed, notify student of review decision (when appropriate).
+            if (self::studentnotify_scholarship_approval($rec)) {
+                // If sent, mark as notified.
+                $rec->studentnotified = time();
+                $DB->update_record('local_gcs_sch_given', $rec);
+            }
+        }
         return $rec;
     }
     /**
@@ -1541,7 +1562,7 @@ WHERE st.statuscode='ACT'
         $rec = (object) $rec; // For some reason, we get an array in this function instead of an object.
         $id = $DB->insert_record('local_gcs_sch_given', $rec);
         if ($id > 0) {
-            self::schoolnotify_scholarship_application($rec);// notify internally of scholarship application
+            self::schoolnotify_scholarship_application($rec); // Notify internally of scholarship application.
         }
         $rec = self::get_sch_given($id);
         return $rec;
@@ -1552,27 +1573,29 @@ WHERE st.statuscode='ACT'
      * @param $schgivenrec of scholarships given record
      */
     public static function schoolnotify_scholarship_application ($schgivenrec) {
-        if (empty($schgivenrec->decision) && empty($schgivenrec->reviewdate) && empty($schgivenrec->studentnotified) && $schgivenrec->cadinfoauth == 1) {
-            // get message template
+        if (empty($schgivenrec->decision) && empty($schgivenrec->reviewdate) &&
+            empty($schgivenrec->studentnotified) && $schgivenrec->cadinfoauth == 1) {
+            // Get message template.
             $msg = file_get_contents('/home/gcswww/dev.gcs.edu/local/gcs/templates/email_scholarship_application_review.html');
             if (!empty($msg) && isset($schgivenrec)) {
-                // lookup additional info
+                // Lookup additional info.
                 $sturec = array_pop(self::get_student_by_id($schgivenrec->studentid));
                 $pgmrec = self::get_program_by_programcode($schgivenrec->programcode);
                 $schavailrec = self::get_sch_available_by_code($schgivenrec->category);
                 $userrec = \core_user::get_user($sturec->userid);
-                // variable replacement
+                // Variable replacement.
                 $settings = new \local_gcs\settings();
                 $msg = str_replace("{logourl}", (string) $settings->logourl, $msg);
                 $msg = str_replace("{termyear}", $schgivenrec->termyear, $msg);
-                $msg = str_replace("{fullname}", trim($sturec->legalfirstname . " " . $sturec->legalmiddlename) . " " . $sturec->legallastname, $msg);
+                $msg = str_replace("{fullname}", trim($sturec->legalfirstname . " " .
+                    $sturec->legalmiddlename) . " " . $sturec->legallastname, $msg);
                 $msg = str_replace("{studentid}", $sturec->id, $msg);
                 $msg = str_replace("{stuemail}", $userrec->email, $msg);
                 $msg = str_replace("{scholarshiptext}", self::decode_html($schavailrec->scholarshiptext), $msg);
                 $msg = str_replace("{programdesc}", $pgmrec->description, $msg);
                 $msg = str_replace("{statusconfirm}", self::decode_html($schavailrec->statusconfirm), $msg);
-                
-                // send to internal recips
+
+                // Send to internal recipients.
                 utils::send_notification_email('GCS Scholarship Application Review', $msg);
                 return true;
             }
@@ -1585,22 +1608,24 @@ WHERE st.statuscode='ACT'
      * @param $rec of scholarships given record
      */
     public static function studentnotify_scholarship_approval ($schgivenrec) {
-        // only send when all filled out
-        if (!empty($schgivenrec->reviewdate) && empty($schgivenrec->studentnotified) && (strtolower($schgivenrec->decision) == 'approved' || strtolower($schgivenrec->decision) == 'denied')) {
-            // get message template
-            $msg = file_get_contents('/home/gcswww/dev.gcs.edu/local/gcs/templates/email_scholarship_application_approval_notification.html');
-			
-            // lookup student
+        // Only send when all filled out.
+        if (!empty($schgivenrec->reviewdate) && empty($schgivenrec->studentnotified) &&
+            (strtolower($schgivenrec->decision) == 'approved' || strtolower($schgivenrec->decision) == 'denied')) {
+            // Get message template.
+            $tmplt = '/home/gcswww/dev.gcs.edu/local/gcs/templates/email_scholarship_application_approval_notification.html';
+            $msg = file_get_contents($tmplt);
+
+            // Lookup student.
             $stuarr = self::get_student_by_id($schgivenrec->studentid);
             if (!empty($msg) && isset($stuarr) && count($stuarr) === 1) {
                 $sturec = array_pop($stuarr);
-				
-                // lookup student email
+
+                // Lookup student email.
                 $userrec = \core_user::get_user($sturec->userid);
                 if (isset($userrec) && !empty($userrec->email)) {
                     $stuemail = $userrec->email;
-                    
-                    // salutation
+
+                    // Salutation.
                     if (!empty($sturec->preferredfirstname)) {
                         $salutation = 'Dear ' . $sturec->preferredfirstname;
                     } else if (!empty($sturec->legalfirstname)) {
@@ -1608,25 +1633,21 @@ WHERE st.statuscode='ACT'
                     } else {
                         $salutation = 'GCS Scholarship Applicant';
                     }
-                        
-                    // get scholarship def
+
+                    // Get scholarship def.
                     $schavailrec = self::get_sch_available_by_code($schgivenrec->category);
                     $scholarshipdesc = $schavailrec->description;
-                    
-                    // format approval message
+
+                    // Format approval message.
                     $decision = strtolower($schgivenrec->decision);
                     if ($decision == 'approved') {
-						$scholarshiptext = self::decode_html($schavailrec->scholarshiptext);
+                        $scholarshiptext = self::decode_html($schavailrec->scholarshiptext);
                     } else if ($decision == 'denied') {
                         $scholarshiptext = '';
                     }
-                    
-                    // variable replacement
+
+                    // Variable replacement.
                     $settings = new \local_gcs\settings();
-                
-		        //$f = fopen(__DIR__ . "/ggdebug.log", "w");
-                //fwrite($f, print_r($settings, true));
-                //fclose($f);
 
                     $msg = str_replace("{logourl}", (string) $settings->logourl, $msg);
                     $msg = str_replace("{salutation}", $salutation, $msg);
@@ -1634,8 +1655,8 @@ WHERE st.statuscode='ACT'
                     $msg = str_replace("{scholarshipdesc}", $scholarshipdesc, $msg);
                     $msg = str_replace("{scholarshiptext}", $scholarshiptext, $msg);
                     $msg = str_replace("{comments}", self::decode_html($schgivenrec->comments), $msg);
-                    
-                    // send it to the student
+
+                    // Send it to the student.
                     utils::send_email($stuemail, 'GCS Scholarship Application Review', $msg);
                     return true;
                 }
@@ -1678,14 +1699,14 @@ WHERE st.statuscode='ACT'
         if ( $stuid != 0 ) {
             // Non-Administrators only allowed to read their record.
             if (!has_capability('local/gcs:administrator', $systemcontext) && !self::is_student_logged_in($stuid)) {
-                return [];                
+                return [];
             }
             $sql = 'select * from {local_gcs_classes_taken} where studentid=:studentid';
             $sqlparam['studentid'] = $stuid;
         } else {
             // Non-Administrators only allowed to read their record.
             if (!has_capability('local/gcs:administrator', $systemcontext)) {
-                return [];                
+                return [];
             }
             $sql = 'select * from {local_gcs_classes_taken}';
         }
@@ -1704,34 +1725,26 @@ WHERE st.statuscode='ACT'
      * @return  enrollment agreement records
      */
     public static function get_classes_taken_unsigned ($stuid) {
-		$ctearecs = [];// to collect the unsigned enrollment agreement classes taken
+        $ctearecs = []; // To collect the unsigned enrollment agreement classes taken.
         global $DB;
 
-        // get current term record
-		$termreclist = self::get_term_date_current();
-		foreach ($termreclist as $termrec) {
-			//$f = fopen(__DIR__ . "/ggdebug.log", "w");
-			//fwrite($f, print_r($termrec, true));
-			//fwrite($f, "------------------------------------------------------------------------------------------\n");
-			$ctrecs = self::get_classes_taken_all ($stuid);
-			//fwrite($f, "Count: ".(count($ctrecs) - 1)."\n");
-			//fwrite($f, "------------------------------------------------------------------------------------------\n");
-			foreach ($ctrecs as $ctrec) {
-				if (($ctrec->agreementsigned == null || $ctrec->agreementsigned == 0) && $ctrec->termyear == $termrec->termyear && $ctrec->termcode == $termrec->termcode) {
-					$ctrec->comments = self::format_enrollment_agreement_text ($ctrec);// tack on the formatted ea text
-					
-					// read class def
-					$clrec = self::get_class_by_code_and_term($ctrec->coursecode, $ctrec->termyear, $ctrec->termcode);
-					$ctrec->shorttitleoverride = $clrec->shorttitle;
-					//fwrite($f, print_r($ctrec, true));
-					//fwrite($f, "------------------------------------------------------------------------------------------\n");
-					
-					$ctearecs[] = $ctrec;
-				}
-			}
-			//fclose($f);
-		}
-		
+        // Get current term record.
+        $termreclist = self::get_term_date_current();
+        foreach ($termreclist as $termrec) {
+            $ctrecs = self::get_classes_taken_all ($stuid);
+            foreach ($ctrecs as $ctrec) {
+                if (($ctrec->agreementsigned == null || $ctrec->agreementsigned == 0)
+                    && $ctrec->termyear == $termrec->termyear && $ctrec->termcode == $termrec->termcode) {
+                    $ctrec->comments = self::format_enrollment_agreement_text ($ctrec); // Tack on the formatted ea text.
+
+                    // Read class def.
+                    $clrec = self::get_class_by_code_and_term($ctrec->coursecode, $ctrec->termyear, $ctrec->termcode);
+                    $ctrec->shorttitleoverride = $clrec->shorttitle;
+                    $ctearecs[] = $ctrec;
+                }
+            }
+        }
+
         return $ctearecs;
     }
     /**
@@ -1744,11 +1757,11 @@ WHERE st.statuscode='ACT'
         global $DB;
         $sql = "
             select ct.*
-            from {local_gcs_classes}_taken ct
+            from {local_gcs_classes_taken} ct
             join {local_gcs_student} st on st.id=ct.studentid
             join {local_gcs_courses_permitted} cp on cp.coursecode=ct.coursecode and cp.programcode=st.programcode
-            where s.studentid=:studentid
-            and s.termyear=:termyear
+            where ct.studentid=:studentid
+            and ct.termyear=:termyear
             order by ct.termcode, ct.coursecode";
         $sqlparam['studentid'] = $stuid;
         $sqlparam['termyear'] = $termyear;
@@ -1782,6 +1795,10 @@ WHERE st.statuscode='ACT'
      */
     public static function update_classes_taken ($rec) {
         global $DB;
+        global $USER;
+
+        $rec->changeddate = time();
+        $rec->changedbyuserid = $USER->id;
         $DB->update_record('local_gcs_classes_taken', $rec);
         return $rec;
     }
@@ -1792,15 +1809,18 @@ WHERE st.statuscode='ACT'
      */
     public static function insert_classes_taken ($rec) {
         global $DB;
+        global $USER;
 
         $rec = (object) $rec; // For some reason, we get an array in this function instead of an object.
-		
-		// assign the enrollment agreement
-		$earec = self::get_class_enrollment_agreement_rec ($rec);
-		if ($earec != null) {
-			$rec->agreementid = $earec->id;
-		}
 
+        // Assign the enrollment agreement.
+        $earec = self::get_class_enrollment_agreement_rec ($rec);
+        if ($earec != null) {
+            $rec->agreementid = $earec->id;
+        }
+
+        $rec->changeddate = time();
+        $rec->changedbyuserid = $USER->id;
         $id = $DB->insert_record('local_gcs_classes_taken', $rec);
         $rec = self::get_classes_taken($id);
         return $rec;
@@ -1814,6 +1834,101 @@ WHERE st.statuscode='ACT'
         global $DB;
 
         $DB->delete_records_select('local_gcs_classes_taken', 'id=:id', ['id' => $id]);
+        return;
+    }
+
+    /**
+     * Retrieves the list of field def records.
+     *
+     * @param   (none)
+     * @return  hash  of field def records
+     */
+    public static function get_field_def_by_tableid ($tableid) {
+        global $DB;
+        $sql = "
+            select *
+            from {local_gcs_table_field_def} d
+            order by d.tableid, d.id";
+        $sqlparam['tableid'] = $tableid;
+
+        $recs = $DB->get_records_sql(
+            $sql,
+            [],
+            $limitfrom = 0,
+            $limitnum = 0
+        );
+        return $recs;
+    }
+    /**
+     * Retrieves the list of field def records for a given tableid.
+     *
+     * @param   string   $tableid
+     * @return  hash  of field def records
+    public static function get_field_def_by_tableid ($tableid) {
+        global $DB;
+        $sql = "
+            select *
+            from {local_gcs_table_field_def} d
+            where d.tableid=:tableid
+            order by d.id";
+        $sqlparam['tableid'] = $tableid;
+
+        $recs = $DB->get_records_sql(
+            $sql,
+            $sqlparam,
+            $limitfrom = 0,
+            $limitnum = 0
+        );
+        return $recs;
+    }
+     */
+    /**
+     * Retrieves single field def record
+     *
+     * @param int $id
+     * @return  object
+     */
+    public static function get_field_def ($id) {
+        global $DB;
+        $rec = $DB->get_record(
+                'local_gcs_table_field_def',
+                [ 'id' => $id ]
+            );
+        return $rec;
+    }
+    /**
+     * updates single field def record
+     *
+     * @param object $rec field def record
+     */
+    public static function update_field_def ($rec) {
+        global $DB;
+        $DB->update_record('local_gcs_table_field_def', $rec);
+        return $rec;
+    }
+    /**
+     * inserts single field def record
+     *
+     * @param object $rec field def record (less id)
+     */
+    public static function insert_field_def ($rec) {
+        global $DB;
+
+        $rec = (object) $rec; // For some reason, we get an array in this function instead of an object.
+
+        $id = $DB->insert_record('local_gcs_table_field_def', $rec);
+        $rec = self::get_field_def($id);
+        return $rec;
+    }
+    /**
+     * deletes single field def record
+     *
+     * @param int $id field def record id
+     */
+    public static function delete_field_def ($id) {
+        global $DB;
+
+        $DB->delete_records_select('local_gcs_table_field_def', 'id=:id', ['id' => $id]);
         return;
     }
 
@@ -2018,7 +2133,7 @@ WHERE st.statuscode='ACT'
                     SELECT
                         ct.id as clsid,
                         CASE WHEN LENGTH(ct.assignedcoursecode)=2 THEN ct.assignedcoursecode
-						     WHEN cp.categorycode IS NOT NULL THEN cp.categorycode
+                             WHEN cp.categorycode IS NOT NULL THEN cp.categorycode
                              ELSE 'XX'
                               END AS classcategorycode,
                         CASE WHEN LENGTH(ct.assignedcoursecode)<3 THEN ct.coursecode ELSE ct.assignedcoursecode END AS crscode,
@@ -2035,7 +2150,7 @@ WHERE st.statuscode='ACT'
                         ct.termcode, ct.elective,
                         COALESCE(cp.electiveeligible, 0) AS electiveeligible,
                         CAST(CASE WHEN cp.coursecode IS NOT NULL THEN 1 ELSE 0 END AS integer) AS coursepermitted,
-						CASE WHEN COALESCE(ct.completiondate,0) = 0 THEN 0 ELSE 1 END as completed
+                        CASE WHEN COALESCE(ct.completiondate,0) = 0 THEN 0 ELSE 1 END as completed
                       FROM {local_gcs_classes_taken} ct
                  LEFT JOIN {local_gcs_classes} cls ON cls.coursecode=ct.coursecode
                                                     AND cls.termyear=ct.termyear
@@ -2103,8 +2218,8 @@ WHERE st.statuscode='ACT'
                         COALESCE(c.electiveeligible, 0) AS electiveeligible,
                         CONCAT(t.description, ' ', c.termyear)  AS termname,
                         COALESCE(c.coursepermitted, 0) AS coursepermitted,
-                        COALESCE(preq.coursesrequired, 0) as coursesrequired, 
-						COALESCE(c.completed, 0) as completed
+                        COALESCE(preq.coursesrequired, 0) as coursesrequired,
+                        COALESCE(c.completed, 0) as completed
                       FROM preq
                  LEFT JOIN clstkn c ON c.classcategorycode=preq.categorycode
                  LEFT JOIN {local_gcs_codes} t ON t.codeset='TERM' AND t.code=c.termcode
@@ -2113,11 +2228,11 @@ WHERE st.statuscode='ACT'
                  where c.clsid is null
                 )
                 SELECT recid, programcode, programname, reportseq, categorycode, categoryname,
-				       id, classcategorycode, coursecode, shorttitle, title, transfershorttitle,
-					   transfertitle, credittypecode, gradecode, passfail, coursehours,
-					   termyear, termcode, completiondate, elective, electiveeligible, termname,
-					   coursepermitted, coursesrequired
-				  FROM classlist cl
+                       id, classcategorycode, coursecode, shorttitle, title, transfershorttitle,
+                       transfertitle, credittypecode, gradecode, passfail, coursehours,
+                       termyear, termcode, completiondate, elective, electiveeligible, termname,
+                       coursepermitted, coursesrequired
+                  FROM classlist cl
               ORDER BY reportseq, categorycode, electiveeligible, completed desc, termyear, termcode, coursecode";
         $dbrecs = $DB->get_records_sql(
             $sql,
@@ -2426,96 +2541,128 @@ WHERE st.statuscode='ACT'
      * @param  string  $keycsv key values for lookup
      * @return hash of returned records
      */
-	const DEFS = [
-		['tablecode' => 'class', 'keyfldnames' => 'termyear,termcode,coursecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'course', 'keyfldnames' => 'coursecode', 'tblsfxlist' => 'classes_taken,courses_permitted,classes'],
-		['tablecode' => 'course', 'keyfldnames' => 'assignedcoursecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'enrollmentagreement', 'keyfldnames' => 'agreementid', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'program', 'keyfldnames' => 'programcode', 'tblsfxlist' => 'courses_permitted,program_req,program_completion,sch_given,student'],
-		['tablecode' => 'programreq', 'keyfldnames' => 'programcode,categorycode', 'tblsfxlist' => 'courses_permitted'],
-		['tablecode' => 'scholarship', 'keyfldnames' => 'scholarshipeligible', 'tblsfxlist' => 'student'],
-		['tablecode' => 'scholarship', 'keyfldnames' => 'category', 'tblsfxlist' => 'sch_given'],
-		['tablecode' => 'scholarshipgiven', 'keyfldnames' => 'scholarshipid', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'student', 'keyfldnames' => 'studentid', 'tblsfxlist' => 'classes_taken,sch_given,program_completion'],
-		['tablecode' => 'codeset.category', 'keyfldnames' => 'categorycode', 'tblsfxlist' => 'courses_permitted,program_req'],
-		['tablecode' => 'codeset.category', 'keyfldnames' => 'category', 'tblsfxlist' => 'sch_given'],
-		['tablecode' => 'codeset.citizenship', 'keyfldnames' => 'citizenship', 'tblsfxlist' => 'student'],
-		['tablecode' => 'codeset.cr_type', 'keyfldnames' => 'credittypecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'codeset.cr_type', 'keyfldnames' => 'credittype', 'tblsfxlist' => 'enroll_agreements'],
-		['tablecode' => 'codeset.ethnic', 'keyfldnames' => 'ethniccode', 'tblsfxlist' => 'student'],
-		['tablecode' => 'codeset.grade', 'keyfldnames' => 'gradecode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'codeset.scholarship_category', 'keyfldnames' => 'scholarshipeligible', 'tblsfxlist' => 'sch_given'],
-		['tablecode' => 'codeset.scholarship_accounting', 'keyfldnames' => 'regfoxcode', 'tblsfxlist' => 'classes_taken'],
-		['tablecode' => 'codeset.status', 'keyfldnames' => 'statuscode', 'tblsfxlist' => 'student'],
-		['tablecode' => 'codeset.term', 'keyfldnames' => 'termcode', 'tblsfxlist' => 'classes_taken'],
-	];
-	
+    const DEFS = [
+        ['tablecode' => 'class', 'keyfldnames' => 'termyear,termcode,coursecode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'course', 'keyfldnames' => 'coursecode', 'tblsfxlist' => 'classes_taken,courses_permitted,classes'],
+        ['tablecode' => 'course', 'keyfldnames' => 'assignedcoursecode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'enrollagreement', 'keyfldnames' => 'agreementid', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'program', 'keyfldnames' => 'programcode', 'tblsfxlist' => 'courses_permitted,program_req,program_completion,sch_given,student'],
+        // THIS WOULD HAVE TO BE A CUSTOM QUERY CHECKING THE programcode OF THE student AND THE courses_permitted categorycode ['tablecode' => 'programreq', 'keyfldnames' => 'programcode,categorycode', 'tblsfxlist' => 'courses_permitted'],
+        ['tablecode' => 'schavailable', 'keyfldnames' => 'scholarshipeligible', 'tblsfxlist' => 'student'],
+        ['tablecode' => 'schavailable', 'keyfldnames' => 'category', 'tblsfxlist' => 'sch_given'],
+        ['tablecode' => 'scholarshipgiven', 'keyfldnames' => 'scholarshipid', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'student', 'keyfldnames' => 'studentid', 'tblsfxlist' => 'classes_taken,sch_given,program_completion'],
+        ['tablecode' => 'termdates', 'keyfldnames' => 'termyear,termcode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'codeset.category', 'keyfldnames' => 'categorycode', 'tblsfxlist' => 'courses_permitted,program_req'],
+        ['tablecode' => 'codeset.category', 'keyfldnames' => 'category', 'tblsfxlist' => 'sch_given'],
+        ['tablecode' => 'codeset.citizenship', 'keyfldnames' => 'citizenship', 'tblsfxlist' => 'student'],
+        ['tablecode' => 'codeset.cr_type', 'keyfldnames' => 'credittypecode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'codeset.cr_type', 'keyfldnames' => 'credittype', 'tblsfxlist' => 'enroll_agreements'],
+        ['tablecode' => 'codeset.datatype', 'keyfldnames' => 'datatype', 'tblsfxlist' => 'table_field_def'],
+        ['tablecode' => 'codeset.dbdatatype', 'keyfldnames' => 'dbdatatype', 'tblsfxlist' => 'table_field_def'],
+        ['tablecode' => 'codeset.ethnic', 'keyfldnames' => 'ethniccode', 'tblsfxlist' => 'student'],
+        ['tablecode' => 'codeset.grade', 'keyfldnames' => 'gradecode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'codeset.pass_fail', 'keyfldnames' => 'gradecode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'codeset.popupid', 'keyfldnames' => 'addpopupid', 'tblsfxlist' => 'table_field_def'],
+        ['tablecode' => 'codeset.popupid', 'keyfldnames' => 'updpopupid', 'tblsfxlist' => 'table_field_def'],
+        ['tablecode' => 'codeset.pgm_completed_src', 'keyfldnames' => 'source', 'tblsfxlist' => 'program_completion'],
+        ['tablecode' => 'codeset.programcode', 'keyfldnames' => 'programcode', 'tblsfxlist' => 'program_completion'],
+        ['tablecode' => 'codeset.scholarship_category', 'keyfldnames' => 'category', 'tblsfxlist' => 'sch_given'],
+        ['tablecode' => 'codeset.scholarship_accounting', 'keyfldnames' => 'regfoxcode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'codeset.scholarship_approve', 'keyfldnames' => 'decision', 'tblsfxlist' => 'sch_given'],
+        ['tablecode' => 'codeset.status', 'keyfldnames' => 'statuscode', 'tblsfxlist' => 'student'],
+        ['tablecode' => 'codeset.term', 'keyfldnames' => 'termcode', 'tblsfxlist' => 'classes_taken'],
+        ['tablecode' => 'codeset.visibility', 'keyfldnames' => 'addshow', 'tblsfxlist' => 'table_field_def'],
+        ['tablecode' => 'codeset.visibility', 'keyfldnames' => 'updshow', 'tblsfxlist' => 'table_field_def'],
+    ];
+
     public static function get_table_record_dependencies ($tablecode, $keycsv) {
-		//$f = fopen(__DIR__ . "/ggdebug.log", "w");
-		//fwrite($f, $tablecode . ',' . $keycsv . "\n");
+        $recs = []; // Output list.
+        $keyvals = explode(",", $keycsv);
 
-        $recs = []; // output list
-		$keyvals = explode(",", $keycsv);
+        foreach (self::DEFS as $def) {
+            if ($def['tablecode'] == $tablecode) {
+                $keyfldnames = explode(",", $def['keyfldnames']); // Expand key field names.
+                // Must match the passed-in key value count.
+                if (count($keyfldnames) == count($keyvals)) {
+                    // Build the key array.
+                    $keylist = [];
+                    for ($i = 0; $i < count($keyfldnames); $i++) {
+                        $keylist[$keyfldnames[$i]] = $keyvals[$i];
+                    }
 
-		foreach (self::DEFS as $def) {
-			//fwrite($f, print_r($def, true));
-			// process each matching entry
-			if ($def['tablecode'] == $tablecode) {
-				$keyfldnames = explode(",", $def['keyfldnames']);// expand key field names
-				//fwrite($f, print_r($keyfldnames, true));
-				// must match the passed-in key value count
-				if (count($keyfldnames) == count($keyvals)) {
-					// build the key array
-					$keylist = [];
-					for ($i = 0; $i < count($keyfldnames); $i++) {
-						$keylist[$keyfldnames[$i]] = $keyvals[$i];
-						//fwrite($f, 'keyfldname:' . $keyfldnames[$i] . ',keyval:' . $keyvals[$i] . "\n");
-					}
-					//fwrite($f, print_r($keylist, true));
-					
-					// check each table
-					foreach (explode(",", $def['tblsfxlist']) as $tblsfx) {
-						self::getdependents($recs, $tblsfx, $keylist);
-					}
-				}
-			}
-		}
-
-		// $f = fopen(__DIR__ . "/ggdebug.log", "w");
-		
-		//fclose($f);
+                    // Check each table.
+                    foreach (explode(",", $def['tblsfxlist']) as $tblsfx) {
+                        self::getdependents($recs, $tblsfx, $keylist);
+						// early breakout to save db resources (we don't need to know all dependencies at this point, just that it has at least one)
+						if (count($recs) > 0) {
+							return $recs;
+						}
+                   }
+                }
+            }
+        }
         return $recs;
     }
-	private static function getdependents(&$recs, $tablecode, $keylist) {
-		// $f = fopen(__DIR__ . "/ggdebug.log", "w");
-		// fwrite($f, print_r($recs, true));
-		// fwrite($f, "tablecode: ".$tablecode."\n");
-		// fwrite($f, print_r($keylist, true));
+
+/*     public static function has_table_record_dependencies ($tablecode, $keycsvlist) {
+        $hasdeps = false;
+		$recs = [];
+        $keylist = explode("|", $keycsvlist);
+		$resultlist = []; // Output list.
+        
+        foreach (self::DEFS as $def) {
+			// first find the tablecode in the array
+            if ($def['tablecode'] == $tablecode) {
+				// process each key set, checking for its dependency
+				foreach (explode("|", $keycsvlist) as $keycsvset) {
+					$hasdep = 0;
+					$keyvals = explode(",", $keycsvset);
+					$keyfldnames = explode(",", $def['keyfldnames']); // Expand key field names.
+					// Must match the passed-in key value count.
+					if (count($keyfldnames) == count($keyvals)) {
+						// Build the key array.
+						$keylist = [];
+						for ($i = 0; $i < count($keyfldnames); $i++) {
+							$keylist[$keyfldnames[$i]] = $keyvals[$i];
+						}
+
+						// Check each table.
+						foreach (explode(",", $def['tblsfxlist']) as $tblsfx) {
+							self::getdependents($recs, $tblsfx, $keylist);
+							if (count($recs) > 0) {
+								$hasdep = 1;
+							}
+						}
+					}
+					$resultlist[] = $hasdep;
+				}
+            }
+        }
+        return join(",", $resultlist);
+    }
+ */
+    private static function getdependents(&$recs, $tablecode, $keylist) {
         global $DB;
-		
-		$sqlcondition = '';
-		foreach ($keylist as $key => $val) {
-			if ($sqlcondition != '') {
-				$sqlcondition .= ' and ';
-			}
-			$sqlcondition .= $key . '=:' . $key;
-			//fwrite($f, $key . ": " . $val."\n");
-		}
-		$sql = 'select id from {local_gcs_' . $tablecode . '} where ' . $sqlcondition;
-		//fwrite($f, $sql."\n");
-		$dbrecs = $DB->get_records_sql(
-			$sql,
-			$keylist,
-			$limitfrom = 0,
-			$limitnum = 0
-		);
- 		//fwrite($f, print_r($dbrecs, true));
-       
-		foreach ($dbrecs as $dbrec) {
-			$recs[] = ['tablecode' => $tablecode, 'id' => $dbrec->id];
-		}
- 		//fwrite($f, print_r($recs, true));
-		//fclose($f);
+
+        $sqlcondition = '';
+        foreach ($keylist as $key => $val) {
+            if ($sqlcondition != '') {
+                $sqlcondition .= ' and ';
+            }
+            $sqlcondition .= $key . '=:' . $key;
+        }
+        $sql = 'select id from {local_gcs_' . $tablecode . '} where ' . $sqlcondition . ' limit 1';// for now, to save resources, only get first one
+        $dbrecs = $DB->get_records_sql(
+            $sql,
+            $keylist,
+            $limitfrom = 0,
+            $limitnum = 0
+        );
+
+        foreach ($dbrecs as $dbrec) {
+            $recs[] = ['tablecode' => $tablecode, 'id' => $dbrec->id];
+        }
         return $recs;
-	}
+    }
 }

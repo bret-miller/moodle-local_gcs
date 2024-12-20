@@ -44,7 +44,7 @@ class regfox_get_unprocessed_registrants extends \external_api {
     /**
      * Returns description of method parameters
      * @return external_function_parameters
-    */
+     */
     public static function execute_parameters() {
         return new external_function_parameters([
         ]);
@@ -54,7 +54,7 @@ class regfox_get_unprocessed_registrants extends \external_api {
      * @return external_external_multiple_structure
      */
     public static function execute_returns() {
-		$rf = new regfoxregistrantrecord();
+        $rf = new regfoxregistrantrecord();
         return new external_multiple_structure($rf->rec);
     }
     /**
@@ -63,10 +63,6 @@ class regfox_get_unprocessed_registrants extends \external_api {
      */
     public static function execute() {
         $recs = \local_gcs\data::get_regfox_registrants_unprocessed();
-        $f = fopen(__DIR__ . "/debug-rfunrp.log", "w");
-        fwrite($f, print_r($recs, true));
-        fwrite($f, "------------------------------------------------------------------------------------------\n");
-        fclose($f);
         return $recs;
     }
 }

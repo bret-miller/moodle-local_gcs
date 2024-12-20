@@ -24,29 +24,28 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class courserecord {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */
     public function __construct() {
         $this->recdef = [
-			'id' => new external_value(PARAM_INT, 'course record id'),
-			'coursecode' => new external_value(PARAM_TEXT, 'course code'),
-			'shorttitle' => new external_value(PARAM_TEXT, 'title of course, shortened for when space is limited'),
-			'title' => new external_value(PARAM_TEXT, 'title of course'),
-			'description' => new external_value(PARAM_TEXT, 'course description text'),
-			'coursehours' => new external_value(PARAM_INT, 'number of academic hours given for this course'),
-			'lectures' => new external_value(PARAM_INT, 'number of lectures in course'),
-			'requiredtextbooks' => new external_value(PARAM_TEXT, 'textbooks required for this course'),
-			'defaultinstructor' => new external_value(PARAM_INT, 'user id of default instructor'),
-			'comments' => new external_value(PARAM_TEXT, 'other miscellaneous comments'),
-		];
+            'id' => new external_value(PARAM_INT, 'course record id'),
+            'coursecode' => new external_value(PARAM_TEXT, 'course code'),
+            'shorttitle' => new external_value(PARAM_TEXT, 'title of course, shortened for when space is limited'),
+            'title' => new external_value(PARAM_TEXT, 'title of course'),
+            'description' => new external_value(PARAM_TEXT, 'course description text'),
+            'coursehours' => new external_value(PARAM_INT, 'number of academic hours given for this course'),
+            'lectures' => new external_value(PARAM_INT, 'number of lectures in course'),
+            'requiredtextbooks' => new external_value(PARAM_TEXT, 'textbooks required for this course'),
+            'defaultinstructor' => new external_value(PARAM_INT, 'user id of default instructor'),
+            'extrafee' => new external_value(PARAM_FLOAT, 'Extra Fee'),
+            'comments' => new external_value(PARAM_TEXT, 'other miscellaneous comments'),
+        ];
     }
 }

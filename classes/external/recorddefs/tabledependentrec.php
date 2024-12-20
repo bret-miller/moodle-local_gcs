@@ -24,14 +24,12 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class tabledependentrec {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */

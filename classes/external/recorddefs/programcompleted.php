@@ -24,29 +24,27 @@
 
 namespace local_gcs\external;
 
-defined('MOODLE_INTERNAL') || die();
-
 use external_single_structure;
 use external_value;
 
 class programcompletedrecord {
     public $recdef;
-    
+
     /**
      * Initializes the class record field list definition
      */
     public function __construct() {
         $this->recdef = [
-			'id' => new external_value(PARAM_INT, 'Identity Key|ro'),
-			'studentid' => new external_value(PARAM_INT, 'Student ID'),
-			'programcode' => new external_value(PARAM_TEXT, 'Program Code'),
-			'description' => new external_value(PARAM_TEXT, 'Description'),
-			'university' => new external_value(PARAM_TEXT, 'School/University|nolist'),
-			'enrolldate' => new external_value(PARAM_INT, 'Enrolled|date'),
-			'completiondate' => new external_value(PARAM_INT, 'Completed|date'),
-			'notes' => new external_value(PARAM_TEXT, 'Notes|nolist'),
-			'basisofadmission' => new external_value(PARAM_BOOL, 'Basis of admission|bool|nolist'),
-			'source' => new external_value(PARAM_TEXT, 'Source'),
+            'id' => new external_value(PARAM_INT, 'Identity Key|ro'),
+            'studentid' => new external_value(PARAM_INT, 'Student ID'),
+            'programcode' => new external_value(PARAM_TEXT, 'Program Code'),
+            'description' => new external_value(PARAM_TEXT, 'Description'),
+            'university' => new external_value(PARAM_TEXT, 'School/University|nolist'),
+            'enrolldate' => new external_value(PARAM_INT, 'Enrolled|date'),
+            'completiondate' => new external_value(PARAM_INT, 'Completed|date'),
+            'notes' => new external_value(PARAM_TEXT, 'Notes|nolist'),
+            'basisofadmission' => new external_value(PARAM_BOOL, 'Basis of admission|bool|nolist'),
+            'source' => new external_value(PARAM_TEXT, 'Source'),
         ];
     }
 }

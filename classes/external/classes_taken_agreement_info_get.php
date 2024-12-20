@@ -54,10 +54,10 @@ class classes_taken_agreement_info_get extends \external_api {
      */
     public static function execute_returns() {
         return new external_single_structure([
-			'agreementid' => new external_value(PARAM_INT, 'enrollment agreement id'),
-			'headertext' => new external_value(PARAM_TEXT, 'enrollment agreement header'),
-			'agreementtext' => new external_value(PARAM_TEXT, 'enrollment agreement text'),
-		]);
+            'agreementid' => new external_value(PARAM_INT, 'enrollment agreement id'),
+            'headertext' => new external_value(PARAM_TEXT, 'enrollment agreement header'),
+            'agreementtext' => new external_value(PARAM_TEXT, 'enrollment agreement text'),
+        ]);
     }
     /**
      * Get formatted agreement

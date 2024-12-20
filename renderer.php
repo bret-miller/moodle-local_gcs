@@ -51,8 +51,6 @@ class local_gcs_renderer extends \plugin_renderer_base {
         $out .= $mdl->appcode . PHP_EOL;
         $out .= $this->output->container_end(); // End of content.
         $out .= '<!-- End angular-app. -->' . PHP_EOL;
-        $out .= '<!-- DEBUG angular module' . PHP_EOL;
-        $out .= print_r($mdl, true) . PHP_EOL . '-->' . PHP_EOL;
         if ($mdl->fromcache) {
             $out .= '<!-- Module definition loaded from cache time='.$mdl->modtime.' -->' . PHP_EOL;
         }

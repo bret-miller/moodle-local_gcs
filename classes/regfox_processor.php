@@ -41,7 +41,7 @@ class regfox_processor {
         $this->interactive = $interactive;
         $this->logrecs = '--------------------------------------------------------------------------------'.PHP_EOL;
         $this->logthis('Interactive: '.json_encode($this->interactive));
-		$this->ap = new agreement_processor();
+        $this->ap = new agreement_processor($this->interactive);
     }
 
     /**
@@ -55,7 +55,7 @@ class regfox_processor {
         $recs = data::get_regfox_webhooks_unprocessed();
         $this->logthis("Found ".count($recs)." webhooks to process.");
         foreach ($recs as $rec) {
-            $hash = hash_hmac('sha256',$rec->postdata,$secret);
+            $hash = hash_hmac('sha256', $rec->postdata, $secret);
             if ($rec->signature != $hash) {
                 $this->logthis('Skipping webhook, invalid signature.');
             } else {
@@ -66,12 +66,12 @@ class regfox_processor {
                 $rec->processedtime = time();
                 data::update_regfox_webhook($rec);
                 $this->logthis('Paid by: '.$tran->firstname.' '.$tran->lastname.' ('.$tran->email.')');
-                $this->logthis('Total cost: '.number_format(floatval($tran->total),2). ' ('.$tran->paymethod.')');
+                $this->logthis('Total cost: '.number_format(floatval($tran->total), 2). ' ('.$tran->paymethod.')');
                 $this->logthis('Students:');
                 foreach ($tran->registrants as $reg) {
                     $this->logthis('... '.$reg->firstname.' '.$reg->lastname.' ('.$reg->email.')');
                     $this->logthis('... Scholarship: '.$reg->scholarshipcode);
-                    $this->logthis('... Total: '.number_format(floatval($reg->amount),2));
+                    $this->logthis('... Total: '.number_format(floatval($reg->amount), 2));
                     foreach ($reg->classes as $class) {
                         $this->logthis('....... '.$class->coursecode.' - '.$class->title);
                     }
@@ -88,7 +88,7 @@ class regfox_processor {
      *
      * @param none
      */
-     public function process_registrants() {
+    public function process_registrants() {
         // Process unprocessed classes. Note that records are keyed by id.
         $rfcrecs = data::get_regfox_classes_unprocessed();
         $rfrrecs = data::get_regfox_registrants_unprocessed();
@@ -103,7 +103,7 @@ class regfox_processor {
         foreach ($rfcrecs as $rec) {
             $rfclass = new regfox_class($rec);
             $rfreg = $registrants[$rfclass->regid];
-            array_push($rfreg->classes,$rfclass);
+            array_push($rfreg->classes, $rfclass);
         }
         // Process them.
         foreach ($registrants as $rfreg) {
@@ -113,16 +113,16 @@ class regfox_processor {
         $this->logrecs = PHP_EOL;
         return $log;
     }
-    
+
     /**
      * Process one unprocessed registrant and class registrations for the registrant
      *
      * @param local_gcs\regfox_registrant $rfreg RegFox registrant
-	 * @return array 
-	 *     'processed' = whether or not we could fully process the registrant.
-	 *     'registrant' = the registrant record we tried to process.
-	 *                    the studentid will be nonzero if we matched a student.
-	 *     'log = information about what we did.
+     * @return array
+     *     'processed' = whether or not we could fully process the registrant.
+     *     'registrant' = the registrant record we tried to process.
+     *                    the studentid will be nonzero if we matched a student.
+     *     'log = information about what we did.
      */
     public function process_registrant($rfreg) {
         $rftran  = new regfox_transaction($rfreg->tranid); // Get the transaction for this registrant.
@@ -157,16 +157,12 @@ class regfox_processor {
                 }
             }
         }
-        //$f = fopen(__DIR__ . "/debug.log", "w");
-        //fwrite($f, print_r($rfclass, true).' regid type is '.gettype($rfclass->regid)."\n");
-        //fwrite($f, print_r(debug_backtrace(), true)."\n");
-        //fclose($f);
-        
+
         if ($rfreg->studentid) { // Can only process if we have the student id.
             $stu = data::get_students($rfreg->studentid);
             $this->logthis('Found student id = '.$rfreg->studentid.' '.$stu->firstname.' '.$stu->lastname);
             $credittypes = data::get_codes('cr_type');
-            if (count($rfreg->classes)==0) {
+            if (count($rfreg->classes) == 0) {
                 // Get the unprocessed class registrations for this registrant.
                 $rfreg->classes = data::get_regfox_classes_unprocessed($rfreg->id);
             }
@@ -183,9 +179,9 @@ class regfox_processor {
                 $ty = intval(substr($rftran->ordernumber, 3, 4));
                 $tc = intval(substr($rftran->ordernumber, 7, 1));
                 $cls = new classrec($rfclass->coursecode, $ty, $tc);
-				$msg  = 'Found class id = ' . $cls->id;
-				$msg .= ', course code = ' . $cls->coursecode;
-				$msg .= ', term = ' . $cls->termyear . $cls->termcode;
+                $msg  = 'Found class id = ' . $cls->id;
+                $msg .= ', course code = ' . $cls->coursecode;
+                $msg .= ', term = ' . $cls->termyear . $cls->termcode;
                 if ($cls->id) {
                     // We found or created the class record so we can proceed with processing the registration.
                     $ctr = new classes_taken($stu->id, $ty, $tc, $cls->coursecode);
@@ -198,47 +194,64 @@ class regfox_processor {
                         $ctr->idnumber = $stu->idnumber;
                         $ctr->registrationdate = $rftran->transactiontime;
                         $ctr->credittypecode = $rfclass->credittypecode;
-                        $ctr->tuitionpaid = $rfclass->cost;
                         $ctr->studentpaid = $rfclass->paid;
-						$ctr->classtuition = $rfclass->paid;
+
+                        // Original tuition (does not change with a refund).
+                        $ctr->tuitionpaid = $rfclass->paid; // Init w/what student paid.
+                        if ($ctr->credittypecode != 'AUD') {
+                            // Lookup per unit cost.
+                            $coderec = data::get_code_by_code('configvalues', 'perunitcost');
+                            $perunitcost = floatval($coderec->description);
+                            $ctr->tuitionpaid = $perunitcost * $cls->coursehours; // Get from codeset configvalues rec.
+                        }
+                        // Tuition paid initially (will be reduced when a refund/partial refund is issued).
+                        $ctr->classtuition = $ctr->tuitionpaid;
+                        $ctr->fee = $cls->extrafee;
                         $ctr->regfoxcode = $rfreg->scholarshipcode;
                         $schs = data::get_sch_given_logical($rfreg->studentid, $ty);
                         $schcat = '';
-                        $schtotal = $ctr->tuitionpaid;
+                        // Calculate what student should have paid based on approved scholarship.
+                        $calcschstupaid = $ctr->tuitionpaid;
                         if (count($schs)) {
                             $sch = array_pop($schs);
-                            $ctr->scholarshippedamount = $sch->perunitamount * $cls->coursehours;
-                            $ctr->scholarshipid = $sch->id;
-                            $schcat = $sch->category;
-                            $schtotal = ($ctr->tuitionpaid-$ctr->scholarshippedamount);
+                            if ($sch->decision == 'APPROVED') {
+                                $ctr->scholarshippedamount = $sch->perunitamount * $cls->coursehours;
+                                $ctr->scholarshipid = $sch->id;
+                                $schcat = $sch->category;
+                                // Calculate the schnolarship amount.
+                                $calcschstupaid = ($ctr->tuitionpaid - $ctr->scholarshippedamount);
+                            }
                         }
-						$ctr->ordertotal = $ctr->studentpaid+$ctr->scholarshippedamount;
-                        $this->logthis("Created classes taken record:\n".print_r($ctr,true));
-						$msg = $this->ap->reminder($ctr);
-						$this->logthis($msg);
+                        $ctr->ordertotal = $ctr->studentpaid + $ctr->scholarshippedamount + $ctr->fee;
+                        $this->logthis("Created classes taken record:\n".print_r($ctr, true));
+                        $msg = $this->ap->reminder($ctr);
+                        $this->logthis($msg);
                         $ctr->save();
-						if ($stu->userid) {
-							enrollment::enroll_user($stu->userid, $ctr->coursecode);
-						}
-                        if ( $schtotal != $ctr->studentpaid) {
-                            // Student didn't pay correct amount?
-                            $msg = 
+                        if ($stu->userid) {
+                            enrollment::enroll_user($stu->userid, $ctr->coursecode);
+                        }
+                        if ($calcschstupaid != $ctr->studentpaid || ($schcat != '' && $ctr->regfoxcode != '' && $schcat != $ctr->regfoxcode)) {
+                            // Student didn't pay expected amount or they used a different regfox code than their scholarship?
+                            $msg =
                                 '=================================================='.PHP_EOL.
-                                '=============== CHECK TUITION PAID ==============='.PHP_EOL.
+                                '======= CHECK TUITION PAID AND REGFOX CODE ======='.PHP_EOL.
                                 '=================================================='.PHP_EOL.
                                 'Student: '.$stu->legalfirstname.' '.$stu->legallastname.PHP_EOL.
                                 'Paid: ' . $ctr->studentpaid .PHP_EOL.
                                 'Tuition: ' . $ctr->tuitionpaid .PHP_EOL;
                             if ($ctr->regfoxcode) {
-                                $msg .= 'Scholarship code: ' . $ctr->regfoxcode.PHP_EOL;
+                                $msg .= 'RegFox code: ' . $ctr->regfoxcode.PHP_EOL;
                             }
+                            $msg .= number_format($ty).' Scholarship: ';
                             if ($schcat != '') {
-                                $msg .= 'Scholarship: ' . $sch->category . ' per unit amount ' . number_format($sch->perunitamount,2).PHP_EOL.
-                                    'For this course: '.number_format($ctr->scholarshippedamount,2).PHP_EOL;
+                                $msg .= $schcat . ' per unit amount ' . number_format($sch->perunitamount, 2).PHP_EOL.
+                                    'For this course: '.number_format($ctr->scholarshippedamount, 2).PHP_EOL;
+                            } else {
+                                $msg .= '(none)'.PHP_EOL;
                             }
-                            $msg .= 'Total should be: '.number_format($schtotal,2);
+                            $msg .= 'Total expected: '.number_format($calcschstupaid, 2);
                             $this->logthis($msg);
-							utils::send_notification_email('Check Tuition Paid',"<p>$msg</p>");
+                            utils::send_notification_email('Check Tuition Paid', nl2br($msg));
                         }
                     }
                     if ($ctr->id) {
@@ -247,16 +260,16 @@ class regfox_processor {
                         $now = time();
                         $rfclass->processedtime = $now;
                         $rfclass->save();
-						
-						// Check to make sure the regfox discount code exists, otherwise add it.
-						if (!data::get_code_by_code('scholarship_accounting', $ctr->regfoxcode)) {
-							data::insert_code((object)[
-								'id' => 0,
-								'codeset' => 'scholarship_accounting',
-								'code' => $ctr->regfoxcode,
-								'description' => '',
-							]);
-						}
+
+                        // Check to make sure the regfox discount code exists, otherwise add it.
+                        if (strlen($ctr->regfoxcode) > 0 && !data::get_code_by_code('scholarship_accounting', $ctr->regfoxcode)) {
+                            data::insert_code((object)[
+                                'id' => 0,
+                                'codeset' => 'scholarship_accounting',
+                                'code' => $ctr->regfoxcode,
+                                'description' => '',
+                            ]);
+                        }
                     }
                 }
             }
@@ -278,11 +291,11 @@ class regfox_processor {
         $this->logrecs = PHP_EOL;
         return [
             'processed' => $allprocessed,
-			'registrant' => $rfreg,
-            'log' => $log
+            'registrant' => $rfreg,
+            'log' => $log,
         ];
     }
-    
+
     /**
      * Add a message to the log records.
      *

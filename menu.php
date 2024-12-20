@@ -30,37 +30,19 @@ $html = '';
 $pagetitle = get_string("menumenu", 'local_gcs');
 $pagetitle = str_replace('{pluginname}', $settings->pluginname, $pagetitle);
 global $OUTPUT, $PAGE;
-$htmlpage = new \local_gcs\html_page('',[],$pagetitle);
+$htmlpage = new \local_gcs\html_page('', [], $pagetitle);
 $systemcontext = context_system::instance();
 if (has_capability('local/gcs:administrator', $systemcontext)) {
-	$foldername = get_config('local_gcs', 'menuadmin');
+    $foldername = get_config('local_gcs', 'menuadmin');
 } else {
-	$foldername = get_config('local_gcs', 'menustudent');
+    $foldername = get_config('local_gcs', 'menustudent');
 }
 $PAGE->navigation->initialise();
 $nav = clone($PAGE->navigation);
-/*
-$nodes = $nav->find_all_of_type(global_navigation::TYPE_CATEGORY);
-$node = false;
-foreach ($nodes as $n) {
-	if ($n->text == $foldername) {
-		$node = $n;
-	}
-}
-*/
 $node = $nav->find('gcspm', global_navigation::TYPE_CUSTOM);
-if (!$node){
-	$node = $nav->find('gcsstu', global_navigation::TYPE_CUSTOM);
+if (!$node) {
+    $node = $nav->find('gcsstu', global_navigation::TYPE_CUSTOM);
 }
-/*
-$html .= "\n<pre>\n";
-$html .= "====================================================================================================\n";
-$html .= "foldername: $foldername\n\n";
-$html .= print_r($node,true);
-$html .= "\n====================================================================================================\n";
-$html .= print_r($PAGE->navigation,true);
-$html .= "\n</pre>\n";
-//*/
 $html .= $OUTPUT->render_from_template('core/settings_link_page', ['node' => $node]);
 $htmlpage->content .= $html;
 echo $htmlpage->output->render($htmlpage);

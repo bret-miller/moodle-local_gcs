@@ -28,5 +28,5 @@ require_login(null, false);
 $settings = new \local_gcs\settings();
 $html = '<div>For Term: <div class="termselect"></div></div>
     <div class="reportcontent"></div>';
-$htmlpage = new \local_gcs\html_page($html,['amd/webservice.js']);
+$htmlpage = new \local_gcs\html_page($html, ['amd/webservice.js']);
 echo $htmlpage->output->render($htmlpage);

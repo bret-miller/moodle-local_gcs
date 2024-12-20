@@ -24,8 +24,6 @@
 
 namespace local_gcs\task;
 
-defined('MOODLE_INTERNAL') || die();
-
 class process_regfox_registrations extends \core\task\adhoc_task {
     /** @var string log records to write to debug log */
     public $logrecs;
@@ -43,18 +41,18 @@ class process_regfox_registrations extends \core\task\adhoc_task {
     public function execute() {
         $this->logrecs = '';
         $this->log('local_gcs: process_regfox_registrations started');
-		
-		// Debugging is easier if the processing code isn't in the task itself.
-		$processor = new \local_gcs\regfox_processor($this);
+
+        // Debugging is easier if the processing code isn't in the task itself.
+        $processor = new \local_gcs\regfox_processor($this);
 
         // Process raw webhooks into registrants and class registrations.
-		$logrecs = $processor->process_webhooks();
-		$this->log($logrecs);
-		
-		// Process the unprocessed registrants and class registrations.
+        $logrecs = $processor->process_webhooks();
+        $this->log($logrecs);
+
+        // Process the unprocessed registrants and class registrations.
         $logrecs = $processor->process_registrants();
-		$this->log($logrecs);
-        
+        $this->log($logrecs);
+
         return $this->logrecs;
     }
     public function log($logrec) {
